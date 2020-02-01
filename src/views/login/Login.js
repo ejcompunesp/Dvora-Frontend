@@ -1,7 +1,6 @@
 import React from "react";
 
 import { Container } from "./styles/login";
-import { FaBeer } from "react-icons/fa"
 
 import logo from "../../assets/dvora-logo.png";
 
