@@ -52,6 +52,22 @@ export const SidebarContainer = styled.div`
     text-decoration: none;
     li {
       margin-top: 20px;
+      svg {
+        font-size: 40px;
+      }
+      a {
+        color: #292929;
+        text-decoration: none;
+        transition: .2s ease all;
+      }
+      a.active {
+        color: #58B7D9;
+        transition: .2s ease all;
+      }
+      a:hover {
+        transition: .2s ease all;
+        color: #dedede;
+      }
     }
   }
 `;

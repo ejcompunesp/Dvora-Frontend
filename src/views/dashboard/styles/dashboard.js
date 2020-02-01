@@ -9,9 +9,13 @@ export const DashboardContainer = styled.div`
   }
   .sidebar {
     grid-column: 1/2;
-    border: 1px solid black;
     min-height: 100vh;
     background-color: #ffffff;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, .3);
+  }
+  .content {
+    grid-column: 2/14;
+    padding: 30px;
   }
 `;
 
