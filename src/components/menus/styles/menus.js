@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const BlueNavbar = styled.div`
+export const TopNavbarContainer = styled.div`
   width: 100%;
   background-color: ${props => props.background};
   height: 65px;
@@ -13,7 +13,7 @@ export const BlueNavbar = styled.div`
 
 `;
 
-export const BlueNavItems = styled.div`
+export const TopNavItems = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,4 +37,21 @@ export const BreadCrumb = styled.h2`
     font-weight: 400;
   }
   margin-left: 30px;
+`;
+
+export const SidebarContainer = styled.div`
+  width: 100%;
+  display: flex;
+  height: 100%;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  ul {
+    list-style: none;
+    text-decoration: none;
+    li {
+      margin-top: 20px;
+    }
+  }
 `;
