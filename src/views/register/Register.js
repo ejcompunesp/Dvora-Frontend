@@ -1,6 +1,8 @@
 import React from "react";
+import Dropzone from "react-dropzone"
 
-import { Container } from "./estilo/registro";
+import { Container } from "./styles/register";
+import { MyFile } from "../register/Up"
 import { FaUserAlt } from "react-icons/fa"
 import { FaCity } from "react-icons/fa"
 import { MdLocationCity } from "react-icons/md"
@@ -8,9 +10,11 @@ import {FaRegCalendarAlt} from "react-icons/fa"
 
 import logo from "../../assets/dvora-logo.png";
 import ejcomp from "../../assets/ejcomp.jpg";
+import Basic from "./styles/upload"
 
 
-export default function Registro() {
+
+export default function Register() {
   return (
     <Container>
       <img src={logo} alt="logo dvora" />
@@ -19,10 +23,11 @@ export default function Registro() {
           registros
         </div>
         <form>
-          <div className="fotoDaEj">
-            <img src={ejcomp} alt=""/> 
-            <h4> Foto da EJ </h4>
-          </div>
+            <MyFile>
+            <Basic>
+              <input type="file"/>
+            </Basic>
+            </MyFile>
           
           <div className="divForm" >
             <i className="Icon"> <FaUserAlt/> </i>

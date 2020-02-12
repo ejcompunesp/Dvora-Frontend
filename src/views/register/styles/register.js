@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   background-color: #fbf5ec;
-  height: 100vh;
-  width: 100vw;
+  max-height: 100vh;
+  max-width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,12 +17,13 @@ export const Container = styled.div`
     margin-top: 30px;
     position: relative;
     display: flex;
+    flex-direction: column;
+    flex-wrap:wrap;
     justify-content: center;
     align-items: center;
     background-color: #ffffff;
-    width: 30%;
-    height: 70%;
-    flex-direction: column;
+    max-width: 40%;
+    max-height: 70%;
     
     .registro {
       position: absolute;
@@ -45,19 +46,6 @@ export const Container = styled.div`
     justify-content: flex-start;
     margin-top: 30px;
     padding:10px;
-    img{
-      width: 80px;
-      height: 80px;
-      margin-bottom:10px;
-      float: left;
-      border-radius: 60% 60% 60% 60%;
-    }
-    h4{
-      margin-top: 30px;
-      margin-right:40%;
-      font-family: 'Nunito';
-      font-weight: bold;
-    }
     .divForm{
       margin-top: 1%;
       margin-bottom:2%;
@@ -74,7 +62,6 @@ export const Container = styled.div`
         margin-left:5px;
     }
     }
-    
     input {
       display: inline-block 
       margin: 15px;
