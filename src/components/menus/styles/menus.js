@@ -10,7 +10,9 @@ export const TopNavbarContainer = styled.div`
   img {
     width: 55px;
   }
-
+  h2{
+    margin-bottom: 0px;
+  }
 `;
 
 export const TopNavItems = styled.div`
