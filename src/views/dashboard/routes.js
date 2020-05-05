@@ -1,13 +1,14 @@
 import React from 'react';
 import Home from '../dashboard/home/Home';
 import Settings from '../dashboard/settings/Settings';
-import Monitoring from '../monitoring/Monitoring';
-import Team from '../team/Team';
-import Profile from '../profile/Profile';
+import Monitoring from './monitoring/Monitoring';
+import Team from './team/Team';
+import Profile from './profile/Profile';
+import Feedback from './feedback/Feedback';
 
-import { FaHome, FaClipboardList } from 'react-icons/fa';
+import { FaHome, FaClipboardList, FaComments } from 'react-icons/fa';
 import { MdSettings } from 'react-icons/md';
-import { IoIosPeople, IoMdPerson } from 'react-icons/io'
+import { IoIosPeople, IoMdPerson } from 'react-icons/io';
 
 function isActive(path) {
   const url = window.location.pathname;
@@ -16,9 +17,10 @@ function isActive(path) {
 
 const HomeIcon = <FaHome/>
 const SettingsIcon = <MdSettings/>
-const MonitoringIcon = <FaClipboardList/>
-const TeamIcon = <IoIosPeople/>
-const ProfileIcon = <IoMdPerson/>
+const MonitoringIcon = <FaClipboardList title="Acompanhamento"/>
+const TeamIcon = <IoIosPeople title="Equipe"/>
+const ProfileIcon = <IoMdPerson title="Profile"/>
+const FeedbackIcon = <FaComments title="Feedback"/>
 
 export const routes = [
   {
@@ -50,5 +52,11 @@ export const routes = [
     active: (path) => isActive(path),
     icon: ProfileIcon,
     component: Profile
+  },
+  {
+    path: '/dashboard/feedback',
+    active: (path) => isActive(path),
+    icon: FeedbackIcon,
+    component: Feedback
   },
 ];

@@ -6,7 +6,7 @@ import { GoPencil } from "react-icons/go";
 import { FaRegUser, FaRegClock, FaRegLightbulb } from "react-icons/fa";
 import { Title, UserInfo, LastDuties, About, ActualProject } from "./styles/profile";
 
-import JohnDoe from '../../assets/John Doe.png';
+import JohnDoe from '../../../assets/John Doe.png';
 
 export default function Profile() {
   return (

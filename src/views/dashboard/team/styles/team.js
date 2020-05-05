@@ -1,0 +1,96 @@
+import styled from 'styled-components';
+
+export const Container = styled.div`
+  width: 100%;
+  background-color: #ffffff;
+  border: solid 1px #aaaaaa;
+  border-radius: 6px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  font-family: "Ubuntu";
+`;
+
+export const ContentDiv = styled.div`
+  width: 100%;
+`;
+
+export const Title = styled.div`
+  width: 100%;
+  margin-bottom: 30px;
+  padding: 30px 50px 30px 50px;
+  color: #4a4a4a;
+  font-size: 30px;
+  font-weight: 500;
+  border-bottom: solid 1px #aaaaaa;
+`;
+
+export const TeamMembers = styled.ul`
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(220px, 1fr));
+  grid-gap: 30px;
+  margin: 0 45px 20px 45px; 
+  li{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: solid 1px #aaaaaa;
+    border-radius: 6px;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    p{
+      margin: 0 0 10px 0;
+    }
+    img{
+      width: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+  }
+
+  @media (max-width: 1310px){
+    grid-template-columns: repeat(4, minmax(220px, 1fr));
+  }
+
+  @media (max-width: 972px){
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+  }
+`;
+
+export const SocialMedias = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  .insta{
+    margin: 2px;
+    font-size: 29.4px;
+    padding: 2px;
+    border-radius: 4px;
+    color: #fff;
+    background:
+    radial-gradient(circle farthest-corner at 35% 90%, #fec564, transparent 50%),
+    radial-gradient(circle farthest-corner at 0 140%, #fec564, transparent 50%),
+    radial-gradient(ellipse farthest-corner at 0 -25%, #5258cf, transparent 50%),
+    radial-gradient(ellipse farthest-corner at 20% -50%, #5258cf, transparent 50%),
+    radial-gradient(ellipse farthest-corner at 100% 0, #893dc2, transparent 50%),
+    radial-gradient(ellipse farthest-corner at 60% -20%, #893dc2, transparent 50%),
+    radial-gradient(ellipse farthest-corner at 100% 100%, #d9317a, transparent),
+    linear-gradient(#6559ca, #bc318f 30%, #e33f5f 50%, #f77638 70%, #fec66d 100%);
+  }
+  a{
+    transition: filter 0.2s;
+    margin: 0;
+    svg{
+      font-size: 32px;
+    }
+  }
+  a:hover{
+    filter: brightness(120%);
+  }
+`;
+
+export const Pages = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 50px 30px 50px;
+`;
