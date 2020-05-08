@@ -15,7 +15,7 @@ export default function MemberRegistration(props) {
     setTimeout(() => {
       setLoading(false);
       setVisible(false);
-    }, 3000);
+    }, 2000);
   };
 
   function handleCancel() {

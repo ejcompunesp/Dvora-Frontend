@@ -1,16 +1,15 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
-import { Form, Input, Icon, message, Button } from 'antd';
+import { Form, Input, message, Button, Upload, Icon } from 'antd';
 
 import { MdPerson, MdPhone, MdEmail, MdLock } from 'react-icons/md';
 import { FaAddressCard, FaUserCog, FaUserTie, FaFacebookSquare, 
   FaInstagram, FaLinkedin } from 'react-icons/fa';
 
-import { UploadButtons, Thumbnail } from './styles/memberRegistrationForm';
+import { UploadButtons } from './styles/memberRegistrationForm';
 
 function MemeberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
-  const [thumbnail, setThumbnail] = useState(null);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -19,9 +18,7 @@ function MemeberRegistrationForm(props) {
         props.onSubmit(values);
         message.success('Membro registrado com sucesso.');
       }
-      else {
-        message.error('Erro ao registrar membro, tente novamente.');
-      }
+      else message.error('Erro ao registrar membro, tente novamente.');
     });
   }
 
@@ -47,9 +44,19 @@ function MemeberRegistrationForm(props) {
     callback();
   };
 
-  const preview = useMemo(() => {
-    return thumbnail ? URL.createObjectURL(thumbnail) : null;
-  }, [thumbnail]);
+  function normFile(e) {
+    console.log('Upload event:', e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+
+  function dummyRequest({photo, onSuccess}){
+    setTimeout(() =>{
+      onSuccess("ok");
+    }, 0);
+  }
 
   const { getFieldDecorator } = props.form;
 
@@ -163,19 +170,19 @@ function MemeberRegistrationForm(props) {
         {getFieldDecorator('linkedinLink', {
         })(<Input addonBefore={<FaLinkedin />} style={{ width: '100%' }} />)}
       </Form.Item>
-      <Form.Item label="Foto"
-      >
-        {getFieldDecorator('img', {
+      <Form.Item label="Foto">
+        {getFieldDecorator('photo', {
+          valuePropName: 'fileList',
+          getValueFromEvent: normFile,
         })(
-          <Thumbnail
-            id="thumbnail"
-            style={{ backgroundImage: `url(${preview})` }}
-          >
-            <Input className={thumbnail ? 'has-thumbnail' : null} type="file" onChange={event => setThumbnail(event.target.files[0])} />
-          </Thumbnail>
-        
+          <Upload name="file" customRequest={dummyRequest} listType="picture">
+            <Button>
+              <Icon type="upload" /> Click to upload
+            </Button>
+          </Upload>,
         )}
       </Form.Item>
+
       <UploadButtons>
         <Button className="cancel" key="back" onClick={() => props.setVisible(false)}>
           Cancelar
