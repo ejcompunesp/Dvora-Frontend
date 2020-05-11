@@ -1,25 +1,36 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Checkbox, Icon, InputNumber, message } from "antd";
+import { Form, Input, Button, Icon, message } from "antd";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as JeActions from '../../store/actions/je';
+
+import { authApi } from '../../api';
 
 import { Container, StyledForm } from "./styles/login";
-import { FaBeer } from "react-icons/fa";
 
 import logo from "../../assets/dvora-logo.png";
 
-function Login(props) {
-  const { getFieldDecorator } = props.form;
+function Login({ form, setJe }) {
+  const { getFieldDecorator } = form;
   const [loading, setLoading] = useState(false);
-
+  
   function handleSubmit(e) {
     e.preventDefault();
-    props.form.validateFields((err, values) => {
+    form.validateFields(async (err, values) => {
       if (!err) {
-        console.log(values);
         setLoading(true);
-        setInterval(() => {
+        try {
+          const response = await authApi.login(values);
+          if(response.status === 200) {
+            setLoading(false);
+            setJe(response.data);
+            message.success('Login feito com sucesso!');
+          }
+        } catch(error) {
+          message.error(error.response.data.msg);
           setLoading(false);
-          message.success('Login feito com sucesso!');
-        }, 1000)
+        }
       }
     });
   }
@@ -71,4 +82,11 @@ function Login(props) {
 
 Login = Form.create()(Login);
 
-export default Login;
+const mapStateToProps = state => ({
+  je: state.je
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(JeActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
