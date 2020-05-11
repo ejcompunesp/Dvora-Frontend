@@ -51,17 +51,17 @@ export default function Team() {
           {currentPosts.map(member => {
             return (
               <li key={member.sr}>
-                <img src={member.img?member.img:user} alt={"Foto de perfil"} />
+                <img src={member.file?member.file:user} alt={"Foto de perfil"} />
                 <strong>{member.name}</strong>
-                <p>{member.role}</p>
+                <p>{member.position}</p>
                 <SocialMedias>
-                  <a title="Facebook" href={member.facebookLink} target="_blank">
+                  <a title="Facebook" href={member.facebook} target="_blank">
                     <FaFacebookSquare style={{ color: "#3b5998" }}/>
                   </a>
-                  <a title="Instagram" href={member.instagramLink} target="_blank">
+                  <a title="Instagram" href={member.instagram} target="_blank">
                     <FaInstagram className="insta"/>
                   </a>
-                  <a title="Linkedin" href={member.linkedinLink} target="_blank">
+                  <a title="Linkedin" href={member.linkedin} target="_blank">
                     <FaLinkedin style={{ color: "#0e76a8" }}/>
                   </a>
                 </SocialMedias>

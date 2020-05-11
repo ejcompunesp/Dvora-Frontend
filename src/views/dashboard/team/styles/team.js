@@ -28,7 +28,9 @@ export const TeamMembers = styled.ul`
   display: grid;
   grid-template-columns: repeat(5, minmax(220px, 1fr));
   grid-gap: 30px;
-  margin: 0 45px 20px 45px; 
+  margin: 0 45px 20px 45px;
+  font-size: 14px; 
+
   li{
     display: flex;
     flex-direction: column;
@@ -37,10 +39,16 @@ export const TeamMembers = styled.ul`
     border-radius: 6px;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+
+    strong{
+      font-size: 14px;
+    }
+
     p{
+      font-size: 12px;
       margin: 0 0 10px 0;
     }
+
     img{
       width: 100px;
       border-radius: 50%;
@@ -48,12 +56,20 @@ export const TeamMembers = styled.ul`
     }
   }
 
-  @media (max-width: 1310px){
+  @media (max-width: 1490px){
     grid-template-columns: repeat(4, minmax(220px, 1fr));
   }
 
-  @media (max-width: 972px){
+  @media (max-width: 1200px){
     grid-template-columns: repeat(3, minmax(220px, 1fr));
+  }
+
+  @media (max-width: 940px){
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+
+  @media (max-width: 670px){
+    grid-template-columns: repeat(1, minmax(220px, 1fr));
   }
 `;
 
@@ -61,6 +77,7 @@ export const SocialMedias = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
+
   .insta{
     margin: 2px;
     font-size: 29.4px;
@@ -77,13 +94,16 @@ export const SocialMedias = styled.div`
     radial-gradient(ellipse farthest-corner at 100% 100%, #d9317a, transparent),
     linear-gradient(#6559ca, #bc318f 30%, #e33f5f 50%, #f77638 70%, #fec66d 100%);
   }
+
   a{
     transition: filter 0.2s;
     margin: 0;
+
     svg{
       font-size: 32px;
     }
   }
+
   a:hover{
     filter: brightness(120%);
   }

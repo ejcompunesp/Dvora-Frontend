@@ -9,6 +9,8 @@ import { TableOperations } from '../../views/dashboard/monitoring/styles/monitor
 
 import { data } from '../../api/ApiTeste';
 
+import user from '../../assets/user.png';
+
 export default function MemberList() {
   function determineStatusIcon(status){
     if (status === "Feito")
@@ -32,11 +34,12 @@ export default function MemberList() {
   
   sortedInfo = sortedInfo || {};
   filteredInfo = filteredInfo || {};
+
   const columns = [
     {
-      dataIndex: 'img',
+      dataIndex: 'file',
       width: '4%',
-      render: img => <img alt={img} src={img}/>
+      render: file => <img src={file?file:user} alt="Foto de perfil"/>
     },
     {
       title: 'Nome',
@@ -78,10 +81,10 @@ export default function MemberList() {
     },
     {
       title: 'Cargo',
-      dataIndex: 'role',
-      key: 'role',
-      sorter: (a, b) => a.role.length - b.role.length,
-      sortOrder: sortedInfo.columnKey === 'role' && sortedInfo.order,
+      dataIndex: 'position',
+      key: 'position',
+      sorter: (a, b) => a.position.length - b.position.length,
+      sortOrder: sortedInfo.columnKey === 'position' && sortedInfo.order,
       ellipsis: true,
     },
   ];

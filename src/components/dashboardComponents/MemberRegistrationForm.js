@@ -135,7 +135,7 @@ function MemeberRegistrationForm(props) {
         })(<Input addonBefore={<FaAddressCard />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Diretoria">
-        {getFieldDecorator('direction', {
+        {getFieldDecorator('board', {
           rules: [
             {
               required: true,
@@ -145,7 +145,7 @@ function MemeberRegistrationForm(props) {
         })(<Input addonBefore={<FaUserTie />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Cargo">
-        {getFieldDecorator('role', {
+        {getFieldDecorator('position', {
           rules: [
             {
               required: true,
@@ -159,19 +159,19 @@ function MemeberRegistrationForm(props) {
         })(<Input addonBefore={<MdPhone />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Facebook">
-        {getFieldDecorator('facebookLink', {
+        {getFieldDecorator('facebook', {
         })(<Input addonBefore={<FaFacebookSquare />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Instagram">
-        {getFieldDecorator('instagramLink', {
+        {getFieldDecorator('instagram', {
         })(<Input addonBefore={<FaInstagram />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Linkedin">
-        {getFieldDecorator('linkedinLink', {
+        {getFieldDecorator('linkedin', {
         })(<Input addonBefore={<FaLinkedin />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Foto">
-        {getFieldDecorator('photo', {
+        {getFieldDecorator('file', {
           valuePropName: 'fileList',
           getValueFromEvent: normFile,
         })(
