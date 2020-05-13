@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import * as JeActions from '../../store/actions/je';
 
-import { authApi } from '../../api';
+import { authApi, loginDashboard } from '../../api';
 
 import { Container, StyledForm } from "./styles/login";
 
@@ -25,10 +25,11 @@ function Login({ form, setJe }) {
           if(response.status === 200) {
             setLoading(false);
             setJe(response.data);
+            loginDashboard(response.data.token);
             message.success('Login feito com sucesso!');
           }
         } catch(error) {
-          message.error(error.response.data.msg);
+          console.log(error)
           setLoading(false);
         }
       }
