@@ -29,7 +29,7 @@ function Login({ form, setJe }) {
             message.success('Login feito com sucesso!');
           }
         } catch(error) {
-          console.log(error)
+          message.error(error.response.data.msg);
           setLoading(false);
         }
       }
@@ -81,8 +81,6 @@ function Login({ form, setJe }) {
   );
 }
 
-Login = Form.create()(Login);
-
 const mapStateToProps = state => ({
   je: state.je
 });
@@ -90,4 +88,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(JeActions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login));
