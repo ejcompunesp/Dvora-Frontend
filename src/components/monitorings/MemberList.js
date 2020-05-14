@@ -20,8 +20,8 @@ export default function MemberList() {
     else return <MdTimelapse/>;
   }
   
-  let [filteredInfo, setFilteredInfo] = useState();
-  let [sortedInfo, setSortedInfo] = useState();
+  let [filteredInfo, setFilteredInfo] = useState('');
+  let [sortedInfo, setSortedInfo] = useState('');
   
   function handleChange(pagination, filters, sorter) {
     setFilteredInfo(filters);
@@ -94,7 +94,7 @@ export default function MemberList() {
       <TableOperations>
         <Button onClick={clearFilters}>Limpar filtros</Button>
       </TableOperations>
-      <Table columns={columns} dataSource={data} onChange={handleChange} />
+      <Table columns={columns} scroll={{ x: true }} dataSource={data} onChange={handleChange} />
     </div>
   );
 }

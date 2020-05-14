@@ -5,8 +5,9 @@ import Monitoring from './monitoring/Monitoring';
 import Team from './team/Team';
 import Profile from './profile/Profile';
 import Feedback from './feedback/Feedback';
+import Duty from './duty/Duty';
 
-import { FaHome, FaClipboardList, FaComments } from 'react-icons/fa';
+import { FaHome, FaClipboardList, FaComments, FaCoffee } from 'react-icons/fa';
 import { MdSettings } from 'react-icons/md';
 import { IoIosPeople, IoMdPerson } from 'react-icons/io';
 
@@ -21,6 +22,7 @@ const MonitoringIcon = <FaClipboardList title="Acompanhamento"/>
 const TeamIcon = <IoIosPeople title="Equipe"/>
 const ProfileIcon = <IoMdPerson title="Profile"/>
 const FeedbackIcon = <FaComments title="Feedback"/>
+const DutyIcon = <FaCoffee title="Plantão"/>
 
 export const routes = [
   {
@@ -58,5 +60,11 @@ export const routes = [
     active: (path) => isActive(path),
     icon: FeedbackIcon,
     component: Feedback
+  },
+  {
+    path: '/dashboard/duty',
+    active: (path) => isActive(path),
+    icon: DutyIcon,
+    component: Duty
   },
 ];

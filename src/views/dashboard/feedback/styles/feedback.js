@@ -16,10 +16,8 @@ export const Header = styled.ul`
     font-size: 36px;
   }
   
-  li{
-    p{
+  li p{
       margin: 0;
-    }
   }
   
   img{
@@ -30,28 +28,39 @@ export const Header = styled.ul`
 `;
 
 export const Title = styled.div`
-  margin: 0 90px 30px 90px;
+  margin: 0 90px 20px 90px;
   border-bottom: solid 1px #aaaaaa;
   color: #4a4a4a;
   font-size: 30px;
   font-weight: 500;
 `;
 
-export const FeedbackContent = styled.div`
-  padding: 30px 90px 30px 90px;
+export const FeedbackForm = styled.div`
   margin-bottom: 30px;
-  
-  .steps-content {
-    margin-top: 16px;
-    border: 1px dashed #e9e9e9;
-    border-radius: 6px;
-    background-color: #fafafa;
-    min-height: 200px;
-    text-align: center;
-    padding-top: 80px;
+
+  button{
+    background: #00A7E1;
+    border-color: #00A7E1
   }
 
-  .steps-action {
-    margin-top: 24px;
+  button:hover{
+    filter: brightness(110%);
+  }
+`;
+
+export const Question = styled.div`
+  margin-bottom: 20px;
+
+  p{
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+
+  textarea{
+    width: 50%;
+    padding: 10px;
+    line-height: 20px;
+    border-radius: 6px;
+    resize: vertical;
   }
 `;

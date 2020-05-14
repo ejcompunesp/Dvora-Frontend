@@ -4,10 +4,10 @@ import { Pagination } from 'antd'
 
 import { FaFacebookSquare, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
-import { Container, Title, TeamMembers, SocialMedias, Pages, ContentDiv } from './styles/team';
+import { Container, Title, Content, TeamMembers, SocialMedias, Pages } from './styles/team';
 
 import { data } from '../../../api/ApiTeste';
-import MemberRegistration from '../../../components/dashboardComponents/MemberRegistration';
+import MemberRegistration from '../../../components/registrations/MemberRegistration';
 import user from '../../../assets/user.png';
 
 export default function Team() {
@@ -43,10 +43,10 @@ export default function Team() {
   return (
     <Container>
       <Title>
-        Nossa equipe
+        <h2>Nossa equipe</h2>
         <MemberRegistration onSubmit={handleSubmit} />
       </Title>
-      <ContentDiv>
+      <Content>
         <TeamMembers>
           {currentPosts.map(member => {
             return (
@@ -69,15 +69,15 @@ export default function Team() {
             )
           })}
         </TeamMembers>
-      </ContentDiv>
-      <Pages>
-        <Pagination 
-          defaultCurrent={1} 
-          total={data.length} 
-          pageSize={postsPerPage} 
-          onChange={handlePageChange}
-        />
-      </Pages>
+        <Pages>
+          <Pagination 
+            defaultCurrent={1} 
+            total={data.length} 
+            pageSize={postsPerPage} 
+            onChange={handlePageChange}
+            />
+        </Pages>
+      </Content>
     </Container>
   );
 }

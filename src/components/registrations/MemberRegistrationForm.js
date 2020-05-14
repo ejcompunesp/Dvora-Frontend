@@ -8,7 +8,7 @@ import { FaAddressCard, FaUserCog, FaUserTie, FaFacebookSquare,
 
 import { UploadButtons } from './styles/memberRegistrationForm';
 
-function MemeberRegistrationForm(props) {
+function MemberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
 
   function handleSubmit(e) {
@@ -97,7 +97,7 @@ function MemeberRegistrationForm(props) {
           ],
         })(<Input addonBefore={<MdEmail />} style={{ width: '100%' }} />)}
       </Form.Item>
-      <Form.Item label="Password" hasFeedback>
+      <Form.Item label="Password" hasFeedback required={true} >
         {getFieldDecorator('password', {
           rules: [
             {
@@ -177,7 +177,7 @@ function MemeberRegistrationForm(props) {
         })(
           <Upload name="file" customRequest={dummyRequest} listType="picture">
             <Button>
-              <Icon type="upload" /> Click to upload
+              <Icon type="upload" /> Clique para adicionar
             </Button>
           </Upload>,
         )}
@@ -200,6 +200,6 @@ function MemeberRegistrationForm(props) {
   );
 }
 
-const RegistrationForm = Form.create({ name: 'Registro de membros' })(MemeberRegistrationForm);
+const RegistrationForm = Form.create({ name: 'Registro de membros' })(MemberRegistrationForm);
 
 export default RegistrationForm;

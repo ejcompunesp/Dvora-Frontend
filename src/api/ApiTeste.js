@@ -11,6 +11,39 @@ export const data = [
     linkedin: 'https://www.linkedin.com/home',
     onDuty: 'Feito',
     acc: 'Feito',
+    duties: [
+      {
+        date: '12/04',
+        startTime: '-',
+        finishTime: '-',
+        duration: 2,
+      },
+      {
+        date: '13/04',
+        duration: 2,
+      },
+      {
+        date: '14/04',
+        duration: 2,
+      },
+      {
+        date: '15/04',
+        duration: 2,
+      },
+      {
+        date: '16/04',
+        duration: 2,
+      },
+      {
+        date: '17/04',
+        duration: 2,
+      },
+      {
+        date: '18/04',
+        duration: 2,
+      },
+    ],
+    about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris auctor libero justo, sed mattis sem sagittis non. In eget mauris erat. Donec ultricies quis nibh eget vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris auctor libero justo, sed mattis sem sagittis non. In eget mauris erat. Donec ultricies quis nibh eget vestibulumLorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris auctor libero justo, sed mattis sem sagittis non. In eget mauris erat. Donec ultricies quis nibh eget vestibulum',
   },
   {
     sr: 2,
@@ -22,6 +55,38 @@ export const data = [
     linkedin: 'https://www.linkedin.com/home',
     onDuty: 'Não feito',
     acc: 'Feito',
+    duties: [
+      {
+        date: '12/04',
+        startTime: '-',
+        finishTime: '-',
+        duration: 2,
+      },
+      {
+        date: '13/04',
+        duration: 2,
+      },
+      {
+        date: '14/04',
+        duration: 2,
+      },
+      {
+        date: '15/04',
+        duration: 2,
+      },
+      {
+        date: '16/04',
+        duration: 2,
+      },
+      {
+        date: '17/04',
+        duration: 2,
+      },
+      {
+        date: '18/04',
+        duration: 2,
+      },
+    ],
   },
   {
     sr: 3,
@@ -33,6 +98,38 @@ export const data = [
     linkedin: 'https://www.linkedin.com/home',
     onDuty: 'Feito',
     acc: 'Não feito',
+    duties: [
+      {
+        date: '12/04',
+        startTime: '-',
+        finishTime: '-',
+        duration: 2,
+      },
+      {
+        date: '13/04',
+        duration: 2,
+      },
+      {
+        date: '14/04',
+        duration: 2,
+      },
+      {
+        date: '15/04',
+        duration: 2,
+      },
+      {
+        date: '16/04',
+        duration: 2,
+      },
+      {
+        date: '17/04',
+        duration: 2,
+      },
+      {
+        date: '18/04',
+        duration: 2,
+      },
+    ],
   },
   {
     sr: 4,
@@ -44,6 +141,38 @@ export const data = [
     linkedin: 'https://www.linkedin.com/home',
     onDuty: 'Não feito',
     acc: 'Não feito',
+    duties: [
+      {
+        date: '12/04',
+        startTime: '-',
+        finishTime: '-',
+        duration: 2,
+      },
+      {
+        date: '13/04',
+        duration: 2,
+      },
+      {
+        date: '14/04',
+        duration: 2,
+      },
+      {
+        date: '15/04',
+        duration: 2,
+      },
+      {
+        date: '16/04',
+        duration: 2,
+      },
+      {
+        date: '17/04',
+        duration: 2,
+      },
+      {
+        date: '18/04',
+        duration: 2,
+      },
+    ],
   },
   {
     sr: 5,
@@ -55,6 +184,38 @@ export const data = [
     linkedin: 'https://www.linkedin.com/home',
     onDuty: 'Feito',
     acc: 'Feito',
+    duties: [
+      {
+        date: '12/04',
+        startTime: '-',
+        finishTime: '-',
+        duration: 2,
+      },
+      {
+        date: '13/04',
+        duration: 2,
+      },
+      {
+        date: '14/04',
+        duration: 2,
+      },
+      {
+        date: '15/04',
+        duration: 2,
+      },
+      {
+        date: '16/04',
+        duration: 2,
+      },
+      {
+        date: '17/04',
+        duration: 2,
+      },
+      {
+        date: '18/04',
+        duration: 2,
+      },
+    ],
   },
   {
     sr: 6,

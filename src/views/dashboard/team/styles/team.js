@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 100%;
+  padding: 40px 60px;
   background-color: #ffffff;
   border: solid 1px #aaaaaa;
   border-radius: 6px;
@@ -9,26 +10,39 @@ export const Container = styled.div`
   font-family: "Ubuntu";
 `;
 
-export const ContentDiv = styled.div`
-  width: 100%;
-`;
-
 export const Title = styled.div`
   width: 100%;
-  margin-bottom: 30px;
-  padding: 30px 50px 30px 50px;
-  color: #4a4a4a;
-  font-size: 30px;
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
   border-bottom: solid 1px #aaaaaa;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: #4a4a4a;
+    font-size: 30px;
+    font-weight: 500;
+
+    svg {
+      margin-left: 20px; 
+    }
+  }
+`;
+
+export const Content = styled.div`
+  width: 100%;
+  padding: 30px 0 40px 0;
 `;
 
 export const TeamMembers = styled.ul`
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(5, minmax(220px, 1fr));
+  grid-template-columns: repeat(5, minmax(200px, 1fr));
   grid-gap: 30px;
-  margin: 0 45px 20px 45px;
+  margin-bottom: 20px;
   font-size: 14px; 
 
   li{

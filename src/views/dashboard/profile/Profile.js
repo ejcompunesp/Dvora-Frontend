@@ -1,12 +1,19 @@
 import React from "react";
 
-import { Container } from "../team/styles/team";
-import { IoMdInformationCircleOutline } from "react-icons/io";
-import { GoPencil } from "react-icons/go";
-import { FaRegUser, FaRegClock, FaRegLightbulb } from "react-icons/fa";
-import { Title, UserInfo, LastDuties, About, ActualProject } from "./styles/profile";
+import { Button } from 'antd';
 
+import { IoMdInformationCircleOutline } from "react-icons/io";
+import { GoPencil, GoInfo } from "react-icons/go";
+import { FaRegUser, FaRegClock, FaRegLightbulb, FaRegCalendarAlt } from "react-icons/fa";
+
+import { Container, Content } from "../team/styles/team";
+import { Title, UserInfo, LastDuties, Duties, About, ActualProject } from "./styles/profile";
+
+import {data} from '../../../api/ApiTeste';
 import JohnDoe from '../../../assets/John Doe.png';
+
+const person = data[0];
+const personDuty = data[0].duties;
 
 export default function Profile() {
   return (
@@ -14,40 +21,42 @@ export default function Profile() {
       <Title>
         <img src={JohnDoe} alt="profile-img"/>
         <li style={{marginLeft: "280px"}}>
-          <strong>John Doe</strong>
-          <p>Gerente de Projetos</p>
+          <strong>{person.name}</strong>
+          <p>{person.position}</p>
         </li>
         <li>
           <p>Título atual: Rei do OffTopic</p>
         </li>
       </Title>
-      <UserInfo>
-        <li>
-          <LastDuties>
-            <p><FaRegClock/> Últimos plantões</p>
-            <p>14/04</p>
-            <p>14/04</p>
-            <p>14/04</p>
-            <p>14/04</p>
-            <p>14/04</p>
-            <p>14/04</p>
-            <p>14/04</p>
-          </LastDuties>
-        </li>
-        <li>
-          <About>
-            <strong><FaRegUser/> Sobre:</strong>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris auctor libero justo, sed mattis sem sagittis non. In eget mauris erat. Donec ultricies quis nibh eget vestibulum</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris auctor libero justo, sed mattis sem sagittis non. In eget mauris erat. Donec ultricies quis nibh eget vestibulum</p>
-          </About>
-          <strong>Projeto atual:</strong>
-          <ActualProject>
-            <p><strong><FaRegLightbulb/> Nome: </strong>Dvora</p>
-            <p><strong><IoMdInformationCircleOutline/> Descrição: </strong>Gerenciador de EJ's Open Source!</p>
-            <p><strong><GoPencil/> Contrato assinado em: </strong>Dezembro/2019</p>
-          </ActualProject>
-        </li>
-      </UserInfo>
+      <Content>
+        <UserInfo>
+          <li>
+            <LastDuties>
+              <span><FaRegClock /> Últimos plantões</span>
+              {personDuty.map(duties => {
+                return (
+                  <Duties key={duties.date}>
+                    <FaRegCalendarAlt /> {duties.date} <hr/> <FaRegClock /> {duties.duration}hrs <GoInfo className="info" />
+                  </Duties>
+                )
+              })}
+            </LastDuties>
+            <Button type="primary">Iniciar plantão</Button>
+          </li>
+          <li>
+            <About>
+              <span><FaRegUser/> Sobre:</span>
+              <p>{person.about}</p>
+            </About>
+            <strong>Projeto atual:</strong>
+            <ActualProject>
+              <p><span><FaRegLightbulb/> Nome: </span>Dvora</p>
+              <p><span><IoMdInformationCircleOutline/> Descrição: </span>Gerenciador de EJ's Open Source!</p>
+              <p><span><GoPencil/> Contrato assinado em: </span>Dezembro/2019</p>
+            </ActualProject>
+          </li>
+        </UserInfo>
+      </Content>
     </Container>
   );
 }
