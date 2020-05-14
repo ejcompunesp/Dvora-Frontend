@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Input, Button, Icon, message } from "antd";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Redirect } from 'react-router-dom';
 
 import * as JeActions from '../../store/actions/je';
 
@@ -14,6 +15,7 @@ import logo from "../../assets/dvora-logo.png";
 function Login({ form, setJe }) {
   const { getFieldDecorator } = form;
   const [loading, setLoading] = useState(false);
+  const [toDashboard, setToDashboard] = useState(false);
   
   function handleSubmit(e) {
     e.preventDefault();
@@ -25,8 +27,9 @@ function Login({ form, setJe }) {
           if(response.status === 200) {
             setLoading(false);
             setJe(response.data);
-            loginDashboard(response.data.token);
             message.success('Login feito com sucesso!');
+            loginDashboard(response.data.token);
+            setToDashboard(true);
           }
         } catch(error) {
           message.error(error.response.data.msg);
@@ -36,6 +39,8 @@ function Login({ form, setJe }) {
     });
   }
   return (
+    <>
+    {toDashboard ? <Redirect to="/dashboard" /> : null}
     <Container>
       <img src={logo} />
       <StyledForm onSubmit={handleSubmit} className="login-form">
@@ -78,6 +83,7 @@ function Login({ form, setJe }) {
         </Form.Item>
       </StyledForm>
     </Container>
+  </>
   );
 }
 
