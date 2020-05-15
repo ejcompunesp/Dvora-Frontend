@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Icon, message } from "antd";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Redirect } from 'react-router-dom';
-
+import { Redirect} from 'react-router-dom';
 import * as JeActions from '../../store/actions/je';
 
 import { authApi, loginDashboard } from '../../api';
@@ -16,7 +15,14 @@ function Login({ form, setJe }) {
   const { getFieldDecorator } = form;
   const [loading, setLoading] = useState(false);
   const [toDashboard, setToDashboard] = useState(false);
-  
+ 
+  useEffect(() => {
+    const token = localStorage.getItem('@dvora-token');
+    if(token){
+      setToDashboard(true);
+    }
+  },[]);
+ 
   function handleSubmit(e) {
     e.preventDefault();
     form.validateFields(async (err, values) => {
@@ -29,7 +35,7 @@ function Login({ form, setJe }) {
             setJe(response.data);
             message.success('Login feito com sucesso!');
             loginDashboard(response.data.token);
-            setToDashboard(true);
+            setToDashboard(true)
           }
         } catch(error) {
           message.error(error.response.data.msg);

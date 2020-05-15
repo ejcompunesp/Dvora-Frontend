@@ -1,11 +1,10 @@
 import api from './api';
-export const TOKEN_KEY = "@devora-token";
+export const TOKEN_KEY = "@dvora-token";
 export const isAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
 
 export const loginDashboard = token => {
   localStorage.setItem(TOKEN_KEY, token);
-  console.log(token);
 };
 
 export const logoutDashboard = () => {
