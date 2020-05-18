@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Icon, message } from "antd";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import { Redirect} from 'react-router-dom';
 import * as JeActions from '../../store/actions/je';
 
-import { authApi } from '../../api';
+import { authApi, loginDashboard } from '../../api';
 
 import { Container, StyledForm } from "./styles/login";
 
@@ -14,7 +14,15 @@ import logo from "../../assets/dvora-logo.png";
 function Login({ form, setJe }) {
   const { getFieldDecorator } = form;
   const [loading, setLoading] = useState(false);
-  
+  const [toDashboard, setToDashboard] = useState(false);
+ 
+  useEffect(() => {
+    const token = localStorage.getItem('@dvora-token');
+    if(token){
+      setToDashboard(true);
+    }
+  },[]);
+ 
   function handleSubmit(e) {
     e.preventDefault();
     form.validateFields(async (err, values) => {
@@ -26,6 +34,8 @@ function Login({ form, setJe }) {
             setLoading(false);
             setJe(response.data);
             message.success('Login feito com sucesso!');
+            loginDashboard(response.data.token);
+            setToDashboard(true)
           }
         } catch(error) {
           message.error(error.response.data.msg);
@@ -35,6 +45,8 @@ function Login({ form, setJe }) {
     });
   }
   return (
+    <>
+    {toDashboard ? <Redirect to="/dashboard" /> : null}
     <Container>
       <img src={logo} />
       <StyledForm onSubmit={handleSubmit} className="login-form">
@@ -77,10 +89,9 @@ function Login({ form, setJe }) {
         </Form.Item>
       </StyledForm>
     </Container>
+  </>
   );
 }
-
-Login = Form.create()(Login);
 
 const mapStateToProps = state => ({
   je: state.je
@@ -89,4 +100,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(JeActions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login));
