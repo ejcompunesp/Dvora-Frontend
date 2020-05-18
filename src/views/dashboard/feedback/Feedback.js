@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { Radio, Button } from 'antd';
+import { Radio, Button, message } from 'antd';
 
-import { RiFeedbackLine } from 'react-icons/ri';
+import { RiMessage3Line } from 'react-icons/ri';
 
 import { Container, Title, Content } from '../team/styles/team';
 import { FeedbackForm, Question } from './styles/feedback';
@@ -39,7 +39,9 @@ export default function Feedback() {
 
   function handleFeedback (e) {
     e.preventDefault();
-
+    if (e != null) {
+      message.success('Obrigado pelo feedback S2. "RH"');
+    }
     const data = {
       productivity,
       mood,
@@ -47,12 +49,10 @@ export default function Feedback() {
       note,
       activity,
     }
-
     console.log(data);
   }
 
   function Alternatives () {
-
     return (
       <div>
         <Radio style={radioStyle} value={1}>
@@ -77,7 +77,7 @@ export default function Feedback() {
   return(
     <Container>
       <Title>
-        <h2>Feedback <RiFeedbackLine /></h2>
+        <h2>Feedback <RiMessage3Line /></h2>
       </Title>
       <Content>
         <p style={{ fontSize: '16px' }}>Vamos {person.name}, conte-nos um pouco sobre o seu plantão!</p>

@@ -29,6 +29,10 @@ export const Title = styled.div`
     svg {
       margin-left: 20px; 
     }
+
+    .rocket{
+      transform: rotate(45deg);
+    }
   }
 `;
 

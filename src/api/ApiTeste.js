@@ -5,18 +5,22 @@ export const data = [
     sr: 1,
     name: 'Pessoa 1',
     file: John,
+    board: 'Projetos',
     position: 'Gerente de projetos',
     facebook: 'https://www.facebook.com',
     instagram: 'https://www.instagram.com/?hl=pt-br',
     linkedin: 'https://www.linkedin.com/home',
-    onDuty: 'Feito',
-    acc: 'Feito',
+    acc: 'Feito', //mudar
     duties: [
       {
-        date: '12/04',
+        id: 1,
+        memberId: 1,
+        status: 'Feito',
+        date: '12/04', //retirar dps
         startTime: '-',
         finishTime: '-',
         duration: 2,
+        weekDay: 'sexta',
       },
       {
         date: '13/04',
