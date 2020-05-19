@@ -47,7 +47,7 @@ export default function TopNavbar() {
   }
   return (
     <TopNavbarContainer background={"#00A7E1"}>
-      <img src={dvoraLogo} />
+      <img src={dvoraLogo} alt="Dvora"/>
       <TopNavItems>
         <BreadCrumb>EJComp - <span> Perfil do Usuário</span></BreadCrumb>
         <IconsList>

@@ -10,7 +10,7 @@ export default function Dashboard() {
   return (
     <DashboardContainer>
       <div className="navbar">
-        <Menu />
+        <Menu/>
       </div>
       <div className="sidebar">
         <Siderbar/> 

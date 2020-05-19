@@ -10,7 +10,9 @@ export const TopNavbarContainer = styled.div`
   img {
     width: 55px;
   }
-
+  h2{
+    margin-bottom: 0px;
+  }
 `;
 
 export const TopNavItems = styled.div`
@@ -24,7 +26,7 @@ export const IconsList = styled.div`
   display: flex;
   margin: 0 20px;
   svg {
-    margin: 0 10px;
+    margin: 0 14px;
     font-size: 20px;
     cursor: pointer;
   }
