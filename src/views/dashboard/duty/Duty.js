@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, Table } from 'antd';
+import { Table } from 'antd';
 
 import { FiCoffee } from 'react-icons/fi';
 
@@ -10,6 +10,8 @@ import { DutyControllerButtons, DaysDuties } from './styles/duty';
 import {data} from '../../../api/ApiTeste';
 
 import user from '../../../assets/user.png';
+import ModalOnDuty from '../../../components/duty/ModalOnDuty'
+import ModalOffDuty from '../../../components/duty/ModalOffDuty'
 
 const person0 = data[0];
 const people = data.slice(0, 4);
@@ -92,8 +94,8 @@ export default function Duty() {
         <p style={{ fontSize: '16px' }}>Bora pra mais um plantão, <span>{person0.name}</span>?</p>
 
         <DutyControllerButtons>
-          <Button type="primary" onClick={handleStarted} disabled={started}>Iniciar</Button>
-          <Button type="primary" onClick={handleFinished} disabled={finished}>Terminar</Button>
+          <ModalOnDuty handleStarted={handleStarted} disabled={started}/>
+          <ModalOffDuty handleFinished={handleFinished} disabled={finished}/>
         </DutyControllerButtons>
 
         <DaysDuties>
