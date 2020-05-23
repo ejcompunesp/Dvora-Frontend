@@ -1,40 +1,16 @@
-import React, {Component} from 'react';
-import Dropzone from 'react-dropzone';
+import  styled from 'styled-components';
 
-class Basic extends Component {
-  constructor() {
-    super();
-    this.onDrop = (files) => {
-      this.setState({files})
-    };
-    this.state = {
-      files: []
-    };
-  }
-
-  render() {
-    const files = this.state.files.map(file => (
-      <li key={file.name}>
-        {file.name} - {file.size} bytes
-      </li>
-    ));
-
-    return (
-      <Dropzone onDrop={this.onDrop}>
-        {({getRootProps, getInputProps}) => (
-          <section className="container">
-            <div {...getRootProps({className: 'dropzone'})}>
-              <input {...getInputProps()} />
-              <p>coloque a foto de sua ej </p>
-            </div>
-            <aside>
-              <ul>{files}</ul>
-            </aside>
-          </section>
-        )}
-      </Dropzone>
-    );
-  }
+const Input = styled.div`
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+  display:flex;
 }
 
-export default Basic;
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+ 
+`;
+export default Input;
