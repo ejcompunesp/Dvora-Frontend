@@ -1,12 +1,17 @@
 import React from "react";
 
-import AppRoutes from "./routes";
-import './index.css';
+import { Provider } from "react-redux";
+import AppRoutes from "./app.routes";
+import "./index.css";
+
+import store from "./store";
 
 
 function App() {
   return (
-    <AppRoutes/>
+    <Provider store={store}>
+      <AppRoutes />
+    </Provider>
   );
 }
 
