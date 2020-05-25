@@ -1,3 +1,4 @@
+  
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Icon, message } from "antd";
 import { connect } from 'react-redux';
@@ -11,6 +12,22 @@ import { Container, StyledForm } from "./styles/login";
 
 import logo from "../../assets/dvora-logo.png";
 
+function Login({ form, setJe }) {
+  const { getFieldDecorator } = form;
+  const [loading, setLoading] = useState(false);
+  const [toDashboard, setToDashboard] = useState(false);
+ 
+  useEffect(() => {
+    const token = localStorage.getItem('@dvora-token');
+    if(token){
+      setToDashboard(true);
+    }
+  },[]);
+ 
+  function handleSubmit(e) {
+    e.preventDefault();
+    form.validateFields(async (err, values) => {
+      if (!err) {
         setLoading(true);
         try {
           const response = await authApi.login(values);
@@ -41,6 +58,7 @@ import logo from "../../assets/dvora-logo.png";
           })(
             <Input
               size="large"
+              prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
               placeholder="E-mail"
             />
           )}

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Checkbox, Icon, InputNumber, message } from "antd";
 
-import { Container, StyledFormRegister } from "./register";
-import PicturesWall from '../Upload'
+import { Container, StyledFormRegister } from "./styles/register";
+import UploadImage from './Upload'
 
-import logo from "../../../assets/dvora-logo.png";
-import authApi from "../../../api/auth"
+import logo from "../../assets/dvora-logo.png";
+import {jesApi } from "../../api";
 
 function Registro({form}) {
   const { getFieldDecorator } = form;
@@ -17,13 +17,24 @@ function Registro({form}) {
     form.validateFields(async (err, values) => {
       if (!err) {
         setLoading(true);
+        const data = new FormData();
+        data.append("name", values.name);
+        data.append("email", values.email);
+        data.append("password", values.password);
+        data.append("university", values.university);
+        data.append("city", values.city);
+        data.append("creationYear", values.creationYear);
+        data.append("file", null);
+
+
         try {
-          const response = await authApi.register(values);
+          const response = await jesApi.register(data);
           if(response.status === 200) {
             setLoading(false);
             message.success('Registro feito com sucesso!');
           }
         } catch(error) {
+          console.log(error)
           message.error(error.response.data.msg);
           setLoading(false);
         }
@@ -36,10 +47,7 @@ function Registro({form}) {
       <img src={logo} />
       <StyledFormRegister onSubmit={handleSubmit}>
         <div className="blue">Registro</div>
-
-        <PicturesWall>
-
-        </PicturesWall>
+        <UploadImage/>
         <Form.Item>
           {getFieldDecorator("nome", {
             rules: [{ required: true, message: "Please input your username!" }]

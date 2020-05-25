@@ -1,30 +1,29 @@
 import React from "react";
 import { Upload, Icon, Modal } from 'antd';
-import {getBase64} from 'react';
+import { useState } from "react";
 
 
-class PicturesWall extends React.Component {
-  state = {
+export default function UploadImage(){
+
+  const [file,setFile] = useState({
     previewVisible: false,
     previewImage: '',
     fileList: [
     ],
-  };
+  })
+  
+  const handleCancel = () => setFile({ previewVisible: false });
 
-  handleCancel = () => this.setState({ previewVisible: false });
+  const handlePreview = async file => {
 
-  handlePreview = async file => {
-
-    this.setState({
+    setFile({
       previewImage: file.url || file.preview,
       previewVisible: true,
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  const handleChange = ({ fileList }) => setFile({ fileList });
 
-  render() {
-    const { previewVisible, previewImage, fileList } = this.state;
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -36,17 +35,14 @@ class PicturesWall extends React.Component {
         <Upload
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           listType="picture-card"
-          fileList={fileList}
-          onChange={this.handleChange}
+          fileList={file.fileList}
+          onChange={handleChange}
         >
-          {fileList.length >= 1 ? null : uploadButton}
+          {file.fileList.length >= 1 ? null : uploadButton}
         </Upload>
-        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        <Modal visible={file.previewVisible} footer={null} onCancel={handleCancel}>
+          <img alt="example" style={{ width: '100%' }} src={file.previewImage} />
         </Modal>
       </div>
     );
-  }
 }
-
-export default PicturesWall;
