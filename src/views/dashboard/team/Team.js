@@ -37,6 +37,7 @@ export default function Team() {
   }
 
   async function handleSubmit(values) {
+    console.log(values);
     const data = new FormData ();
 
     data.append('name', values.name);

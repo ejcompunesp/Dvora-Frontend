@@ -4,16 +4,22 @@
   "private": true,
   "dependencies": {
     "antd": "^3.26.9",
+    "babel-plugin-root-import": "^6.4.1",
     "axios": "^0.19.2",
     "react": "^16.12.0",
+    "react-app-rewired": "^2.1.5",
     "react-dom": "^16.12.0",
+    "react-dropzone": "^10.2.1",
+    "react-file-reader": "^1.1.4",
     "react-icons": "^3.8.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
     "redux": "^4.0.5",
     "styled-components": "^5.0.0",
-    "webfontloader": "^1.6.28"
+    "webfontloader": "^1.6.28",
+    "yarn": "^1.21.1",
+    "yarn-install": "^1.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
