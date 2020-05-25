@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import { isAuthenticated } from "./api/auth";
 
 import Login from './views/login/Login';
-import Registro from './views/registro/Registro';
+import Registro from './views/register/Registro';
 import Dashboard from './views/dashboard/Dashboard';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
