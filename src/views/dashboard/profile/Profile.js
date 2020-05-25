@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useHistory } from 'react-router-dom';
+
 import { Button } from 'antd';
 
 import { IoMdInformationCircleOutline } from "react-icons/io";
@@ -16,6 +18,14 @@ const person = data[0];
 const personDuty = data[0].duties;
 
 export default function Profile() {
+
+  const history = useHistory();
+
+  function handleDuty(e) {
+    e.preventDefault();
+    history.push('/dashboard/duty');
+  }
+
   return (
     <Container>
       <Title>
@@ -41,7 +51,7 @@ export default function Profile() {
                 )
               })}
             </LastDuties>
-            <Button type="primary">Iniciar plantão</Button>
+            <Button type="primary" onClick={handleDuty} >Iniciar plantão</Button>
           </li>
           <li>
             <About>

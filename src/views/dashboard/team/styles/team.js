@@ -8,6 +8,18 @@ export const Container = styled.div`
   border-radius: 6px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   font-family: "Ubuntu";
+
+  button{
+    background: #00A7E1;
+    border-color: #00A7E1;
+    color: #ffffff;
+  }
+
+  button:hover{
+    background: #00A7E1;
+    border-color: #00A7E1;
+    filter: brightness(110%);
+  }
 `;
 
 export const Title = styled.div`

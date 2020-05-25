@@ -36,9 +36,7 @@ export default function Team() {
     setCurrentPage(page);
   }
 
-  function handleSubmit(values) {
-    console.log(values);
-
+  async function handleSubmit(values) {
     const data = new FormData ();
 
     data.append('name', values.name);
@@ -52,8 +50,6 @@ export default function Team() {
     data.append('instagram', values.instagram);
     data.append('linkedin', values.linkedin);
     data.append('file', values.file[0]);
-
-    setPosts([...posts, values]);
   }
 
   return (

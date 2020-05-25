@@ -37,15 +37,6 @@ export const Title = styled.div`
 
 export const FeedbackForm = styled.div`
   margin-bottom: 30px;
-
-  button{
-    background: #00A7E1;
-    border-color: #00A7E1
-  }
-
-  button:hover{
-    filter: brightness(110%);
-  }
 `;
 
 export const Question = styled.div`
