@@ -9,7 +9,8 @@ export const Container = styled.div`
   background-color: #f5f5f5;
   flex-direction: column;
   img {
-    width: 150px;
+    margin-top: 10px;
+    width: 100px;
     margin-bottom: 30px;
   }
 `;
@@ -57,6 +58,7 @@ export const StyledForm = styled(Form)`
     margin: 0;
     padding: 0;
     color: #4a4a4a;
+    font-weight: 700;
     font-family: 'Nunito';
   }
 `;

@@ -31,7 +31,7 @@ export default function UploadImage(){
       </div>
     );
     return (
-      <div className="clearfix">
+      <div className="clearfix" style={{marginTop: '60px'}}>
         <Upload
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           listType="picture-card"

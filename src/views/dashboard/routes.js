@@ -29,7 +29,7 @@ export const routes = [
     path: '/dashboard/home',
     active: (path) => isActive(path),
     icon: HomeIcon,
-    component: Home
+    component: Home,
   },
   {
     path: '/dashboard/settings',
