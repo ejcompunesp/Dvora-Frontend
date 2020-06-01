@@ -28,7 +28,7 @@ function ModalOnDuty( props) {
             <Modal
                 destroyOnClose={true}
                 visible={visible}
-                title="Indentificação de usuário"
+                title="Identificação de usuário"
                 onOk={onSubmit}
                 onCancel={() => setVisible(false)}
                 footer={[
