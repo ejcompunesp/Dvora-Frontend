@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { membersApi } from '../../../api';
 
-import { Pagination, message, Menu, Dropdown } from 'antd'
+import { Pagination, message, Menu, Dropdown, Popconfirm, Skeleton } from 'antd'
 
 import { FaFacebookSquare, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import { AiOutlineRocket } from 'react-icons/ai';
@@ -20,17 +20,26 @@ function Team(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [membersPerPage, setMembersPerPage] = useState(10);
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="0" onClick={handleEdit}>
-        Edit
+  function handleMember(memberId) {
+    return (
+      <Menu>
+        <Menu.Item key="0" onClick={handleEdit}>
+          Edit
       </Menu.Item>
-      <Menu.Divider/>
-      <Menu.Item key="1"onClick={handleRemove}>
-        Remove
-      </Menu.Item>
-    </Menu>
-  );
+        <Menu.Divider />
+        <Menu.Item key="1">
+          <Popconfirm
+            title="Are you sure on removing this member?"
+            onConfirm={() => handleRemove(memberId)}
+            okText="Yes"
+            cancelText="No"
+          >
+            Remove
+        </Popconfirm>
+        </Menu.Item>
+      </Menu>
+    );
+  }
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -70,7 +79,7 @@ function Team(props) {
     // data.append('facebook', values.facebook);
     // data.append('instagram', values.instagram);
     // data.append('linkedin', values.linkedin);
-    data.append('file', values.file[0]);
+    data.append('file', values.file);
 
     try {
       const response = await membersApi.store(data, props.je.id);
@@ -86,12 +95,20 @@ function Team(props) {
     }
   }
 
-  function handleEdit() {
+  async function handleEdit() {
 
   }
 
-  function handleRemove() {
-    
+  async function handleRemove(memberId) {
+    try {
+      const response = await membersApi.delete(props.je.id, {id: memberId});
+      if (response.status === 200) {
+        setMembers([members]);
+        message.success('Membro removido com sucesso!');
+      }
+    } catch (err) {
+      console.log(err.response.data);
+    }
   }
 
   return (
@@ -104,25 +121,27 @@ function Team(props) {
         <TeamMembers>
           {currentMember.map((member) => {
             return (
-              <li key={member.sr}>
-                <Dropdown overlay={menu} trigger={['click']}>
-                  <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()}/>
-                </Dropdown>
-                <img src={member.image ? `https://backend-dvora.herokuapp.com/files/member/${member.image}` : user} alt={"Foto de perfil"} />
-                <strong>{member.name}</strong>
-                <p>{member.position}</p>
-                <SocialMedias>
-                  <a title="Facebook" href={member.facebook} rel="noopener noreferrer" target="_blank">
-                    <FaFacebookSquare style={{ color: "#3b5998" }} />
-                  </a>
-                  <a title="Instagram" href={member.instagram} rel="noopener noreferrer" target="_blank">
-                    <FaInstagram className="insta" />
-                  </a>
-                  <a title="Linkedin" href={member.linkedin} rel="noopener noreferrer" target="_blank">
-                    <FaLinkedin style={{ color: "#0e76a8" }} />
-                  </a>
-                </SocialMedias>
-              </li>
+              !loading ?
+                <li key={member.sr}>
+                  <Dropdown overlay={handleMember(member.id)} trigger={['click']}>
+                    <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
+                  </Dropdown>
+                  <img src={member.image ? `https://backend-dvora.herokuapp.com/files/member/${member.image}` : user} alt={"Foto de perfil"} />
+                  <strong>{member.name}</strong>
+                  <p>{member.position}</p>
+                  <SocialMedias>
+                    <a title="Facebook" href={member.facebook} rel="noopener noreferrer" target="_blank">
+                      <FaFacebookSquare style={{ color: "#3b5998" }} />
+                    </a>
+                    <a title="Instagram" href={member.instagram} rel="noopener noreferrer" target="_blank">
+                      <FaInstagram className="insta" />
+                    </a>
+                    <a title="Linkedin" href={member.linkedin} rel="noopener noreferrer" target="_blank">
+                      <FaLinkedin style={{ color: "#0e76a8" }} />
+                    </a>
+                  </SocialMedias>
+                </li>
+                : <Skeleton active avatar paragraph={{ rows: 2 }} />
             )
           })}
         </TeamMembers>

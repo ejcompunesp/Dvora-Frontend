@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
-import { Form, Input, message, Button, Upload, Icon } from 'antd';
+import { Form, Input, message, Button } from 'antd';
 
+import { FiCamera } from 'react-icons/fi';
 import { MdPerson, MdPhone, MdEmail, MdLock } from 'react-icons/md';
-import { FaAddressCard, FaUserCog, FaUserTie, FaFacebookSquare, 
-  FaInstagram, FaLinkedin } from 'react-icons/fa';
+import {
+  FaAddressCard, FaUserCog, FaUserTie, FaFacebookSquare,
+  FaInstagram, FaLinkedin
+} from 'react-icons/fa';
 
-import { UploadButtons } from './styles/memberRegistrationForm';
+import { UploadButtons, UploadPhoto } from './styles/memberRegistrationForm';
 
 function MemberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
+  const [photo, setPhoto] = useState(null);
 
   function handleSubmit(e) {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
+        values.file = photo;
+        console.log(values);
         props.onSubmit(values);
       }
       else message.error('Erro. Verifique os campos e tente novamente.');
@@ -43,19 +49,9 @@ function MemberRegistrationForm(props) {
     callback();
   };
 
-  function normFile(e) {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
-  function dummyRequest({photo, onSuccess}){
-    setTimeout(() =>{
-      onSuccess("ok");
-    }, 0);
-  }
+  const preview = useMemo(() => {
+    return photo ? URL.createObjectURL(photo) : null;
+  }, [photo])
 
   const { getFieldDecorator } = props.form;
 
@@ -69,7 +65,7 @@ function MemberRegistrationForm(props) {
       sm: { span: 16 },
     },
   };
-  
+
   return (
     <Form {...formItemLayout} onSubmit={handleSubmit} >
       <Form.Item label="Nome">
@@ -120,8 +116,8 @@ function MemberRegistrationForm(props) {
               validator: compareToFirstPassword,
             },
           ],
-        })(<Input.Password onBlur={handleConfirmBlur} addonBefore={<MdLock />} 
-        style={{ width: '100%' }} />)}
+        })(<Input.Password onBlur={handleConfirmBlur} addonBefore={<MdLock />}
+          style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="RA">
         {getFieldDecorator('sr', {
@@ -169,28 +165,23 @@ function MemberRegistrationForm(props) {
         {getFieldDecorator('linkedin', {
         })(<Input addonBefore={<FaLinkedin />} style={{ width: '100%' }} />)}
       </Form.Item>
-      <Form.Item label="Foto">
-        {getFieldDecorator('file', {
-          valuePropName: 'fileList',
-          getValueFromEvent: normFile,
-        })(
-          <Upload name="file" customRequest={dummyRequest} listType="picture">
-            <Button>
-              <Icon type="upload" /> Clique para adicionar
-            </Button>
-          </Upload>,
-        )}
-      </Form.Item>
+      <UploadPhoto
+        style={{ backgroundImage: `url(${preview})` }}
+        className={photo ? 'has-photo' : ''}
+      >
+        <input type="file" onChange={event => setPhoto(event.target.files[0])} />
+        <img src={<FiCamera />} alt="Select img" />
+      </UploadPhoto>
 
       <UploadButtons>
         <Button className="cancel" key="back" onClick={() => props.setVisible(false)}>
           Cancelar
         </Button>
-        <Button 
-          key="submit" 
-          type="primary" 
-          loading={props.loading} 
-          onClick={() => props.setVisible(false)} 
+        <Button
+          key="submit"
+          type="primary"
+          loading={props.loading}
+          onClick={() => props.setVisible(false)}
           htmlType="submit" >
           Adicionar
         </Button>
