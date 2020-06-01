@@ -8,6 +8,7 @@ export const Container = styled.div`
   border-radius: 6px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   font-family: "Ubuntu";
+  color: #4a4a4a;
 
   button{
     background: #00A7E1;
@@ -34,7 +35,6 @@ export const Title = styled.div`
     display: flex;
     align-items: center;
     margin: 0;
-    color: #4a4a4a;
     font-size: 30px;
     font-weight: 500;
 
@@ -64,11 +64,11 @@ export const TeamMembers = styled.ul`
   li{
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
     border: solid 1px #aaaaaa;
     border-radius: 6px;
-    align-items: center;
-    justify-content: center;
 
     strong{
       font-size: 14px;
@@ -81,8 +81,15 @@ export const TeamMembers = styled.ul`
 
     img{
       width: 100px;
+      height: 100px;
+      object-fit: cover;
       border-radius: 50%;
       margin-bottom: 10px;
+    }
+
+    svg{
+      cursor: pointer;
+      font-size: 14px;
     }
   }
 
