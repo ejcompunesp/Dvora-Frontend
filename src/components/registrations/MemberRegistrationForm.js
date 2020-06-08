@@ -16,9 +16,8 @@ function MemberRegistrationForm(props) {
     props.form.validateFields((err, values) => {
       if (!err) {
         props.onSubmit(values);
-        message.success('Membro registrado com sucesso.');
       }
-      else message.error('Erro ao registrar membro, tente novamente.');
+      else message.error('Erro. Verifique os campos e tente novamente.');
     });
   }
 
