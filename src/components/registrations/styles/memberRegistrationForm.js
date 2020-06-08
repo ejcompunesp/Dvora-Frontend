@@ -14,12 +14,9 @@ export const UploadPhoto = styled.label`
   border: 1px dashed #ddd;
   background-size: cover;
   cursor: pointer;
-  width: 160px;
-  height: 160px;
-  
-  display: flex;
-  justify-content: flex-end;
-  
+  width: auto;
+  height: auto;
+  font-size: 12px;
 
 input {
   display: none;

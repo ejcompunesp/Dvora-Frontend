@@ -86,11 +86,6 @@ export const TeamMembers = styled.ul`
       border-radius: 50%;
       margin-bottom: 10px;
     }
-
-    svg{
-      cursor: pointer;
-      font-size: 14px;
-    }
   }
 
   @media (max-width: 1490px){
@@ -107,6 +102,27 @@ export const TeamMembers = styled.ul`
 
   @media (max-width: 670px){
     grid-template-columns: repeat(1, minmax(220px, 1fr));
+  }
+`;
+
+export const DropdownItem = styled.p`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+
+  svg{
+    margin-right: 7px;
+  }
+`;
+
+export const MoreButton = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  svg{
+      cursor: pointer;
+      font-size: 14px;
   }
 `;
 

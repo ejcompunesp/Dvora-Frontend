@@ -7,16 +7,7 @@ import { MdPersonAdd } from 'react-icons/md';
 import RegistrationForm from './MemberRegistrationForm';
 
 export default function MemberRegistration(props) {
-  const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-
-  function handleOk() {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setVisible(false);
-    }, 2000);
-  };
 
   function handleCancel() {
     setVisible(false);
@@ -36,11 +27,10 @@ export default function MemberRegistration(props) {
         destroyOnClose={true}
         visible={visible}
         title="Inserção de membro"
-        onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
       >
-        <RegistrationForm onSubmit={props.onSubmit} loading={loading} setVisible={setVisible}/>
+        <RegistrationForm onSubmit={props.onSubmit} setVisible={setVisible}/>
       </Modal>
     </div>
   );
