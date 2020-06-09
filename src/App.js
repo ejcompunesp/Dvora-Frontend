@@ -6,6 +6,7 @@ import "./index.css";
 
 import store from "./store";
 
+
 function App() {
   return (
     <Provider store={store}>

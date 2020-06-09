@@ -1,16 +1,16 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const TopNavbarContainer = styled.div`
   width: 100%;
-  background-color: ${props => props.background};
+  background-color: ${(props) => props.background};
   height: 65px;
   display: flex;
   align-items: center;
   padding: 0 10px;
   img {
-    width: 55px;
+    width: 35px;
   }
-  h2{
+  h2 {
     margin-bottom: 0px;
   }
 `;
@@ -34,10 +34,8 @@ export const IconsList = styled.div`
 
 export const BreadCrumb = styled.h2`
   color: #ffffff;
-  font-family: 'Montserrat';
-  span {
-    font-weight: 400;
-  }
+  font-family: "Montserrat";
+  font-weight: 700;
   margin-left: 30px;
 `;
 
@@ -60,14 +58,14 @@ export const SidebarContainer = styled.div`
       a {
         color: #292929;
         text-decoration: none;
-        transition: .2s ease all;
+        transition: 0.2s ease all;
       }
       a.active {
-        color: #58B7D9;
-        transition: .2s ease all;
+        color: #58b7d9;
+        transition: 0.2s ease all;
       }
       a:hover {
-        transition: .2s ease all;
+        transition: 0.2s ease all;
         color: #dedede;
       }
     }

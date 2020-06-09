@@ -13,7 +13,7 @@ import dvoraLogo from '../../assets/dvora-logo.png';
 import { logoutDashboard } from '../../api/auth'
 
 
-export default function TopNavbar() {
+export default function TopNavbar({ je }) {
   const [iconMenu, setIconMenu] = useState(true);
   const [dropdown, setDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ export default function TopNavbar() {
     <TopNavbarContainer background={"#00A7E1"}>
       <img src={dvoraLogo} alt="Dvora"/>
       <TopNavItems>
-        <BreadCrumb>EJComp - <span> Perfil do Usuário</span></BreadCrumb>
+        <BreadCrumb>{je.name}</BreadCrumb>
         <IconsList>
           <FaUser />
           <FaBell />
