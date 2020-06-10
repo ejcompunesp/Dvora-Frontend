@@ -1,24 +1,16 @@
 import React, { useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Checkbox,
-  Icon,
-  InputNumber,
-  message,
-} from "antd";
+import { Form, Input, Button, Checkbox, Icon, InputNumber, message } from "antd";
 
 import { Container, StyledFormRegister } from "./styles/register";
-import UploadImage from "./Upload";
+import UploadImage from './Upload'
 
 import logo from "../../assets/dvora-logo.png";
-import { jesApi } from "../../api";
-import { withRouter } from "react-router-dom";
+import {jesApi } from "../../api";
 
-function Registro({ form, history }) {
+function Registro({form}) {
   const { getFieldDecorator } = form;
   const [loading, setLoading] = useState(false);
+
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -34,15 +26,15 @@ function Registro({ form, history }) {
         data.append("creationYear", values.creationYear);
         data.append("file", null);
 
+
         try {
           const response = await jesApi.register(data);
-          if (response.status === 200) {
+          if(response.status === 200) {
             setLoading(false);
-            message.success("Registro feito com sucesso!");
-            history.push('/login')
+            message.success('Registro feito com sucesso!');
           }
-        } catch (error) {
-          console.log(error);
+        } catch(error) {
+          console.log(error)
           message.error(error.response.data.msg);
           setLoading(false);
         }
@@ -55,33 +47,33 @@ function Registro({ form, history }) {
       <img src={logo} />
       <StyledFormRegister onSubmit={handleSubmit}>
         <div className="blue">Registro</div>
-        <UploadImage />
+        <UploadImage/>
         <Form.Item>
           {getFieldDecorator("nome", {
-            rules: [{ required: true, message: "Please input your username!" }],
+            rules: [{ required: true, message: "Please input your username!" }]
           })(
             <Input
               size="large"
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="Nome da Empresa Júnior"
+              placeholder="nome"
             />
           )}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator("email", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+            rules: [{ required: true, message: "Please input your Password!" }]
           })(
             <Input
               size="large"
               prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
               type="email"
-              placeholder="E-mail"
+              placeholder="email"
             />
           )}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+            rules: [{ required: true, message: "Please input your Password!" }]
           })(
             <Input
               size="large"
@@ -93,19 +85,19 @@ function Registro({ form, history }) {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator("city", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+            rules: [{ required: true, message: "Please input your Password!" }]
           })(
             <Input
               size="large"
               prefix={<Icon type="home" style={{ color: "rgba(0,0,0,.25)" }} />}
               type="cidade"
-              placeholder="Cidade de Origem"
+              placeholder="cidade"
             />
           )}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator("IES (instituição de ensino superior)", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+            rules: [{ required: true, message: "Please input your Password!" }]
           })(
             <Input
               size="large"
@@ -117,13 +109,11 @@ function Registro({ form, history }) {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator("Ano de Criação (EJ)", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+            rules: [{ required: true, message: "Please input your Password!" }]
           })(
             <Input
               size="large"
-              prefix={
-                <Icon type="calendar" style={{ color: "rgba(0,0,0,.25)" }} />
-              }
+              prefix={<Icon type="calendar" style={{ color: "rgba(0,0,0,.25)" }} />}
               type="text"
               placeholder="Ano de Criação (EJ)"
             />
@@ -135,7 +125,6 @@ function Registro({ form, history }) {
             type="primary"
             htmlType="submit"
             className="ant-btn-link"
-            loading={loading}
           >
             Cadastrar
           </Button>
@@ -147,4 +136,6 @@ function Registro({ form, history }) {
 
 Registro = Form.create()(Registro);
 
-export default withRouter(Registro);
+export default Registro;
+
+
