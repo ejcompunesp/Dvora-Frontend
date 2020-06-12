@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { connect } from 'react-redux';
+import { membersApi } from '../../api';
 
 import { Table, Button } from 'antd';
 
@@ -7,46 +10,65 @@ import { MdTimelapse } from 'react-icons/md';
 
 import { TableOperations } from '../../views/dashboard/monitoring/styles/monitoring';
 
-import { data } from '../../api/ApiTeste';
-
 import user from '../../assets/user.png';
 
-export default function MemberList() {
-  function determineStatusIcon(status){
+import { data } from '../../api/ApiTeste'
+
+function MemberList(props) {
+  const [loading, setLoading] = useState(false);
+  const [members, setMembers] = useState([]);
+  const [filteredInfo, setFilteredInfo] = useState(null);
+  const [sortedInfo, setSortedInfo] = useState(null); 
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      setLoading(true);
+      try {
+        const response = await membersApi.list(props.je.id);
+        if (response.status === 200) {
+          console.log(response);
+          setMembers(response.data.members);
+        }
+      } catch (err) {
+        console.log(err);
+        console.log(err.response);
+      }
+      setLoading(false);
+    }
+    fetchMembers();
+  }, [props.je.id]);
+
+  function determineStatusIcon(status) {
     if (status === "Feito")
-      return <IoIosCheckmarkCircle style={{ color: "#89C03E" }}/>;
+      return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
     else if (status === "Não feito")
-      return <IoIosCloseCircle style={{ color: "#E71A23" }}/>;
-    else return <MdTimelapse/>;
+      return <IoIosCloseCircle style={{ color: "#E71A23" }} />;
+    else return <MdTimelapse />;
   }
-  
-  let [filteredInfo, setFilteredInfo] = useState('');
-  let [sortedInfo, setSortedInfo] = useState('');
-  
+
   function handleChange(pagination, filters, sorter) {
     setFilteredInfo(filters);
     setSortedInfo(sorter);
   };
-  
+
   function clearFilters() {
-    setFilteredInfo('');
+    setFilteredInfo(null);
   };
-  
-  sortedInfo = sortedInfo || {};
-  filteredInfo = filteredInfo || {};
+
+  setFilteredInfo(filteredInfo || {});
+  setSortedInfo(sortedInfo || {});
 
   const columns = [
     {
       dataIndex: 'file',
       width: '4%',
-      render: file => <img src={file?file:user} alt="Foto de perfil"/>
+      render: file => <img src={file ? file : user} alt="Foto de perfil" />
     },
     {
       title: 'Nome',
-      dataIndex: 'name', 
+      dataIndex: 'name',
       key: 'name',
-      sorter: (a, b) => a.name.localeCompare(b.name),
-      sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+      sorter: (a, b) => a.name.length - b.name.length,
       ellipsis: true,
     },
     {
@@ -57,11 +79,23 @@ export default function MemberList() {
       title: 'Plantão',
       dataIndex: 'onDuty',
       key: 'onDuty',
-      filters: [{ text: 'Feito', value: 'Feito' }, { text: 'Não feito', value: 'Não feito' }, { text: 'Em andamento', value: 'Em andamento' }],
+      filters: [
+        {
+          text: 'Feito',
+          value: 'Feito'
+        },
+        {
+          text: 'Não feito',
+          value: 'Não feito'
+        },
+        {
+          text: 'Em andamento',
+          value: 'Em andamento'
+        }
+      ],
       filteredValue: filteredInfo.onDuty || null,
       onFilter: (value, record) => record.onDuty.includes(value),
       sorter: (a, b) => a.onDuty.length - b.onDuty.length,
-      sortOrder: sortedInfo.columnKey === 'onDuty' && sortedInfo.order,
       ellipsis: true,
     },
     {
@@ -72,7 +106,20 @@ export default function MemberList() {
       title: 'Acompanhamento',
       dataIndex: 'acc',
       key: 'acc',
-      filters: [{ text: 'Feito', value: 'Feito' }, { text: 'Não feito', value: 'Não feito' }, { text: 'Em andamento', value: 'Em andamento' }],
+      filters: [
+        {
+          text: 'Feito',
+          value: 'Feito'
+        },
+        {
+          text: 'Não feito',
+          value: 'Não feito'
+        },
+        {
+          text: 'Em andamento',
+          value: 'Em andamento'
+        }
+      ],
       filteredValue: filteredInfo.acc || null,
       onFilter: (value, record) => record.acc.includes(value),
       sorter: (a, b) => a.acc.length - b.acc.length,
@@ -88,7 +135,7 @@ export default function MemberList() {
       ellipsis: true,
     },
   ];
-  
+
   return (
     <div>
       <TableOperations>
@@ -98,3 +145,9 @@ export default function MemberList() {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  je: state.je
+});
+
+export default connect(mapStateToProps)(MemberList);

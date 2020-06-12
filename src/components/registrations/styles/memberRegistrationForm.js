@@ -8,3 +8,25 @@ export const UploadButtons = styled.div`
     margin-right: 12px;
   }
 `;
+
+export const UploadPhoto = styled.label`
+  margin-bottom: 20px;
+  border: 1px dashed #ddd;
+  background-size: cover;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  font-size: 12px;
+
+input {
+  display: none;
+}
+
+.has-thumbnail {
+  border: 0;
+}
+
+.has-thumbnail img {
+  display: none;
+}
+`;
