@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Modal, Button, message } from 'antd';
+import { membersDuty }  from '../../api';
 
 function ModalOnDuty( props) {
     const [visible, setVisible] = useState(false);
@@ -8,20 +9,25 @@ function ModalOnDuty( props) {
     
     function onSubmit (e) {
         e.preventDefault();
-        props.form.validateFields((err, values) => {
-          if (!err) {
-            setLoading(true)
-              if(values.Email==='teste'){
-                setLoading(false);
-                setVisible(false)
-            props.handleStarted();
-          }
-          else{
-            message.error('digite um login válido');
-            setLoading(false);
-          }}
+        props.form.validateFields(async(err, values) => {
+            if (!err) {
+                setLoading(true);
+                try {
+                  const response = await membersDuty.create(values);
+                  if(response.status === 201) {
+                    setLoading(false);
+                    setVisible(false);
+                    props.handleStarted(response.data.member.id);
+                    message.success('Plantão iniciado!');
+                  }
+                } catch(error) {
+                  setLoading(false);
+                  message.error("Erro ao iniciar plantão!");
+                }
+              }
         });
     }
+    
     return (
         <>
             <Button disabled={props.disabled} type="primary" onClick={() => setVisible(true)} >Iniciar</Button>
@@ -42,12 +48,12 @@ function ModalOnDuty( props) {
             >
                 <Form>
                     <Form.Item>
-                        {getFieldDecorator('Email', {
+                        {getFieldDecorator('email', {
                             rules: [{ required: true, message: 'Please input your email!' }],
                         })(<Input placeholder='email'/>)}
                     </Form.Item>
                     <Form.Item>
-                        {getFieldDecorator('Password', {
+                        {getFieldDecorator('password', {
                             rules: [{ required: true, message: 'Please input your password!' }],
                         })(<Input.Password placeholder='senha'/>)}
                     </Form.Item>
