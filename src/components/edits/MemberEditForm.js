@@ -9,7 +9,7 @@ import {
   FaInstagram, FaLinkedin
 } from 'react-icons/fa';
 
-import { UploadButtons, UploadPhoto } from './styles/memberRegistrationForm';
+import { UploadButtons, UploadPhoto } from '../registrations/styles/memberRegistrationForm';
 
 function MemberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
@@ -100,34 +100,26 @@ function MemberRegistrationForm(props) {
           ],
         })(<Input addonBefore={<MdPerson />} style={{ width: '100%' }} />)}
       </Form.Item>
-      <Form.Item label="E-mail">
+      {/* <Form.Item label="E-mail">
         {getFieldDecorator('email', {
           rules: [
             {
               type: 'email',
               message: 'Os dados inseridos não são um E-mail válido!',
             },
-            {
-              required: true,
-              message: 'Por favor, insira seu e-mail!',
-            },
           ],
         })(<Input addonBefore={<MdEmail />} style={{ width: '100%' }} />)}
-      </Form.Item>
-      <Form.Item label="Password" hasFeedback required={true} >
+      </Form.Item> */}
+      <Form.Item label="New password" hasFeedback required={true} >
         {getFieldDecorator('password', {
           rules: [
-            {
-              required: true,
-              message: 'Por favor, insira sua senha!',
-            },
             {
               validator: validateToNextPassword,
             },
           ],
         })(<Input.Password addonBefore={<MdLock />} style={{ width: '100%' }} />)}
       </Form.Item>
-      <Form.Item label="Confirm Password" hasFeedback>
+      <Form.Item label="Confirm password" hasFeedback>
         {getFieldDecorator('confirm', {
           rules: [
             {
@@ -143,35 +135,17 @@ function MemberRegistrationForm(props) {
       </Form.Item>
       <Form.Item label="RA">
         {getFieldDecorator('sr', {
-          rules: [
-            {
-              required: true,
-              message: 'Por favor, insira seu RA!',
-            },
-          ],
         })(<Input addonBefore={<FaAddressCard />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Diretoria">
         {getFieldDecorator('board', {
-          rules: [
-            {
-              required: true,
-              message: 'Por favor, insira sua diretoria!'
-            }
-          ],
         })(<Input addonBefore={<FaUserTie />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Cargo">
         {getFieldDecorator('position', {
-          rules: [
-            {
-              required: true,
-              message: 'Por favor, insira seu cargo!'
-            }
-          ],
         })(<Input addonBefore={<FaUserCog />} style={{ width: '100%' }} />)}
       </Form.Item>
-      <Form.Item label="Telefone">
+      {/* <Form.Item label="Telefone">
         {getFieldDecorator('phone', {
         })(<Input addonBefore={<MdPhone />} style={{ width: '100%' }} />)}
       </Form.Item>
@@ -186,7 +160,7 @@ function MemberRegistrationForm(props) {
       <Form.Item label="Linkedin">
         {getFieldDecorator('linkedin', {
         })(<Input addonBefore={<FaLinkedin />} style={{ width: '100%' }} />)}
-      </Form.Item>
+      </Form.Item> */}
       {/* <Form.Item 
         style={{ backgroundImage: `url(${preview})` }}
         className={photo ? 'has-photo' : ''}>
