@@ -37,7 +37,6 @@ export default function Duty() {
     localStorage.setItem('duties', JSON.stringify(memberOnDuty));
   }, [memberOnDuty]);
 
-
   async function handleStarted(memberId) {
     try {
       const response = await membersDuty.list(memberId);
@@ -46,10 +45,18 @@ export default function Duty() {
         const data = {
           name: response.data.member.name,
           file: response.data.member.image,
-          id: response.data.member.duties[index].id,
+          dutyId: response.data.member.duties[index].id,
+          memberId: response.data.member.id,
           startTime: currentdate.getHours() + ":" + currentdate.getMinutes(),
+          finishTime: null
         };
-        setMemberOnDuty([...memberOnDuty, data]);
+
+        var indexDuty = memberOnDuty.map(x => x.memberId).indexOf(memberId)
+        if (indexDuty !== -1) {
+          memberOnDuty[indexDuty] = data;
+          setMemberOnDuty([...memberOnDuty]);
+        }
+        else setMemberOnDuty([...memberOnDuty, data]);
       }
     } catch (error) {
       console.log(error);
@@ -57,9 +64,9 @@ export default function Duty() {
   }
 
 
-  async function handleFinished(id, member) {
+  async function handleFinished(dutyId, member) {
     try {
-      const response = await membersDuty.update(id);
+      const response = await membersDuty.update(dutyId);
       if (response.status === 200) {
         member.finishTime = currentdate.getHours() + ":" + currentdate.getMinutes();
         setMemberOnDuty([...memberOnDuty]);
@@ -100,20 +107,18 @@ export default function Duty() {
         },
         {
           title: 'Término',
-          dataIndex: 'finishTime',     
-          },
+          dataIndex: 'finishTime',
+        },
         {
           title: 'Finalizar plantão',
-          dataIndex: 'id',
-          render: (id, member) => <Popconfirm title="Finalizar plantão?" onConfirm={() => handleFinished(id, member)}>
+          dataIndex: 'dutyId',
+          render: (dutyId, member) => <Popconfirm title="Finalizar plantão?" onConfirm={() => handleFinished(dutyId, member)}>
             <a>Encerrar</a>
           </Popconfirm>
         },
       ]
     },
   ]
-
-
 
   return (
     <Container>
