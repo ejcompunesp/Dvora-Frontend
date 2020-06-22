@@ -22,7 +22,7 @@ function ModalOnDuty( props) {
                   }
                 } catch(error) {
                   setLoading(false);
-                  message.error("Erro ao iniciar plantão!");
+                  message.error(error.response.data.msg);
                 }
               }
         });

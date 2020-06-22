@@ -73,7 +73,7 @@ export default function Duty() {
         message.success('Plantão finalizado!');
       }
     } catch (error) {
-      message.error('Erro ao finalizar plantão.');
+      message.error(error.response.data.msg);
     }
   }
 
