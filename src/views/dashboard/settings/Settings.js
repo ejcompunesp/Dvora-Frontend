@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Form, Input, Button, Upload, Icon,  Popconfirm, message } from 'antd';
+import { Form, Input, Button, Upload, Icon, message } from 'antd';
 import { FiSettings, FiEdit3 } from 'react-icons/fi';
 
 import { connect } from 'react-redux';
@@ -15,14 +15,15 @@ import { setJe } from '../../../store/actions/je';
 function Settings({ form, je }) {
   const { getFieldDecorator } = form;
   const [image, setImage] = useState({ preview: '', fileList: '' });
-  const [upload, setUpload] = useState(false);
+  const [upload, setUpload] = useState();
   const [disable, setDisable] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function handleSubmit(e) {
+    setLoading(true);
     e.preventDefault();
     form.validateFields(async (err, values) => {
-      console.log(values);
       if (!err) {
         const form = new FormData();
         form.append("id", je.id);
@@ -36,12 +37,17 @@ function Settings({ form, je }) {
         try {
           const response = await jesApi.update(form);
           console.log(response);
-          if (response.status === 200)
+          if (response.status === 200) {
+            setLoading(false);
             console.log(response.data);
-          setJe(response.data);
-          setDisable(true);
+            setJe(response.data);
+            message.success('Perfil atualizado com sucesso!');
+            setDisable(true);
+          }
         } catch (error) {
+          setLoading(false);
           console.log(error);
+          message.error(error.response.data.msg);
         }
       }
     });
@@ -50,11 +56,12 @@ function Settings({ form, je }) {
   useEffect(() => (
     je.image ? setUpload(je.image)
       :
-      setUpload(<div>
+      setUpload(
+      <div>
         <Icon type="plus" />
         <div className="ant-upload-text">Upload</div>
       </div>)
-  ), []);
+  ),[]);
 
   function handleChange(e) {
     if (e.target.files.length) {
@@ -69,7 +76,7 @@ function Settings({ form, je }) {
     form.resetFields();
     setDisable(true);
     setVisible(false)
-    setImage({preview: ''})
+    setImage({ preview: '' })
   };
   function onUpdate() {
     setDisable(false);
@@ -88,7 +95,7 @@ function Settings({ form, je }) {
     <Container>
       <Title>
         <h2>Configurações da EJ <FiSettings /></h2>
-        <Button onClick={onUpdate} type="primary"> <FiEdit3 title='editar' style={{fontSize: '16pt'}}/></Button>
+        <Button onClick={onUpdate} type="primary"> <FiEdit3 title='editar' style={{ fontSize: '16pt' }} /></Button>
       </Title>
       <Form onSubmit={handleSubmit} >
         <Form.Item
@@ -154,7 +161,7 @@ function Settings({ form, je }) {
           </Form.Item>
         </> : null}
         <Form.Item >
-          <Button type="primary" htmlType="submit" > Salvar </Button>
+          <Button loading={loading} type="primary" htmlType="submit" > Salvar </Button>
           <Button style={{ marginLeft: '10px' }} htmlType="button" onClick={onReset}>  Cancelar </Button>
         </Form.Item>
       </Form>
