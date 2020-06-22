@@ -14,10 +14,12 @@ export default function Siderbar() {
           if (isActive) {
             return (
               <li key={idx}>
-                <Link to={route.path} className="active">
-                  {" "}
-                  {route.icon}
-                </Link>
+                {!route.invisible ? (
+                  <Link to={route.path} className="active">
+                    {" "}
+                    {route.icon}
+                  </Link>
+                ) : null}
               </li>
             );
           }

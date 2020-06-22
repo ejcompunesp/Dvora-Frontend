@@ -55,9 +55,8 @@ function Registro({ form, history }) {
       <img src={logo} />
       <StyledFormRegister onSubmit={handleSubmit}>
         <div className="blue">Registro</div>
-        <UploadImage />
         <Form.Item>
-          {getFieldDecorator("nome", {
+          {getFieldDecorator("name", {
             rules: [{ required: true, message: "Please input your username!" }],
           })(
             <Input
