@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 
 import { Form, Input, Button, Upload, Icon, message } from 'antd';
 import { FiSettings, FiEdit3 } from 'react-icons/fi';
@@ -15,10 +15,18 @@ import { setJe } from '../../../store/actions/je';
 function Settings({ form, je }) {
   const { getFieldDecorator } = form;
   const [image, setImage] = useState({ preview: '', fileList: '' });
-  const [upload, setUpload] = useState();
   const [disable, setDisable] = useState(true);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  const uploadButton = (
+    <div>
+    <Icon type="plus" />
+    <div className="ant-upload-text">Upload</div>
+  </div>
+  );
+
+  const [ src ] = useState(je.image? <img src={je.image} alt="avatar" style={{ width: '100%' }}/>: uploadButton);
 
   function handleSubmit(e) {
     setLoading(true);
@@ -52,16 +60,6 @@ function Settings({ form, je }) {
       }
     });
   }
-
-  useEffect(() => (
-    je.image ? setUpload(je.image)
-      :
-      setUpload(
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
-      </div>)
-  ),[]);
 
   function handleChange(e) {
     if (e.target.files.length) {
@@ -106,7 +104,7 @@ function Settings({ form, je }) {
           <Avatar>
             <Upload showUploadList={false}
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76" listType="picture-card" disabled={disable} >
-              {image.preview ? <img src={image.preview} alt="avatar" style={{ width: '100%' }} /> : upload}
+              {image.preview ? <img src={image.preview} alt="avatar" style={{ width: '100%' }} /> : src}
             </Upload>
           </Avatar>
         </Form.Item>
