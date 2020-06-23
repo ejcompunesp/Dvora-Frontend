@@ -4,6 +4,8 @@ import { Modal } from 'antd';
 
 import { FiEdit } from 'react-icons/fi';
 
+import { DropdownItem } from '../../views/dashboard/team/styles/team';
+
 import EditForm from './MemberEditForm';
 
 export default function MemberRegistration(props) {
@@ -15,7 +17,9 @@ export default function MemberRegistration(props) {
 
   return (
     <div>
-      <p style={{ margin: 0 }} onClick={() => setVisible(true)}><FiEdit /> Edit</p>
+      <DropdownItem style={{ margin: 0 }} onClick={() => setVisible(true)}>
+        <FiEdit /> Editar
+      </DropdownItem>
       
       <Modal
         destroyOnClose={true}

@@ -9,7 +9,7 @@ import Duty from './duty/Duty';
 
 import { FaHome, FaClipboardList, FaComments, FaCoffee } from 'react-icons/fa';
 import { MdSettings } from 'react-icons/md';
-import { IoIosPeople, IoMdPerson } from 'react-icons/io';
+import { IoIosPeople } from 'react-icons/io';
 
 function isActive(path) {
   const url = window.location.pathname;
@@ -20,7 +20,6 @@ const HomeIcon = <FaHome/>
 const SettingsIcon = <MdSettings/>
 const MonitoringIcon = <FaClipboardList title="Acompanhamento"/>
 const TeamIcon = <IoIosPeople title="Equipe"/>
-const ProfileIcon = <IoMdPerson title="Profile"/>
 const FeedbackIcon = <FaComments title="Feedback"/>
 const DutyIcon = <FaCoffee title="Plantão"/>
 
@@ -52,7 +51,6 @@ export const routes = [
   {
     path: '/dashboard/profile',
     active: (path) => isActive(path),
-    icon: ProfileIcon,
     component: Profile
   },
   {

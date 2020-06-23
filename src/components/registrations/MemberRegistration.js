@@ -24,6 +24,7 @@ export default function MemberRegistration(props) {
         <MdPersonAdd />
       </Button>
       <Modal
+      style={{ width: 'auto' }}
         destroyOnClose={true}
         visible={visible}
         title="Inserção de membro"

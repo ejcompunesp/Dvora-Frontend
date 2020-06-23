@@ -10,7 +10,8 @@ import { AiOutlineRocket } from 'react-icons/ai';
 import { FiMoreVertical } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
-import { Container, Title, Content, TeamMembers, MoreButton, DropdownItem, SocialMedias, Pages } from './styles/team';
+import { Container, Title, Content, TeamMembers, 
+  MoreButton, DropdownItem, SocialMedias, Pages } from './styles/team';
 
 import MemberRegistration from '../../../components/registrations/MemberRegistration';
 import MemberEdit from '../../../components/edits/MemberEdit';
@@ -20,7 +21,7 @@ function Team(props) {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [membersPerPage, setMembersPerPage] = useState(10);
+  const [membersPerPage, setMembersPerPage] = useState(12);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -53,17 +54,17 @@ function Team(props) {
     return (
       <Menu>
         <Menu.Item key="0">
-          <DropdownItem><MemberEdit onSubmit={() => handleEdit(memberId)} /></DropdownItem>
+          <MemberEdit onSubmit={() => handleEdit(memberId)} />
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="1">
           <Popconfirm
-            title="Are you sure on removing this member?"
+            title="Deseja mesmo remover o membro?"
             onConfirm={() => handleRemove(memberId)}
             okText="Yes"
             cancelText="No"
           >
-            <DropdownItem><RiDeleteBinLine /> Remove</DropdownItem>
+          <DropdownItem><RiDeleteBinLine /> Remover</DropdownItem>
           </Popconfirm>
         </Menu.Item>
       </Menu>
@@ -83,6 +84,7 @@ function Team(props) {
     // data.append('instagram', values.instagram);
     // data.append('linkedin', values.linkedin);
     data.append('file', values.file);
+    data.append('isDutyDone', 0);
 
     try {
       const response = await membersApi.store(props.je.id, data);
@@ -152,8 +154,7 @@ function Team(props) {
         <TeamMembers>
           {currentMember.map((member) => {
             return (
-              loading ?
-                <Skeleton active avatar paragraph={{ rows: 2 }} /> :
+              loading ? <Skeleton active avatar paragraph={{ rows: 2 }} /> :
                 <li key={member.id}>
                   <MoreButton>
                     <Dropdown overlay={handleMember(member.id)} trigger={['click']} placement="bottomRight">

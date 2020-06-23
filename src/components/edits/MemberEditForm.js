@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-import { Form, Input, message, Button, Upload, Icon } from 'antd';
+import { Form, Input, message, Button } from 'antd';
 
 import { FiCamera } from 'react-icons/fi';
 import { MdPerson, MdPhone, MdEmail, MdLock } from 'react-icons/md';
@@ -9,20 +9,12 @@ import {
   FaInstagram, FaLinkedin
 } from 'react-icons/fa';
 
-import { UploadButtons, UploadPhoto } from '../registrations/styles/memberRegistrationForm';
+import { UploadButtons, UploadPhoto, PhotoInput } from '../registrations/styles/memberRegistrationForm';
 
 function MemberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
   const [loading, setLoading] = useState(false);
   const [photo, setPhoto] = useState(null);
-
-  function handleOk() {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      props.setVisible(false);
-    }, 2000);
-  };
 
   function handleCancel() {
     props.setVisible(false);
@@ -30,11 +22,16 @@ function MemberRegistrationForm(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     props.form.validateFields((err, values) => {
       if (!err) {
         values.file = photo;
         console.log(values);
         props.onSubmit(values);
+        setTimeout(() => {
+          setLoading(false);
+          props.setVisible(false);
+        }, 2000);
       }
       else message.error('Erro. Verifique os campos e tente novamente.');
     });
@@ -66,21 +63,12 @@ function MemberRegistrationForm(props) {
     return photo ? URL.createObjectURL(photo) : null;
   }, [photo]);
 
-  function normFile(e) {
-    console.log('Upload event:', e);
-    setPhoto(e.target.file[0]);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   const { getFieldDecorator } = props.form;
 
   const formItemLayout = {
     labelCol: {
-      xs: { span: 24 },
-      sm: { span: 8 },
+      xs: { span: 8 },
+      sm: { span: 16 },
     },
     wrapperCol: {
       xs: { span: 24 },
@@ -89,15 +77,15 @@ function MemberRegistrationForm(props) {
   };
 
   return (
-    <Form {...formItemLayout} onSubmit={handleSubmit} >
+    <Form {...formItemLayout} layout='vertical' onSubmit={handleSubmit} >
+      <UploadPhoto
+        style={{ backgroundImage: `url(${preview})` }}
+        className={photo ? 'has-photo' : ''}>
+        <PhotoInput type="file" onChange={event => setPhoto(event.target.files[0])} />
+        <FiCamera />
+      </UploadPhoto>
       <Form.Item label="Nome">
         {getFieldDecorator('name', {
-          rules: [
-            {
-              required: true,
-              message: 'Por favor, insira seu nome!',
-            },
-          ],
         })(<Input addonBefore={<MdPerson />} style={{ width: '100%' }} />)}
       </Form.Item>
       {/* <Form.Item label="E-mail">
@@ -110,7 +98,7 @@ function MemberRegistrationForm(props) {
           ],
         })(<Input addonBefore={<MdEmail />} style={{ width: '100%' }} />)}
       </Form.Item> */}
-      <Form.Item label="New password" hasFeedback required={true} >
+      <Form.Item label="New password" hasFeedback >
         {getFieldDecorator('password', {
           rules: [
             {
@@ -123,7 +111,6 @@ function MemberRegistrationForm(props) {
         {getFieldDecorator('confirm', {
           rules: [
             {
-              required: true,
               message: 'Por favor, confirme sua senha!',
             },
             {
@@ -161,31 +148,6 @@ function MemberRegistrationForm(props) {
         {getFieldDecorator('linkedin', {
         })(<Input addonBefore={<FaLinkedin />} style={{ width: '100%' }} />)}
       </Form.Item> */}
-      {/* <Form.Item 
-        style={{ backgroundImage: `url(${preview})` }}
-        className={photo ? 'has-photo' : ''}>
-        <Input type="file" onChange={event => setPhoto(event.target.files[0])} />
-          <FiCamera />
-      </Form.Item> */}
-        {/* <UploadPhoto
-          style={{ backgroundImage: `url(${preview})` }}
-          className={photo ? 'has-photo' : ''}
-        >
-          <Input type="file" onChange={event => setPhoto(event.target.files[0])} />
-          <FiCamera />
-        </UploadPhoto> */}
-        <Form.Item label="Upload">
-          {getFieldDecorator('upload', {
-            valuePropName: 'fileList',
-            getValueFromEvent: normFile,
-          })(
-            <Upload name="logo"  listType="picture">
-              <Button>
-                <Icon type="upload" /> Click to upload
-              </Button>
-            </Upload>,
-          )}
-        </Form.Item>
 
       <UploadButtons>
         <Button className="cancel" key="back" onClick={handleCancel}>
@@ -195,9 +157,9 @@ function MemberRegistrationForm(props) {
           key="submit"
           type="primary"
           loading={loading}
-          onClick={handleOk}
+          onClick={handleSubmit}
           htmlType="submit" >
-          Adicionar
+          Editar
         </Button>
       </UploadButtons>
     </Form>
