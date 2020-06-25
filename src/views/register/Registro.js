@@ -55,7 +55,7 @@ function Registro({ form, history }) {
       <img src={logo} />
       <StyledFormRegister onSubmit={handleSubmit}>
         <div className="blue">Registro</div>
-        <Form.Item>
+        <Form.Item style={{marginTop: '60px'}}>
           {getFieldDecorator("name", {
             rules: [{ required: true, message: "Please input your username!" }],
           })(
@@ -68,7 +68,7 @@ function Registro({ form, history }) {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator("email", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+            rules: [{ required: true, message: "Please input your email!" }],
           })(
             <Input
               size="large"
@@ -92,7 +92,7 @@ function Registro({ form, history }) {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator("city", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+            rules: [{ required: true, message: "Please input the city of EJ!" }],
           })(
             <Input
               size="large"
@@ -103,8 +103,8 @@ function Registro({ form, history }) {
           )}
         </Form.Item>
         <Form.Item>
-          {getFieldDecorator("IES (instituição de ensino superior)", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+          {getFieldDecorator("university", {
+            rules: [{ required: true, message: "Please input the university of EJ!" }],
           })(
             <Input
               size="large"
@@ -115,8 +115,8 @@ function Registro({ form, history }) {
           )}
         </Form.Item>
         <Form.Item>
-          {getFieldDecorator("Ano de Criação (EJ)", {
-            rules: [{ required: true, message: "Please input your Password!" }],
+          {getFieldDecorator("creationYear", {
+            rules: [{ required: true, message: "Please input the year of creation of EJ" }],
           })(
             <Input
               size="large"
