@@ -9,7 +9,7 @@ import {
   FaInstagram, FaLinkedin
 } from 'react-icons/fa';
 
-import { UploadButtons, UploadPhoto, PhotoInput } from '../registrations/styles/memberRegistrationForm';
+import { UploadButtons, UploadPhoto } from '../registrations/styles/memberRegistration';
 
 function MemberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
@@ -65,23 +65,12 @@ function MemberRegistrationForm(props) {
 
   const { getFieldDecorator } = props.form;
 
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 8 },
-      sm: { span: 16 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 },
-    },
-  };
-
   return (
-    <Form {...formItemLayout} layout='vertical' onSubmit={handleSubmit} >
+    <Form layout='vertical' onSubmit={handleSubmit} >
       <UploadPhoto
         style={{ backgroundImage: `url(${preview})` }}
         className={photo ? 'has-photo' : ''}>
-        <PhotoInput type="file" onChange={event => setPhoto(event.target.files[0])} />
+        <input type="file" onChange={event => setPhoto(event.target.files[0])} />
         <FiCamera />
       </UploadPhoto>
       <Form.Item label="Nome">

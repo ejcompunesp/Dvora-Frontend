@@ -9,7 +9,7 @@ import {
   FaInstagram, FaLinkedin
 } from 'react-icons/fa';
 
-import { StyledForm, UploadButtons, UploadPhoto, PhotoInput } from './styles/memberRegistrationForm';
+import { UploadButtons, CentralizedUpload, UploadPhoto, PhotoInput } from './styles/memberRegistration';
 
 function MemberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
@@ -26,7 +26,6 @@ function MemberRegistrationForm(props) {
     props.form.validateFields((err, values) => {
       if (!err) {
         values.file = photo;
-        console.log(values);
         props.onSubmit(values);
         setTimeout(() => {
           setLoading(false);
@@ -69,13 +68,15 @@ function MemberRegistrationForm(props) {
   const { getFieldDecorator } = props.form;
 
   return (
-    <StyledForm layout="vertical" onSubmit={handleSubmit} >
-      <UploadPhoto
-        style={{ backgroundImage: `url(${preview})` }}
-        className={photo ? 'has-photo' : ''}>
-        <PhotoInput type="file" onChange={event => setPhoto(event.target.files[0])} />
-        <FiCamera />
-      </UploadPhoto>
+    <Form layout="vertical" onSubmit={handleSubmit} >
+      <CentralizedUpload>
+        <UploadPhoto
+          style={{ backgroundImage: `url(${preview})` }}
+          className={photo ? 'has-photo' : ''}>
+          <input type="file" onChange={event => setPhoto(event.target.files[0])} />
+          <FiCamera />
+        </UploadPhoto>
+      </CentralizedUpload>
       <Form.Item label="Nome">
         {getFieldDecorator('name', {
           rules: [
@@ -187,7 +188,7 @@ function MemberRegistrationForm(props) {
           Adicionar
         </Button>
       </UploadButtons>
-    </StyledForm>
+    </Form>
   );
 }
 

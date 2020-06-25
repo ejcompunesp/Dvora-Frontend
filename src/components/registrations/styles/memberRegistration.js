@@ -1,11 +1,14 @@
 import styled from 'styled-components';
-import { Form } from 'antd';
+import { Modal, Input } from 'antd';
 
-export const StyledForm = styled(Form)`
+export const StyledModal = styled(Modal)`
+  width: auto;
+`;
+
+export const CentralizedUpload = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px;
 `;
 
 export const UploadButtons = styled.div`
@@ -36,8 +39,12 @@ export const UploadPhoto = styled.label`
   .has-photo svg {
     display: none;
   }
+
+  .ant-form input[type='file'] {
+    display: none;
+}
 `;
 
-export const PhotoInput = styled.input`
- display: none;
+export const PhotoInput = styled(Input)`
+  display: none;
 `;

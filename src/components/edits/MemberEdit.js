@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 
-import { Modal } from 'antd';
-
 import { FiEdit } from 'react-icons/fi';
 
 import { DropdownItem } from '../../views/dashboard/team/styles/team';
 
+import { StyledModal } from '../registrations/styles/memberRegistration';
 import EditForm from './MemberEditForm';
 
 export default function MemberRegistration(props) {
@@ -21,7 +20,7 @@ export default function MemberRegistration(props) {
         <FiEdit /> Editar
       </DropdownItem>
       
-      <Modal
+      <StyledModal
         destroyOnClose={true}
         visible={visible}
         title="Edição do membro"
@@ -29,7 +28,7 @@ export default function MemberRegistration(props) {
         footer={null}
       >
         <EditForm onSubmit={props.onSubmit} setVisible={setVisible}/>
-      </Modal>
+      </StyledModal>
     </div>
   );
 }

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
-import { Modal, Button } from 'antd';
+import { Button } from 'antd';
 
 import { MdPersonAdd } from 'react-icons/md';
 
+import { StyledModal } from './styles/memberRegistration';
 import RegistrationForm from './MemberRegistrationForm';
 
 export default function MemberRegistration(props) {
@@ -23,16 +24,15 @@ export default function MemberRegistration(props) {
       >
         <MdPersonAdd />
       </Button>
-      <Modal
-      style={{ width: 'auto' }}
+      <StyledModal
         destroyOnClose={true}
         visible={visible}
-        title="Inserção de membro"
+        title="Registro de membro"
         onCancel={handleCancel}
         footer={null}
       >
         <RegistrationForm onSubmit={props.onSubmit} setVisible={setVisible}/>
-      </Modal>
+      </StyledModal>
     </div>
   );
 }
