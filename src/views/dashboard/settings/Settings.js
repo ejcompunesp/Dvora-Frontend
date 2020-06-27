@@ -26,7 +26,7 @@ function Settings({ form, je }) {
   </div>
   );
 
-  const [ src ] = useState(je.image? <img src={je.image} alt="avatar" style={{ width: '100%' }}/>: uploadButton);
+  const [ src ] = useState(je.image? <img src={`https://backend-dvora.herokuapp.com/files/je/${je.image}`} alt="avatar" style={{ width: '100%' }}/>: uploadButton);
 
   function handleSubmit(e) {
     setLoading(true);
