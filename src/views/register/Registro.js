@@ -3,10 +3,9 @@ import {
   Form,
   Input,
   Button,
-  Checkbox,
   Icon,
-  InputNumber,
   message,
+  Upload,
 } from "antd";
 
 import { Container, StyledFormRegister } from "./styles/register";
@@ -19,6 +18,12 @@ import { withRouter } from "react-router-dom";
 function Registro({ form, history }) {
   const { getFieldDecorator } = form;
   const [loading, setLoading] = useState(false);
+  const [file,setFile] = useState({
+    previewVisible: false,
+    previewImage: '',
+    fileList: [
+    ],
+  })
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -32,7 +37,7 @@ function Registro({ form, history }) {
         data.append("university", values.university);
         data.append("city", values.city);
         data.append("creationYear", values.creationYear);
-        data.append("file", null);
+        data.append("file", file.fileList);
 
         try {
           const response = await jesApi.register(data);
@@ -49,13 +54,40 @@ function Registro({ form, history }) {
       }
     });
   }
+  function handleChange(e) {
+    if (e.target.files.length) {
+      setFile({
+        previewImage: URL.createObjectURL(e.target.files[0]),
+        fileList: e.target.files[0]
+      });
+      console.log(file.fileList);
+    }
+  };
+  const uploadButton = (
+    <div>
+      <Icon type="plus" />
+      <div className="ant-upload-text">Upload</div>
+    </div>
+  );
 
   return (
     <Container>
       <img src={logo} />
       <StyledFormRegister onSubmit={handleSubmit}>
         <div className="blue">Registro</div>
-        <Form.Item style={{marginTop: '60px'}}>
+        <div className="clearfix" style={{marginTop: '60px'}}>
+        <Form.Item
+          name="upload"
+          onChange={handleChange}
+        >
+            <Upload showUploadList={false}
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76" listType="picture-card"  >
+              {file.previewImage ? <img alt="example" style={{ width: '100%'}} src={file.previewImage} /> : uploadButton}
+            </Upload>
+        </Form.Item>
+        </div>
+
+        <Form.Item>
           {getFieldDecorator("name", {
             rules: [{ required: true, message: "Please input your username!" }],
           })(
