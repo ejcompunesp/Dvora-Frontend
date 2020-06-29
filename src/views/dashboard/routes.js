@@ -34,35 +34,37 @@ export const routes = [
     path: '/dashboard/settings',
     active: (path) => isActive(path),
     icon: SettingsIcon,
-    component: Settings
+    component: Settings,
   },
   {
     path: '/dashboard/monitoring',
     active: (path) => isActive(path),
     icon: MonitoringIcon,
-    component: Monitoring
+    component: Monitoring,
   },
   {
     path: '/dashboard/team',
     active: (path) => isActive(path),
     icon: TeamIcon,
-    component: Team
+    component: Team,
   },
   {
     path: '/dashboard/profile',
     active: (path) => isActive(path),
-    component: Profile
+    component: Profile,
+    invisible: true,
   },
   {
     path: '/dashboard/feedback',
     active: (path) => isActive(path),
     icon: FeedbackIcon,
-    component: Feedback
+    component: Feedback,
+    invisible: true,
   },
   {
     path: '/dashboard/duty',
     active: (path) => isActive(path),
     icon: DutyIcon,
-    component: Duty
+    component: Duty,
   },
 ];

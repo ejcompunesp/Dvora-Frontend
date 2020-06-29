@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Modal, Input } from 'antd';
+import { Modal } from 'antd';
 
 export const StyledModal = styled(Modal)`
   width: auto;
@@ -33,18 +33,14 @@ export const UploadPhoto = styled.label`
   align-items: center;
 
   .has-photo {
-    border: 0;
+    border: 0 !important;
   }
 
   .has-photo svg {
-    display: none;
+    display: none !important;
   }
 
-  .ant-form input[type='file'] {
-    display: none;
-}
-`;
-
-export const PhotoInput = styled(Input)`
-  display: none;
+  input{
+    display: none !important;
+  }
 `;

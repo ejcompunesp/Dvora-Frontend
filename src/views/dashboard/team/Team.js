@@ -103,6 +103,7 @@ function Team(props) {
   async function handleEdit(values, memberId) {
     const data = new FormData();
     data.append('name', values.name);
+    data.append('id', memberId);
     data.append('password', values.password);
     data.append('sr', values.sr);
     data.append('board', values.board);
@@ -112,10 +113,11 @@ function Team(props) {
     // data.append('instagram', values.instagram);
     // data.append('linkedin', values.linkedin);
     data.append('file', values.file);
+    console.log(memberId);
 
     try {
       const response = await membersApi.update(props.je.id, {
-        id: memberId,
+        id: data.id,
         name: data.name,
         board: data.board,
         position: data.position,
@@ -133,6 +135,7 @@ function Team(props) {
   }
 
   async function handleRemove(memberId) {
+    console.log(memberId);
     try {
       const response = await membersApi.delete(props.je.id, { id: memberId });
       if (response.status === 200) {
@@ -161,7 +164,7 @@ function Team(props) {
                       <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
                     </Dropdown>
                   </MoreButton>
-                  <img src={member.file ? `https://backend-dvora.herokuapp.com/files/member/${member.file}` : user} alt={"Foto de perfil"} />
+                  <img src={member.image ? `https://backend-dvora.herokuapp.com/files/member/${member.image}` : user} alt={"Foto de perfil"} />
                   <strong>{member.name}</strong>
                   <p>{member.position}</p>
                   <SocialMedias>

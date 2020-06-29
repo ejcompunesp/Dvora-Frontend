@@ -155,6 +155,6 @@ function MemberRegistrationForm(props) {
   );
 }
 
-const RegistrationForm = Form.create({ name: 'Registro de membros' })(MemberRegistrationForm);
+const RegistrationForm = Form.create({ name: 'Edição de membros' })(MemberRegistrationForm);
 
 export default RegistrationForm;

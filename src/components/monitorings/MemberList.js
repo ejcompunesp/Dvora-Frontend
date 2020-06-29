@@ -13,7 +13,6 @@ import user from '../../assets/user.png';
 function MemberList(props) {
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
-  const [membersInfos, setMembersInfos] = useState([]);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -35,20 +34,16 @@ function MemberList(props) {
 
   function handleStatusIcon(status) {
     console.log(status);
-    if (status === 1)
-      return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
-    else if (status === 0)
+    if (status === 0 || null)
       return <IoIosCloseCircle style={{ color: "#E71A23" }} />;
-    else return <MdTimelapse />;
+    else return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
   }
 
   function handleStatus(status) {
     console.log(status);
-    if (status === 1)
-      return "Feito";
-    else if (status === 0)
+    if (status === 0 || null)
       return "Não feito";
-    else return "Em andamento";
+    else return "Feito";
 
   }
 
@@ -89,7 +84,7 @@ function MemberList(props) {
       ],
       filterMultiple: false,
       onFilter: (value, record) => record.duty.indexOf(value) === 0,
-      sorter: (a, b) => a.duty.length - b.duty.length,
+      sorter: (a, b) => a.dutyStatus.length - b.dutyStatus.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -119,11 +114,11 @@ function MemberList(props) {
       ],
       filterMultiple: false,
       onFilter: (value, record) => record.acc.indexOf(value) === 0,
-      sorter: (a, b) => a.acc.length - b.acc.length,
+      sorter: (a, b) => a.accStatus.length - b.accStatus.length,
       sortDirections: ['descend', 'ascend'],
     },
     {
-      dataIndex: 'acc',
+      dataIndex: 'isMonitoringDone',
       key: 'acc',
       visible: false,
     },
