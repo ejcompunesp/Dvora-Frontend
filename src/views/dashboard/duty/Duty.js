@@ -21,8 +21,6 @@ export default function Duty() {
     + currentdate.getMinutes() + ":"
     + currentdate.getSeconds();
 
-  console.log(datetime);
-
   let [sortedInfo, setSortedInfo] = useState();
   const [memberOnDuty, setMemberOnDuty] = useState([]);
 

@@ -20,11 +20,9 @@ function MemberList(props) {
       try {
         const response = await membersApi.list(props.je.id);
         if (response.status === 200) {
-          console.log(response);
           setMembers(response.data.members);
         }
       } catch (err) {
-        console.log(err);
         console.log(err.response);
       }
       setLoading(false);
@@ -33,14 +31,12 @@ function MemberList(props) {
   }, [props.je.id]);
 
   function handleStatusIcon(status) {
-    console.log(status);
     if (status === 0 || null)
       return <IoIosCloseCircle style={{ color: "#E71A23" }} />;
     else return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
   }
 
   function handleStatus(status) {
-    console.log(status);
     if (status === 0 || null)
       return "Não feito";
     else return "Feito";
