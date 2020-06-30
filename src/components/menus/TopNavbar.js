@@ -46,18 +46,23 @@ export default function TopNavbar({ je }) {
       history.push('/login');
     }, 1000)
   }
+
+  function redirectToProfile() {
+    history.push(`/dashboard/profile`);
+  }
   
   function showOptions() {
     setIconMenu(!iconMenu);
     setDropdown(!dropdown);
   }
+
   return (
     <TopNavbarContainer background={"#00A7E1"}>
       <img src={dvoraLogo} alt="Dvora"/>
       <TopNavItems>
         <BreadCrumb>{je.name}</BreadCrumb>
         <IconsList>
-          <FaUser />
+          <FaUser onClick={redirectToProfile} />
           <FaBell />
           <Dropdown overlay={menu}
             trigger={['click']}
