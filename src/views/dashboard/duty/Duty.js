@@ -13,6 +13,7 @@ import user from '../../../assets/user.png';
 import ModalOnDuty from '../../../components/duty/ModalOnDuty'
 
 export default function Duty() {
+  const apiURL = 'https://backend-dvora.herokuapp.com/files/member';
   var currentdate = new Date();
   var datetime = "Last Sync: " + currentdate.getDate() + "/"
     + (currentdate.getMonth() + 1) + "/"
@@ -90,7 +91,7 @@ export default function Duty() {
         {
           dataIndex: 'file',
           width: '4%',
-          render: file => <img src={file ? file : user} alt="Foto de perfil" />
+          render: file => <img src={file ? `${apiURL}/${file}` : user} alt="Foto de perfil" />
         },
         {
           title: 'Nome',
@@ -110,9 +111,12 @@ export default function Duty() {
         {
           title: 'Finalizar plantão',
           dataIndex: 'dutyId',
-          render: (dutyId, member) => <Popconfirm title="Finalizar plantão?" onConfirm={() => handleFinished(dutyId, member)}>
+          render: (dutyId, member) => member.finishTime === null ? 
+          <Popconfirm title="Finalizar plantão?" onConfirm={() => handleFinished(dutyId, member)}>
             <a>Encerrar</a>
-          </Popconfirm>
+          </Popconfirm> 
+          : 
+          <span>CONCLUÍDO!</span>
         },
       ]
     },
