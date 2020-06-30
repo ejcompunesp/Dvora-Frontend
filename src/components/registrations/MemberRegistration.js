@@ -8,10 +8,9 @@ import { StyledModal } from './styles/memberRegistration';
 import RegistrationForm from './MemberRegistrationForm';
 
 export default function MemberRegistration(props) {
-  const [visible, setVisible] = useState(false);
-
+  
   function handleCancel() {
-    setVisible(false);
+    props.setVisible(false);
   };
 
   return (
@@ -20,18 +19,18 @@ export default function MemberRegistration(props) {
         title="Adicionar membro"
         type="primary"
         style={{ fontSize: "26px" }}
-        onClick={() => setVisible(true)}
+        onClick={() => props.setVisible(true)}
       >
         <MdPersonAdd />
       </Button>
       <StyledModal
         destroyOnClose={true}
-        visible={visible}
+        visible={props.visible}
         title="Registro de membro"
         onCancel={handleCancel}
         footer={null}
       >
-        <RegistrationForm onSubmit={props.onSubmit} setVisible={setVisible}/>
+        <RegistrationForm onSubmit={props.onSubmit} setVisible={props.setVisible}/>
       </StyledModal>
     </div>
   );

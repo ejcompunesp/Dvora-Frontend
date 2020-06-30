@@ -22,6 +22,7 @@ function Team(props) {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [membersPerPage, setMembersPerPage] = useState(12);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -91,6 +92,7 @@ function Team(props) {
       if (response.status === 200) {
         setMembers([...members, response.data.member]);
         message.success('Membro inserido com sucesso!');
+        setVisible(false);
         console.log(response);
       }
     } catch (err) {
@@ -151,46 +153,47 @@ function Team(props) {
     <Container>
       <Title>
         <h2>Nossa equipe <AiOutlineRocket className="rocket" /></h2>
-        <MemberRegistration onSubmit={handleSubmit} />
+        <MemberRegistration visible={visible} setVisible={setVisible} onSubmit={handleSubmit} />
       </Title>
       <Content>
-        <TeamMembers>
-          {currentMember.map((member) => {
-            return (
-              loading ? <Skeleton active avatar paragraph={{ rows: 2 }} /> :
-                <li key={member.id}>
-                  <MoreButton>
-                    <Dropdown overlay={handleMember(member.id)} trigger={['click']} placement="bottomRight">
-                      <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
-                    </Dropdown>
-                  </MoreButton>
-                  <img src={member.image ? `https://backend-dvora.herokuapp.com/files/member/${member.image}` : user} alt={"Foto de perfil"} />
-                  <strong>{member.name}</strong>
-                  <p>{member.position}</p>
-                  <SocialMedias>
-                    <a title="Facebook" href={member.facebook} rel="noopener noreferrer" target="_blank">
-                      <FaFacebookSquare style={{ color: "#3b5998" }} />
-                    </a>
-                    <a title="Instagram" href={member.instagram} rel="noopener noreferrer" target="_blank">
-                      <FaInstagram className="insta" />
-                    </a>
-                    <a title="Linkedin" href={member.linkedin} rel="noopener noreferrer" target="_blank">
-                      <FaLinkedin style={{ color: "#0e76a8" }} />
-                    </a>
-                  </SocialMedias>
-                </li>
-            )
-          })}
-        </TeamMembers>
-        <Pages>
-          <Pagination
-            defaultCurrent={1}
-            current={currentPage}
-            total={members.length}
-            pageSize={membersPerPage}
-            onChange={handlePageChange}
-          />
-        </Pages>
+        <Skeleton loading={loading}>
+          <TeamMembers>
+            {currentMember.map((member) => {
+              return (
+                  <li key={member.id}>
+                    <MoreButton>
+                      <Dropdown overlay={handleMember(member.id)} trigger={['click']} placement="bottomRight">
+                        <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
+                      </Dropdown>
+                    </MoreButton>
+                    <img src={member.image ? `https://backend-dvora.herokuapp.com/files/member/${member.image}` : user} alt={"Foto de perfil"} />
+                    <strong>{member.name}</strong>
+                    <p>{member.position}</p>
+                    <SocialMedias>
+                      <a title="Facebook" href={member.facebook} rel="noopener noreferrer" target="_blank">
+                        <FaFacebookSquare style={{ color: "#3b5998" }} />
+                      </a>
+                      <a title="Instagram" href={member.instagram} rel="noopener noreferrer" target="_blank">
+                        <FaInstagram className="insta" />
+                      </a>
+                      <a title="Linkedin" href={member.linkedin} rel="noopener noreferrer" target="_blank">
+                        <FaLinkedin style={{ color: "#0e76a8" }} />
+                      </a>
+                    </SocialMedias>
+                  </li>
+              )
+            })}
+          </TeamMembers>
+          <Pages>
+            <Pagination
+              defaultCurrent={1}
+              current={currentPage}
+              total={members.length}
+              pageSize={membersPerPage}
+              onChange={handlePageChange}
+            />
+          </Pages>
+        </Skeleton>
       </Content>
     </Container>
   );

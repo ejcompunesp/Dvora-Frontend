@@ -27,10 +27,6 @@ function MemberRegistrationForm(props) {
       if (!err) {
         values.file = photo;
         props.onSubmit(values);
-        setTimeout(() => {
-          setLoading(false);
-          props.setVisible(false);
-        }, 2000);
       }
       else {
         message.error('Erro. Verifique os campos e tente novamente.');
