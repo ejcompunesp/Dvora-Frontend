@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { Table, Popconfirm, message } from 'antd';
 
@@ -25,6 +26,8 @@ export default function Duty() {
 
   let [sortedInfo, setSortedInfo] = useState();
   const [memberOnDuty, setMemberOnDuty] = useState([]);
+
+  const history = useHistory();
 
   useEffect(() => {
     const duties = localStorage.getItem('duties');
@@ -71,6 +74,8 @@ export default function Duty() {
         member.finishTime = currentdate.getHours() + ":" + currentdate.getMinutes();
         setMemberOnDuty([...memberOnDuty]);
         message.success('Plantão finalizado!');
+        history.push('/dashboard/feedback');
+
       }
     } catch (error) {
       message.error(error.response.data.msg);

@@ -59,7 +59,8 @@ export const routes = [
     path: '/dashboard/feedback',
     active: (path) => isActive(path),
     icon: FeedbackIcon,
-    component: Feedback
+    component: Feedback,
+    invisible: true,
   },
   {
     path: '/dashboard/duty',
