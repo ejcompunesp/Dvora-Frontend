@@ -10,7 +10,8 @@ import { AiOutlineRocket } from 'react-icons/ai';
 import { FiMoreVertical } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
-import { Container, Title, Content, TeamMembers, MoreButton, DropdownItem, SocialMedias, Pages } from './styles/team';
+import { Container, Title, Content, TeamMembers, 
+  MoreButton, DropdownItem, SocialMedias, Pages } from './styles/team';
 
 import MemberRegistration from '../../../components/registrations/MemberRegistration';
 import MemberEdit from '../../../components/edits/MemberEdit';
@@ -20,7 +21,8 @@ function Team(props) {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [membersPerPage, setMembersPerPage] = useState(10);
+  const [membersPerPage, setMembersPerPage] = useState(12);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -53,17 +55,17 @@ function Team(props) {
     return (
       <Menu>
         <Menu.Item key="0">
-          <DropdownItem><MemberEdit onSubmit={() => handleEdit(memberId)} /></DropdownItem>
+          <MemberEdit onSubmit={() => handleEdit(memberId)} />
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="1">
           <Popconfirm
-            title="Are you sure on removing this member?"
+            title="Deseja mesmo remover o membro?"
             onConfirm={() => handleRemove(memberId)}
             okText="Yes"
             cancelText="No"
           >
-            <DropdownItem><RiDeleteBinLine /> Remove</DropdownItem>
+          <DropdownItem><RiDeleteBinLine /> Remover</DropdownItem>
           </Popconfirm>
         </Menu.Item>
       </Menu>
@@ -83,12 +85,14 @@ function Team(props) {
     // data.append('instagram', values.instagram);
     // data.append('linkedin', values.linkedin);
     data.append('file', values.file);
+    data.append('isDutyDone', 0);
 
     try {
       const response = await membersApi.store(props.je.id, data);
       if (response.status === 200) {
         setMembers([...members, response.data.member]);
         message.success('Membro inserido com sucesso!');
+        setVisible(false);
         console.log(response);
       }
     } catch (err) {
@@ -101,6 +105,7 @@ function Team(props) {
   async function handleEdit(values, memberId) {
     const data = new FormData();
     data.append('name', values.name);
+    data.append('id', memberId);
     data.append('password', values.password);
     data.append('sr', values.sr);
     data.append('board', values.board);
@@ -110,10 +115,11 @@ function Team(props) {
     // data.append('instagram', values.instagram);
     // data.append('linkedin', values.linkedin);
     data.append('file', values.file);
+    console.log(memberId);
 
     try {
       const response = await membersApi.update(props.je.id, {
-        id: memberId,
+        id: data.id,
         name: data.name,
         board: data.board,
         position: data.position,
@@ -131,6 +137,7 @@ function Team(props) {
   }
 
   async function handleRemove(memberId) {
+    console.log(memberId);
     try {
       const response = await membersApi.delete(props.je.id, { id: memberId });
       if (response.status === 200) {
@@ -146,47 +153,47 @@ function Team(props) {
     <Container>
       <Title>
         <h2>Nossa equipe <AiOutlineRocket className="rocket" /></h2>
-        <MemberRegistration onSubmit={handleSubmit} />
+        <MemberRegistration visible={visible} setVisible={setVisible} onSubmit={handleSubmit} />
       </Title>
       <Content>
-        <TeamMembers>
-          {currentMember.map((member) => {
-            return (
-              loading ?
-                <Skeleton active avatar paragraph={{ rows: 2 }} /> :
-                <li key={member.id}>
-                  <MoreButton>
-                    <Dropdown overlay={handleMember(member.id)} trigger={['click']} placement="bottomRight">
-                      <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
-                    </Dropdown>
-                  </MoreButton>
-                  <img src={member.file ? `https://backend-dvora.herokuapp.com/files/member/${member.file}` : user} alt={"Foto de perfil"} />
-                  <strong>{member.name}</strong>
-                  <p>{member.position}</p>
-                  <SocialMedias>
-                    <a title="Facebook" href={member.facebook} rel="noopener noreferrer" target="_blank">
-                      <FaFacebookSquare style={{ color: "#3b5998" }} />
-                    </a>
-                    <a title="Instagram" href={member.instagram} rel="noopener noreferrer" target="_blank">
-                      <FaInstagram className="insta" />
-                    </a>
-                    <a title="Linkedin" href={member.linkedin} rel="noopener noreferrer" target="_blank">
-                      <FaLinkedin style={{ color: "#0e76a8" }} />
-                    </a>
-                  </SocialMedias>
-                </li>
-            )
-          })}
-        </TeamMembers>
-        <Pages>
-          <Pagination
-            defaultCurrent={1}
-            current={currentPage}
-            total={members.length}
-            pageSize={membersPerPage}
-            onChange={handlePageChange}
-          />
-        </Pages>
+        <Skeleton loading={loading}>
+          <TeamMembers>
+            {currentMember.map((member) => {
+              return (
+                  <li key={member.id}>
+                    <MoreButton>
+                      <Dropdown overlay={handleMember(member.id)} trigger={['click']} placement="bottomRight">
+                        <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
+                      </Dropdown>
+                    </MoreButton>
+                    <img src={member.image ? `https://backend-dvora.herokuapp.com/files/member/${member.image}` : user} alt={"Foto de perfil"} />
+                    <strong>{member.name}</strong>
+                    <p>{member.position}</p>
+                    <SocialMedias>
+                      <a title="Facebook" href={member.facebook} rel="noopener noreferrer" target="_blank">
+                        <FaFacebookSquare style={{ color: "#3b5998" }} />
+                      </a>
+                      <a title="Instagram" href={member.instagram} rel="noopener noreferrer" target="_blank">
+                        <FaInstagram className="insta" />
+                      </a>
+                      <a title="Linkedin" href={member.linkedin} rel="noopener noreferrer" target="_blank">
+                        <FaLinkedin style={{ color: "#0e76a8" }} />
+                      </a>
+                    </SocialMedias>
+                  </li>
+              )
+            })}
+          </TeamMembers>
+          <Pages>
+            <Pagination
+              defaultCurrent={1}
+              current={currentPage}
+              total={members.length}
+              pageSize={membersPerPage}
+              onChange={handlePageChange}
+            />
+          </Pages>
+        </Skeleton>
       </Content>
     </Container>
   );

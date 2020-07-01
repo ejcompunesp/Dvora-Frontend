@@ -3,22 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { membersApi } from '../../api';
 
-import { Table, Button } from 'antd';
+import { Table, Skeleton } from 'antd';
 
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from 'react-icons/io';
 import { MdTimelapse } from 'react-icons/md';
 
-import { TableOperations } from '../../views/dashboard/monitoring/styles/monitoring';
-
 import user from '../../assets/user.png';
-
-import { data } from '../../api/ApiTeste'
 
 function MemberList(props) {
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
-  const [filteredInfo, setFilteredInfo] = useState(null);
-  const [sortedInfo, setSortedInfo] = useState(null); 
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -26,11 +20,9 @@ function MemberList(props) {
       try {
         const response = await membersApi.list(props.je.id);
         if (response.status === 200) {
-          console.log(response);
           setMembers(response.data.members);
         }
       } catch (err) {
-        console.log(err);
         console.log(err.response);
       }
       setLoading(false);
@@ -38,110 +30,109 @@ function MemberList(props) {
     fetchMembers();
   }, [props.je.id]);
 
-  function determineStatusIcon(status) {
-    if (status === "Feito")
-      return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
-    else if (status === "Não feito")
+  function handleStatusIcon(status) {
+    if (status === 0 || null)
       return <IoIosCloseCircle style={{ color: "#E71A23" }} />;
-    else return <MdTimelapse />;
+    else return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
   }
 
-  function handleChange(pagination, filters, sorter) {
-    setFilteredInfo(filters);
-    setSortedInfo(sorter);
-  };
+  function handleStatus(status) {
+    if (status === 0 || null)
+      return "Não feito";
+    else return "Feito";
 
-  function clearFilters() {
-    setFilteredInfo(null);
-  };
-
-  setFilteredInfo(filteredInfo || {});
-  setSortedInfo(sortedInfo || {});
+  }
 
   const columns = [
     {
       dataIndex: 'file',
+      key: 'file',
       width: '4%',
-      render: file => <img src={file ? file : user} alt="Foto de perfil" />
+      render: file => <img src={file ? file : user} alt="Foto de perfil" />,
     },
     {
       title: 'Nome',
       dataIndex: 'name',
       key: 'name',
+      width: '25%',
       sorter: (a, b) => a.name.length - b.name.length,
-      ellipsis: true,
+      sortDirections: ['descend'],
     },
     {
+      key: 'dutyStatusIcon',
       width: '2%',
-      render: (row) => determineStatusIcon(row.onDuty),
+      render: (row) => handleStatusIcon(row.duty),
     },
     {
       title: 'Plantão',
-      dataIndex: 'onDuty',
-      key: 'onDuty',
+      key: 'dutyStatus',
+      width: '21%',
+      render: (row) => handleStatus(row.duty),
       filters: [
         {
-          text: 'Feito',
-          value: 'Feito'
+          text: 'Done',
+          value: 'Feito',
         },
         {
-          text: 'Não feito',
-          value: 'Não feito'
+          text: 'Not Done',
+          value: 'Não feito',
         },
-        {
-          text: 'Em andamento',
-          value: 'Em andamento'
-        }
       ],
-      filteredValue: filteredInfo.onDuty || null,
-      onFilter: (value, record) => record.onDuty.includes(value),
-      sorter: (a, b) => a.onDuty.length - b.onDuty.length,
-      ellipsis: true,
+      filterMultiple: false,
+      onFilter: (value, record) => record.duty.indexOf(value) === 0,
+      sorter: (a, b) => a.dutyStatus.length - b.dutyStatus.length,
+      sortDirections: ['descend', 'ascend'],
     },
     {
+      dataIndex: 'isDutyDone',
+      key:'duty',
+      visible: false, 
+    },
+    {
+      key: 'accStatusIcon',
       width: '2%',
-      render: (row) => determineStatusIcon(row.acc),
+      render: (row) => handleStatusIcon(row.acc),
     },
     {
       title: 'Acompanhamento',
-      dataIndex: 'acc',
-      key: 'acc',
+      key: 'accStatus',
+      width: '21%',
+      render: (row) => handleStatus(row.acc),
       filters: [
         {
-          text: 'Feito',
-          value: 'Feito'
+          text: 'Done',
+          value: 'Feito',
         },
         {
-          text: 'Não feito',
-          value: 'Não feito'
+          text: 'Not Done',
+          value: 'Não feito',
         },
-        {
-          text: 'Em andamento',
-          value: 'Em andamento'
-        }
       ],
-      filteredValue: filteredInfo.acc || null,
-      onFilter: (value, record) => record.acc.includes(value),
-      sorter: (a, b) => a.acc.length - b.acc.length,
-      sortOrder: sortedInfo.columnKey === 'acc' && sortedInfo.order,
-      ellipsis: true,
+      filterMultiple: false,
+      onFilter: (value, record) => record.acc.indexOf(value) === 0,
+      sorter: (a, b) => a.accStatus.length - b.accStatus.length,
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
+      dataIndex: 'isMonitoringDone',
+      key: 'acc',
+      visible: false,
     },
     {
       title: 'Cargo',
       dataIndex: 'position',
       key: 'position',
+      width: '25%',
       sorter: (a, b) => a.position.length - b.position.length,
-      sortOrder: sortedInfo.columnKey === 'position' && sortedInfo.order,
+      sortDirections: ['descend', 'ascend'],
       ellipsis: true,
     },
   ];
 
   return (
+    loading ? <Skeleton active avatar paragraph={{ rows: 2 }} /> :
     <div>
-      <TableOperations>
-        <Button onClick={clearFilters}>Limpar filtros</Button>
-      </TableOperations>
-      <Table columns={columns} scroll={{ x: true }} dataSource={data} onChange={handleChange} />
+      <Table columns={columns.filter(column => column.visible !== false)} scroll={{ x: true }} dataSource={members} />
     </div>
   );
 }

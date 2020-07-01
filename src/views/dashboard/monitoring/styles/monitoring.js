@@ -12,11 +12,3 @@ export const TableStyle = styled.div`
     }
   }
 `;
-
-export const TableOperations = styled.div`
-  margin-bottom: 16px;
-
-  button{
-    margin-right: 8px;
-  }
-`;
