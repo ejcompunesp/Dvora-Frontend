@@ -1,68 +1,75 @@
-import React from 'react';
-import Home from '../dashboard/home/Home';
-import Settings from '../dashboard/settings/Settings';
-import Monitoring from './monitoring/Monitoring';
-import Team from './team/Team';
-import Profile from './profile/Profile';
-import Feedback from './feedback/Feedback';
-import Duty from './duty/Duty';
+import React from "react";
+import Home from "../dashboard/home/Home";
+import Settings from "../dashboard/settings/Settings";
+import Monitoring from "./monitoring/Monitoring";
+import MonitoringDetails from "./monitoring/MonitoringDetails";
+import Team from "./team/Team";
+import Profile from "./profile/Profile";
+import Feedback from "./feedback/Feedback";
+import Duty from "./duty/Duty";
 
-import { FaHome, FaClipboardList, FaComments, FaCoffee } from 'react-icons/fa';
-import { MdSettings } from 'react-icons/md';
-import { IoIosPeople } from 'react-icons/io';
+import { FaHome, FaClipboardList, FaComments, FaCoffee } from "react-icons/fa";
+import { MdSettings } from "react-icons/md";
+import { IoIosPeople } from "react-icons/io";
 
 function isActive(path) {
   const url = window.location.pathname;
   return path === url;
 }
 
-const HomeIcon = <FaHome/>
-const SettingsIcon = <MdSettings/>
-const MonitoringIcon = <FaClipboardList title="Acompanhamento"/>
-const TeamIcon = <IoIosPeople title="Equipe"/>
-const FeedbackIcon = <FaComments title="Feedback"/>
-const DutyIcon = <FaCoffee title="Plantão"/>
+const HomeIcon = <FaHome />;
+const SettingsIcon = <MdSettings />;
+const MonitoringIcon = <FaClipboardList title="Acompanhamento" />;
+const TeamIcon = <IoIosPeople title="Equipe" />;
+const FeedbackIcon = <FaComments title="Feedback" />;
+const DutyIcon = <FaCoffee title="Plantão" />;
 
 export const routes = [
   {
-    path: '/dashboard/home',
+    path: "/dashboard/home",
     active: (path) => isActive(path),
     icon: HomeIcon,
     component: Home,
   },
   {
-    path: '/dashboard/settings',
+    path: "/dashboard/settings",
     active: (path) => isActive(path),
     icon: SettingsIcon,
     component: Settings,
   },
   {
-    path: '/dashboard/monitoring',
+    path: "/dashboard/monitoring",
     active: (path) => isActive(path),
     icon: MonitoringIcon,
     component: Monitoring,
   },
   {
-    path: '/dashboard/team',
+    path: "/dashboard/monitoring/details",
+    active: (path) => isActive(path),
+    invisible: true,
+    component: MonitoringDetails,
+  },
+  {
+    path: "/dashboard/team",
     active: (path) => isActive(path),
     icon: TeamIcon,
     component: Team,
   },
   {
-    path: '/dashboard/profile',
+    path: "/dashboard/profile",
     active: (path) => isActive(path),
     component: Profile,
     invisible: true,
   },
   {
-    path: '/dashboard/feedback',
+    path: "/dashboard/feedback",
     active: (path) => isActive(path),
     icon: FeedbackIcon,
     component: Feedback,
     invisible: true,
   },
   {
-    path: '/dashboard/duty',
+    path: "/dashboard/duty",
     active: (path) => isActive(path),
     icon: DutyIcon,
     component: Duty,
