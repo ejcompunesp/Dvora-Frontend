@@ -53,6 +53,7 @@ export const FeedbackContainer = styled.div`
   border: 1px solid #aaaaaa;
   max-height: 250px;
   overflow: hidden;
+  margin-bottom: 20px;
 `;
 
 export const FeedbackTitle = styled.div`

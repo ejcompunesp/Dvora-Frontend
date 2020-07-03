@@ -6,7 +6,7 @@ import {
   CommentContent,
 } from "./styles/monitoring";
 
-const MonitoringComments = () => {
+const MonitoringComments = ({comment}) => {
   return (
     <CommentContainer>
       <FeedbackTitle>
@@ -14,11 +14,7 @@ const MonitoringComments = () => {
       </FeedbackTitle>
       <CommentContent>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit
-          amet elit sed neque vulputate iaculis in id orci. Aliquam ac interdum
-          nisl. Morbi et orci nec neque feugiat dictum. Nulla blandit nisl
-          lobortis sagittis ornare. Quisque et vestibulum elit. Nunc commodo
-          risus eget orci convallis, vulputate cursus libero sodales.
+          {comment ? comment : <p>Acompanhamento não obteve um retorno do membro!</p>}
         </p>
       </CommentContent>
     </CommentContainer>
