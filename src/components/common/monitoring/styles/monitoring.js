@@ -45,3 +45,32 @@ export const Container = styled.div`
     align-items: center;
   }
 `;
+
+export const FeedbackContainer = styled.div`
+  min-width: 650px;
+  padding: 20px 40px;
+  border-radius: 3px;
+  border: 1px solid #aaaaaa;
+  max-height: 250px;
+  overflow: hidden;
+`;
+
+export const FeedbackTitle = styled.div`
+  width: 100%;
+  border-bottom: 1px solid #aaaaaa;
+`;
+export const FeedbackContent = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 15px 15px 0px;
+  justify-content: space-between;
+  flex-direction: column;
+  max-height: 150px;
+  overflow-y: scroll;
+`;
+
+export const QuestionContainer = styled.div`
+  padding: 5px 0px;
+  display: flex;
+  justify-content: space-between;
+`;
