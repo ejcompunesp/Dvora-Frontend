@@ -22,4 +22,6 @@ export const Content = styled.div`
 export const MonitoringInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `
+

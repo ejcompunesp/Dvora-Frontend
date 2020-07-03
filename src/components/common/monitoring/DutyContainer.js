@@ -15,10 +15,6 @@ const DutyContainer = ({ duties }) => {
         <DutyCard />
         <DutyCard />
         <DutyCard />
-        <DutyCard />
-        <DutyCard />
-        <DutyCard />
-        <DutyCard />
       </div>
     </Container>
   );

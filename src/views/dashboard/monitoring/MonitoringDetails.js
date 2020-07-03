@@ -7,6 +7,7 @@ import DutyCard from "../../../components/common/monitoring/DutyCard";
 import DutyContainer from "../../../components/common/monitoring/DutyContainer";
 import { Content, MonitoringInfoContainer } from "./styles/monitoring";
 import FeedbackMonitoring from "../../../components/common/monitoring/FeedbackMonitoring";
+import MonitoringComments from "../../../components/common/monitoring/MonitoringComments";
 
 export default function General() {
   return (
@@ -16,6 +17,7 @@ export default function General() {
         <DutyContainer />
         <MonitoringInfoContainer>
           <FeedbackMonitoring/>
+          <MonitoringComments/>
         </MonitoringInfoContainer>
       </Content>
     </Container>
