@@ -12,3 +12,9 @@ export const TableStyle = styled.div`
     }
   }
 `;
+
+export const Content = styled.div`
+  display: flex;
+  margin-top: 30px;
+`;
+
