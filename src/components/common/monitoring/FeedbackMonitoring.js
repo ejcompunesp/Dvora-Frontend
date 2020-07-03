@@ -17,23 +17,23 @@ const FeedbackMonitoring = () => {
       </FeedbackTitle>
       <FeedbackContent>
         <QuestionContainer>
-          <h3>Como você acredita que foi seu rendimento?</h3>
+          <h4>Como você acredita que foi seu rendimento?</h4>
           <StyledRate disabled defaultValue={4} />
         </QuestionContainer>
         <QuestionContainer>
-          <h3>Como você acredita que foi seu rendimento?</h3>
+          <h4>Como você acredita que foi seu rendimento?</h4>
           <StyledRate disabled defaultValue={3} />
         </QuestionContainer>
         <QuestionContainer>
-          <h3>Como você acredita que foi seu rendimento?</h3>
+          <h4>Como você acredita que foi seu rendimento?</h4>
           <StyledRate disabled defaultValue={2} />
         </QuestionContainer>
         <QuestionContainer>
-          <h3>Como você acredita que foi seu rendimento?</h3>
+          <h4>Como você acredita que foi seu rendimento?</h4>
           <StyledRate disabled defaultValue={2} />
         </QuestionContainer>
         <QuestionContainer>
-          <h3>Como você acredita que foi seu rendimento?</h3>
+          <h4>Como você acredita que foi seu rendimento?</h4>
           <StyledRate disabled defaultValue={2} />
         </QuestionContainer>
       </FeedbackContent>
