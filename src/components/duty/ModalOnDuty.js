@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Modal, Button, message } from 'antd';
-import { membersDuty }  from '../../api';
+import { membersDutyApi }  from '../../api';
 
 function ModalOnDuty( props) {
     const [visible, setVisible] = useState(false);
@@ -13,7 +13,7 @@ function ModalOnDuty( props) {
             if (!err) {
                 setLoading(true);
                 try {
-                  const response = await membersDuty.create(values);
+                  const response = await membersDutyApi.create(values);
                   if(response.status === 201) {
                     setLoading(false);
                     setVisible(false);
