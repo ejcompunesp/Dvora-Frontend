@@ -13,7 +13,7 @@ import dvoraLogo from '../../assets/dvora-logo.png';
 import { logoutDashboard } from '../../api/auth'
 
 
-export default function TopNavbar({ je }) {
+export default function TopNavbar({ je , logout }) {
   const [iconMenu, setIconMenu] = useState(true);
   const [dropdown, setDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -45,6 +45,7 @@ export default function TopNavbar({ je }) {
       setLoading(false);
       history.push('/login');
     }, 1000)
+    logout();
   }
 
   function redirectToProfile() {

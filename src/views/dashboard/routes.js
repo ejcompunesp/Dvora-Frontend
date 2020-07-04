@@ -11,6 +11,10 @@ import { FaHome, FaClipboardList, FaComments, FaCoffee } from 'react-icons/fa';
 import { MdSettings } from 'react-icons/md';
 import { IoIosPeople } from 'react-icons/io';
 
+import { isLoginMember } from '../../api/auth';
+
+const invisibleToMember = isLoginMember();
+
 function isActive(path) {
   const url = window.location.pathname;
   return path === url;
@@ -35,12 +39,14 @@ export const routes = [
     active: (path) => isActive(path),
     icon: SettingsIcon,
     component: Settings,
+    invisible: invisibleToMember
   },
   {
     path: '/dashboard/monitoring',
     active: (path) => isActive(path),
     icon: MonitoringIcon,
     component: Monitoring,
+    invisible: invisibleToMember
   },
   {
     path: '/dashboard/team',
