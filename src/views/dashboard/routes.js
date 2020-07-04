@@ -39,14 +39,16 @@ export const routes = [
     active: (path) => isActive(path),
     icon: SettingsIcon,
     component: Settings,
-    invisible: invisibleToMember
+    invisible: invisibleToMember,
+    limitRouteToJe: true, 
   },
   {
     path: '/dashboard/monitoring',
     active: (path) => isActive(path),
     icon: MonitoringIcon,
     component: Monitoring,
-    invisible: invisibleToMember
+    invisible: invisibleToMember,
+    limitRouteToJe: true, 
   },
   {
     path: '/dashboard/team',
