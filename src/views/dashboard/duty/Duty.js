@@ -8,7 +8,7 @@ import { FiCoffee } from 'react-icons/fi';
 import { Container, Title, Content } from '../team/styles/team'
 import { DutyControllerButtons, DaysDuties } from './styles/duty';
 
-import { membersDuty } from '../../../api'
+import { membersDuty } from '../../../api';
 
 import user from '../../../assets/user.png';
 import ModalOnDuty from '../../../components/duty/ModalOnDuty'
@@ -73,7 +73,12 @@ export default function Duty() {
         member.finishTime = currentdate.getHours() + ":" + currentdate.getMinutes();
         setMemberOnDuty([...memberOnDuty]);
         message.success('Plantão finalizado!');
-        history.push('/dashboard/feedback');
+        history.push({
+          pathname: '/dashboard/feedback',
+          state: {
+            dutyId,
+          }
+        });
 
       }
     } catch (error) {

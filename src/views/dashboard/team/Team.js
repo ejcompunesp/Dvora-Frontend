@@ -115,7 +115,6 @@ function Team(props) {
     // data.append('instagram', values.instagram);
     // data.append('linkedin', values.linkedin);
     data.append('file', values.file);
-    console.log(memberId);
 
     try {
       const response = await membersApi.update(props.je.id, {
@@ -137,7 +136,6 @@ function Team(props) {
   }
 
   async function handleRemove(memberId) {
-    console.log(memberId);
     try {
       const response = await membersApi.delete(props.je.id, { id: memberId });
       if (response.status === 200) {
