@@ -12,7 +12,6 @@ import { FeedbackForm, Question } from './styles/feedback';
 
 export default function Feedback(props) {
   const history = useHistory();
-  console.log(props.location.state);
 
   const [productivity, setProductivity] = useState(3);
   const [mood, setMood] = useState(3);
@@ -47,7 +46,6 @@ export default function Feedback(props) {
         note: note,
         activity: activity,
       });
-      console.log(response);
       if (response.status === 200){
         message.success('Feedback enviado!');
         history.push('/dashboard/duty');
