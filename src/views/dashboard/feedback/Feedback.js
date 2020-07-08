@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import { feedbacksApi } from '../../../api';
 
 import { Radio, Button, message } from 'antd';
 
@@ -7,27 +10,24 @@ import { RiMessage3Line } from 'react-icons/ri';
 import { Container, Title, Content } from '../team/styles/team';
 import { FeedbackForm, Question } from './styles/feedback';
 
-import {data} from '../../../api/ApiTeste';
+export default function Feedback(props) {
+  const history = useHistory();
 
-const person = data[0];
-
-export default function Feedback() {
-  
   const [productivity, setProductivity] = useState(3);
   const [mood, setMood] = useState(3);
   const [satisfaction, setSatisfaction] = useState(3);
   const [note, setNote] = useState('');
   const [activity, setActivity] = useState('');
 
-  function handleProductivity (e) {
+  function handleProductivity(e) {
     setProductivity(e.target.value);
   };
 
-  function handleMood (e) {
+  function handleMood(e) {
     setMood(e.target.value);
   };
 
-  function handleSatisfaction (e) {
+  function handleSatisfaction(e) {
     setSatisfaction(e.target.value);
   };
 
@@ -37,22 +37,25 @@ export default function Feedback() {
     lineHeight: '30px',
   };
 
-  function handleFeedback (e) {
-    e.preventDefault();
-    if (e != null) {
-      message.success('Obrigado pelo feedback S2. "RH"');
+  async function handleFeedback() {
+    try {
+      const response = await feedbacksApi.create(props.location.state.dutyId, {
+        satisfaction: satisfaction,
+        productivity: productivity,
+        mood: mood,
+        note: note,
+        activity: activity,
+      });
+      if (response.status === 200){
+        message.success('Feedback enviado!');
+        history.push('/dashboard/duty');
+      }
+    } catch(err) {
+        message.error('Erro ao enviar o feedback...');
     }
-    const data = {
-      productivity,
-      mood,
-      satisfaction,
-      note,
-      activity,
-    }
-    console.log(data);
   }
 
-  function Alternatives () {
+  function Alternatives() {
     return (
       <div>
         <Radio style={radioStyle} value={1}>
@@ -80,7 +83,7 @@ export default function Feedback() {
         <h2>Feedback <RiMessage3Line /></h2>
       </Title>
       <Content>
-        <p style={{ fontSize: '16px' }}>Vamos {person.name}, conte-nos um pouco sobre o seu plantão!</p>
+        <p style={{ fontSize: '16px' }}>Vamos, conte-nos um pouco sobre o seu plantão!</p>
         <FeedbackForm>
           <form>
             <Question>
