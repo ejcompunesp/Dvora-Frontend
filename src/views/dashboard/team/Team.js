@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import { membersApi } from '../../../api';
+import { isLoginMember } from '../../../api/auth';
 
 import { Pagination, message, Menu, Dropdown, Popconfirm, Skeleton } from 'antd'
 
@@ -10,8 +11,10 @@ import { AiOutlineRocket } from 'react-icons/ai';
 import { FiMoreVertical } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
-import { Container, Title, Content, TeamMembers, 
-  MoreButton, DropdownItem, SocialMedias, Pages } from './styles/team';
+import {
+  Container, Title, Content, TeamMembers,
+  MoreButton, DropdownItem, SocialMedias, Pages
+} from './styles/team';
 
 import MemberRegistration from '../../../components/registrations/MemberRegistration';
 import MemberEdit from '../../../components/edits/MemberEdit';
@@ -23,6 +26,7 @@ function Team(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [membersPerPage, setMembersPerPage] = useState(12);
   const [visible, setVisible] = useState(false);
+  const invisibleToMember = isLoginMember();
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -51,7 +55,7 @@ function Team(props) {
   }
 
   function handleMember(memberId) {
-    
+
     return (
       <Menu>
         <Menu.Item key="0">
@@ -65,7 +69,7 @@ function Team(props) {
             okText="Yes"
             cancelText="No"
           >
-          <DropdownItem><RiDeleteBinLine /> Remover</DropdownItem>
+            <DropdownItem><RiDeleteBinLine /> Remover</DropdownItem>
           </Popconfirm>
         </Menu.Item>
       </Menu>
@@ -115,7 +119,6 @@ function Team(props) {
     // data.append('instagram', values.instagram);
     // data.append('linkedin', values.linkedin);
     data.append('file', values.file);
-    console.log(memberId);
 
     try {
       const response = await membersApi.update(props.je.id, {
@@ -137,7 +140,6 @@ function Team(props) {
   }
 
   async function handleRemove(memberId) {
-    console.log(memberId);
     try {
       const response = await membersApi.delete(props.je.id, { id: memberId });
       if (response.status === 200) {
@@ -153,34 +155,36 @@ function Team(props) {
     <Container>
       <Title>
         <h2>Nossa equipe <AiOutlineRocket className="rocket" /></h2>
-        <MemberRegistration visible={visible} setVisible={setVisible} onSubmit={handleSubmit} />
+        {invisibleToMember ?
+          null : <MemberRegistration visible={visible} setVisible={setVisible} onSubmit={handleSubmit} />
+        }
       </Title>
       <Content>
         <Skeleton loading={loading}>
           <TeamMembers>
             {currentMember.map((member) => {
               return (
-                  <li key={member.id}>
-                    <MoreButton>
-                      <Dropdown overlay={handleMember(member.id)} trigger={['click']} placement="bottomRight">
-                        <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
-                      </Dropdown>
-                    </MoreButton>
-                    <img src={member.image ? `https://backend-dvora.herokuapp.com/files/member/${member.image}` : user} alt={"Foto de perfil"} />
-                    <strong>{member.name}</strong>
-                    <p>{member.position}</p>
-                    <SocialMedias>
-                      <a title="Facebook" href={member.facebook} rel="noopener noreferrer" target="_blank">
-                        <FaFacebookSquare style={{ color: "#3b5998" }} />
-                      </a>
-                      <a title="Instagram" href={member.instagram} rel="noopener noreferrer" target="_blank">
-                        <FaInstagram className="insta" />
-                      </a>
-                      <a title="Linkedin" href={member.linkedin} rel="noopener noreferrer" target="_blank">
-                        <FaLinkedin style={{ color: "#0e76a8" }} />
-                      </a>
-                    </SocialMedias>
-                  </li>
+                <li key={member.id}>
+                  <MoreButton>
+                    <Dropdown overlay={handleMember(member.id)} trigger={['click']} placement="bottomRight">
+                      <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
+                    </Dropdown>
+                  </MoreButton>
+                  <img src={member.image ? `https://backend-dvora.herokuapp.com/files/member/${member.image}` : user} alt={"Foto de perfil"} />
+                  <strong>{member.name}</strong>
+                  <p>{member.position}</p>
+                  <SocialMedias>
+                    <a title="Facebook" href={member.facebook} rel="noopener noreferrer" target="_blank">
+                      <FaFacebookSquare style={{ color: "#3b5998" }} />
+                    </a>
+                    <a title="Instagram" href={member.instagram} rel="noopener noreferrer" target="_blank">
+                      <FaInstagram className="insta" />
+                    </a>
+                    <a title="Linkedin" href={member.linkedin} rel="noopener noreferrer" target="_blank">
+                      <FaLinkedin style={{ color: "#0e76a8" }} />
+                    </a>
+                  </SocialMedias>
+                </li>
               )
             })}
           </TeamMembers>

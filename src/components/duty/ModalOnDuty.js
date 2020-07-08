@@ -17,7 +17,7 @@ function ModalOnDuty( props) {
                   if(response.status === 201) {
                     setLoading(false);
                     setVisible(false);
-                    props.handleStarted(response.data.member.id);
+                    props.setNewDuty(response.data.duty.id);
                     message.success('Plantão iniciado!');
                   }
                 } catch(error) {

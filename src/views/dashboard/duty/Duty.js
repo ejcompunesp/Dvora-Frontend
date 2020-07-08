@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import { Table, Popconfirm, message } from 'antd';
 
@@ -12,65 +13,59 @@ import { membersDutyApi } from '../../../api'
 import user from '../../../assets/user.png';
 import ModalOnDuty from '../../../components/duty/ModalOnDuty'
 
-export default function Duty() {
+function Duty({ je }) {
   const apiURL = 'https://backend-dvora.herokuapp.com/files/member';
-  var currentdate = new Date();
-  var datetime = "Last Sync: " + currentdate.getDate() + "/"
-    + (currentdate.getMonth() + 1) + "/"
-    + currentdate.getFullYear() + " @ "
-    + currentdate.getHours() + ":"
-    + currentdate.getMinutes() + ":"
-    + currentdate.getSeconds();
-    
   let [sortedInfo, setSortedInfo] = useState();
   const [memberOnDuty, setMemberOnDuty] = useState([]);
+  const [newDuty, setNewDuty] = useState();
 
-  useEffect(() => {
-    const duties = localStorage.getItem('duties');
-
-    if (duties) {
-      setMemberOnDuty(JSON.parse(duties))
+  function addZero(number) {
+    if (number < 10) {
+      number = "0" + number;
     }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('duties', JSON.stringify(memberOnDuty));
-  }, [memberOnDuty]);
-
-  async function handleStarted(memberId) {
-    try {
-      const response = await membersDutyApi.list(memberId);
-      if (response.status === 200) {
-        const index = response.data.member.duties.length - 1;
-        const data = {
-          name: response.data.member.name,
-          file: response.data.member.image,
-          dutyId: response.data.member.duties[index].id,
-          memberId: response.data.member.id,
-          startTime: currentdate.getHours() + ":" + currentdate.getMinutes(),
-          finishTime: null
-        };
-
-        var indexDuty = memberOnDuty.map(x => x.memberId).indexOf(memberId)
-        if (indexDuty !== -1) {
-          memberOnDuty[indexDuty] = data;
-          setMemberOnDuty([...memberOnDuty]);
-        }
-        else setMemberOnDuty([...memberOnDuty, data]);
-      }
-    } catch (error) {
-      console.log(error.response.data);
-    }
+    return number;
+  }
+  function formatTime(time) {
+    const currentdate = new Date(time);
+    let h = addZero(currentdate.getHours());
+    let m = addZero(currentdate.getMinutes());
+    return h + ":" + m;
   }
 
+  useEffect(() => {
+    const loadDuties = async () => {
+      try {
+        const response = await membersDutyApi.list(je.id);
+        if (response.status === 200) {
+          const data = response.data.dutiesToday.map(memberDuty => ({
+            ...memberDuty,
+            startTime: formatTime(memberDuty.duty.createdAt),
+            finishTime: memberDuty.duty.status === 1 ? formatTime(memberDuty.duty.updatedAt) : null,
+          }))
+          setMemberOnDuty(data);
+        }
+      }
+      catch (error) {
+        console.log(error.response.data);
+      }
+    }
+    loadDuties();
+  }, [newDuty]);
 
   async function handleFinished(dutyId, member) {
     try {
       const response = await membersDutyApi.update(dutyId);
       if (response.status === 200) {
-        member.finishTime = currentdate.getHours() + ":" + currentdate.getMinutes();
+        member.finishTime = formatTime(response.data.updatedAt);
         setMemberOnDuty([...memberOnDuty]);
         message.success('Plantão finalizado!');
+        history.push({
+          pathname: '/dashboard/feedback',
+          state: {
+            dutyId,
+          }
+        });
+
       }
     } catch (error) {
       message.error(error.response.data.msg);
@@ -96,9 +91,9 @@ export default function Duty() {
         },
         {
           title: 'Nome',
-          dataIndex: 'name',
-          sorter: (a, b) => a.name.localeCompare(b.name),
-          sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+          dataIndex: 'member',
+          sorter: (a, b) => a.member.localeCompare(b.member),
+          sortOrder: sortedInfo.columnKey === 'member' && sortedInfo.order,
           ellipsis: true,
         },
         {
@@ -111,13 +106,13 @@ export default function Duty() {
         },
         {
           title: 'Finalizar plantão',
-          dataIndex: 'dutyId',
-          render: (dutyId, member) => member.finishTime === null ? 
-          <Popconfirm title="Finalizar plantão?" onConfirm={() => handleFinished(dutyId, member)}>
-            <a>Encerrar</a>
-          </Popconfirm> 
-          : 
-          <span>CONCLUÍDO!</span>
+          dataIndex: 'duty.id',
+          render: (text, record) => record.finishTime === null ?
+            <Popconfirm title="Finalizar plantão?" onConfirm={() => handleFinished(text, record)}>
+              <a>Encerrar</a>
+            </Popconfirm>
+            :
+            <span>CONCLUÍDO!</span>
         },
       ]
     },
@@ -132,7 +127,7 @@ export default function Duty() {
         <p style={{ fontSize: '16px' }}>Bora pra mais um plantão ?</p>
 
         <DutyControllerButtons>
-          <ModalOnDuty handleStarted={handleStarted} />
+          <ModalOnDuty setNewDuty={setNewDuty} />
         </DutyControllerButtons>
 
         <DaysDuties>
@@ -145,3 +140,8 @@ export default function Duty() {
   )
 }
 
+const mapStateToProps = state => ({
+  je: state.je
+});
+
+export default connect(mapStateToProps)(Duty);
