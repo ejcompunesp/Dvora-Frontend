@@ -2,7 +2,7 @@ import authApi from './auth';
 import {loginDashboard} from './auth';
 import jesApi from  './jes';
 import membersApi from './members';
-import membersDuty from './duty'
 import feedbacksApi from './feedback';
+import membersDutyApi from './duty'
 
-export {authApi , loginDashboard, jesApi, membersApi, membersDuty, feedbacksApi};
+export {authApi , loginDashboard, jesApi, membersApi, membersDutyApi, feedbacksApi};

@@ -8,7 +8,7 @@ import { FiCoffee } from 'react-icons/fi';
 import { Container, Title, Content } from '../team/styles/team'
 import { DutyControllerButtons, DaysDuties } from './styles/duty';
 
-import { membersDuty } from '../../../api';
+import { membersDutyApi } from '../../../api'
 
 import user from '../../../assets/user.png';
 import ModalOnDuty from '../../../components/duty/ModalOnDuty'
@@ -22,7 +22,7 @@ export default function Duty() {
     + currentdate.getHours() + ":"
     + currentdate.getMinutes() + ":"
     + currentdate.getSeconds();
-
+    
   let [sortedInfo, setSortedInfo] = useState();
   const [memberOnDuty, setMemberOnDuty] = useState([]);
 
@@ -30,6 +30,7 @@ export default function Duty() {
 
   useEffect(() => {
     const duties = localStorage.getItem('duties');
+
     if (duties) {
       setMemberOnDuty(JSON.parse(duties))
     }
@@ -41,7 +42,7 @@ export default function Duty() {
 
   async function handleStarted(memberId) {
     try {
-      const response = await membersDuty.list(memberId);
+      const response = await membersDutyApi.list(memberId);
       if (response.status === 200) {
         const index = response.data.member.duties.length - 1;
         const data = {
@@ -61,14 +62,14 @@ export default function Duty() {
         else setMemberOnDuty([...memberOnDuty, data]);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
     }
   }
 
 
   async function handleFinished(dutyId, member) {
     try {
-      const response = await membersDuty.update(dutyId);
+      const response = await membersDutyApi.update(dutyId);
       if (response.status === 200) {
         member.finishTime = currentdate.getHours() + ":" + currentdate.getMinutes();
         setMemberOnDuty([...memberOnDuty]);
