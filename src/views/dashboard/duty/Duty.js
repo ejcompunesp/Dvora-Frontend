@@ -59,6 +59,13 @@ function Duty({ je }) {
         member.finishTime = formatTime(response.data.updatedAt);
         setMemberOnDuty([...memberOnDuty]);
         message.success('Plantão finalizado!');
+        history.push({
+          pathname: '/dashboard/feedback',
+          state: {
+            dutyId,
+          }
+        });
+
       }
     } catch (error) {
       message.error(error.response.data.msg);
