@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
+import { useHistory } from 'react-router-dom';
+
 import { Table, Popconfirm, message } from 'antd';
 
 import { FiCoffee } from 'react-icons/fi';
@@ -18,6 +20,8 @@ function Duty({ je }) {
   let [sortedInfo, setSortedInfo] = useState();
   const [memberOnDuty, setMemberOnDuty] = useState([]);
   const [newDuty, setNewDuty] = useState();
+
+  const history = useHistory();
 
   function addZero(number) {
     if (number < 10) {
