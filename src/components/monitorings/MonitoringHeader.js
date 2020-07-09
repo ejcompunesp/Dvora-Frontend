@@ -7,6 +7,7 @@ import imgTest from "../../assets/John Doe.png";
 import { Button } from "antd";
 
 const MonitoringHeader = ({ name, role, img }) => {
+  const apiURL = 'https://backend-dvora.herokuapp.com/files/member';
   return (
     <>
       <Title>
@@ -19,7 +20,7 @@ const MonitoringHeader = ({ name, role, img }) => {
           }}
         >
           <div style={{display: 'flex'}}>
-            <ProfilePhoto src={img ? img : imgTest} />
+            <ProfilePhoto src={img ? `${apiURL}/${img}` : imgTest} />
             <div style={{ display: "flex", flexDirection: "column" }}>
               <h2>{name} - Acompanhamento</h2>
               <h3>{role}</h3>
