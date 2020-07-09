@@ -52,7 +52,7 @@ export const routes = [
     limitRouteToJe: true, 
   },
   {
-    path: "/dashboard/monitoring/details",
+    path: "/dashboard/monitoring/details/:memberId",
     active: (path) => isActive(path),
     invisible: true,
     component: MonitoringDetails,
