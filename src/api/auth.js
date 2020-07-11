@@ -6,9 +6,11 @@ export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const isLoginMember = () => {
   const user = JSON.parse(localStorage.getItem("state"));
   if(user) {
-		if (user.member.id) {
-  	  return true; 
- 	  }
+    if(user.member){
+      if (user.member.id) {
+        return true; 
+       }
+    }
 	}
   return false;
 };
