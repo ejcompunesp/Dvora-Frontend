@@ -19,6 +19,7 @@ export default function General({ match }) {
   const [duties, setDuties] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [dutyId, setDutyId] = useState(null);
 
   useEffect(() => {
     getInfo();
@@ -42,7 +43,7 @@ export default function General({ match }) {
       setError(true);
     }
   }
-
+  console.log({ dutyId });
   return (
     <Container>
       <Spin spinning={loading}>
@@ -54,9 +55,13 @@ export default function General({ match }) {
               role={member.position}
             />
             <Content>
-              <DutyContainer duties={duties} />
+              <DutyContainer
+                duties={duties}
+                setDutyId={setDutyId}
+                dutyId={dutyId}
+              />
               <MonitoringInfoContainer>
-                <FeedbackMonitoring />
+                <FeedbackMonitoring duties={duties} dutyId={dutyId} />
                 <MonitoringComments comment={text} />
               </MonitoringInfoContainer>
             </Content>
