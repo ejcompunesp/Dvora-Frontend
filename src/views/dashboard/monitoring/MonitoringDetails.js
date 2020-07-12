@@ -30,7 +30,6 @@ export default function General({ match }) {
     try {
       const response = await feedbacksApi.get(memberId);
       if (response.status === 200) {
-        console.log(response);
         setDuties(response.data.duties);
         setMember(response.data);
         setLoading(false);
