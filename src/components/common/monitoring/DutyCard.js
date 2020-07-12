@@ -1,10 +1,9 @@
-import React from 'react';
-import { DutysCard } from '../../../views/dashboard/monitoring/styles/monitoring';
+import React, { memo } from 'react';
 
 import { BsCalendar, BsClock } from 'react-icons/bs';
 import { Card } from './styles/monitoring';
 
-const DutyCard = ({duty, onClick, dutyId}) => {
+const DutyCard = memo(({duty, onClick, dutyId}) => {
   function timeConvert(n) {
     let num = n;
     let hours = (num / 60);
@@ -31,6 +30,6 @@ const DutyCard = ({duty, onClick, dutyId}) => {
       </div>
     </Card>
   )
-}
+});
 
 export default DutyCard;

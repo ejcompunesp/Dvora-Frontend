@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import styled from "styled-components";
 
 import { Rate } from "antd";
@@ -14,7 +14,7 @@ const StyledRate = styled(Rate)`
   color: #00a7e1;
 `;
 
-const FeedbackMonitoring = ({ duties, dutyId }) => {
+const FeedbackMonitoring = memo(({ duties, dutyId }) => {
   const [duty, setDuty] = useState([]);
   useEffect(() => {
     if (dutyId !== null) setDuty(duties.filter((item) => item.id === dutyId));
@@ -55,6 +55,6 @@ const FeedbackMonitoring = ({ duties, dutyId }) => {
       </FeedbackContent>
     </FeedbackContainer>
   );
-};
+});
 
 export default FeedbackMonitoring;
