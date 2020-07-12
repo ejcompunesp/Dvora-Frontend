@@ -43,7 +43,6 @@ export default function General({ match }) {
       setError(true);
     }
   }
-  console.log({ dutyId });
   return (
     <Container>
       <Spin spinning={loading}>
@@ -62,7 +61,7 @@ export default function General({ match }) {
               />
               <MonitoringInfoContainer>
                 <FeedbackMonitoring duties={duties} dutyId={dutyId} />
-                <MonitoringComments comment={text} />
+                <MonitoringComments comment={text} duties={duties} dutyId={dutyId}/>
               </MonitoringInfoContainer>
             </Content>
           </>
