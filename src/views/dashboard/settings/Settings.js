@@ -1,6 +1,6 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 
-import { Form, Input, Button, Upload, Icon, message } from 'antd';
+import { Form, Input, Button, Upload, Icon, message, Typography } from 'antd';
 import { FiSettings, FiEdit3 } from 'react-icons/fi';
 
 import { connect } from 'react-redux';
@@ -13,19 +13,21 @@ import { Container, Avatar } from './styles/settings';
 
 function Settings({ form, je, setJe }) {
   const { getFieldDecorator } = form;
+  const { Text } = Typography;
   const [image, setImage] = useState({ preview: '', fileList: '' });
   const [disable, setDisable] = useState(true);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+  const [updatePassword, setUpdatePassword] = useState(false);
+
   const uploadButton = (
     <div>
-    <Icon type="plus" />
-    <div className="ant-upload-text">Upload</div>
-  </div>
+      <Icon type="plus" />
+      <div className="ant-upload-text">Upload</div>
+    </div>
   );
 
-  const src = je.image? <img src={`https://backend-dvora.herokuapp.com/files/je/${je.image}`} alt="avatar" style={{ width: '100%' }}/>: uploadButton;
+  const src = je.image ? <img src={`https://backend-dvora.herokuapp.com/files/je/${je.image}`} alt="avatar" style={{ width: '100%' }} /> : uploadButton;
 
   function handleSubmit(e) {
     setLoading(true);
@@ -35,8 +37,8 @@ function Settings({ form, je, setJe }) {
         const form = new FormData();
         form.append("id", je.id);
         form.append("name", values.name);
-        if(values.password !== null) form.append("password", values.password);
-        if(image.fileList) form.append("file", image.fileList);
+        if (values.password !== null) form.append("password", values.password);
+        if (image.fileList) form.append("file", image.fileList);
         form.append("university", values.university);
         form.append("city", values.city);
         form.append("creationYear", values.creationYear);
@@ -44,10 +46,11 @@ function Settings({ form, je, setJe }) {
           const response = await jesApi.update(form);
           if (response.status === 200) {
             setLoading(false);
-            setJe({ je: response.data});
+            setJe({ je: response.data });
             message.success('Perfil atualizado com sucesso!');
             setDisable(true);
             setVisible(false);
+            setUpdatePassword(false);
           }
         } catch (error) {
           setLoading(false);
@@ -70,8 +73,9 @@ function Settings({ form, je, setJe }) {
   function onReset() {
     form.resetFields();
     setDisable(true);
-    setVisible(false)
-    setImage({ preview: '' })
+    setVisible(false);
+    setImage({ preview: '' });
+    setUpdatePassword(false);
   };
   function onUpdate() {
     setDisable(false);
@@ -134,31 +138,38 @@ function Settings({ form, je, setJe }) {
           )}
         </Form.Item>
         {visible ?
-         <>
-          <Form.Item style={{ width: '60%' }} label="Nova senha" hasFeedback>
-            {getFieldDecorator('password', {
-            })(
-              <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
-            )}
-          </Form.Item>
-          <Form.Item style={{ width: '60%' }} label="Confirmar senha"
-            dependencies={['password']}
-            hasFeedback>
-            {getFieldDecorator('confirmPassword', {
-              rules: [
-                {
-                  validator: compareToFirstPassword,
-                },
-              ],
-            })(
-              <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
-            )}
-          </Form.Item>
-        </> : null}
-        <Form.Item >
+          updatePassword ?
+            <>
+              <Form.Item style={{ width: '60%' }} label="Nova senha" hasFeedback>
+                {getFieldDecorator('password', {
+                })(
+                  <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
+                )}
+              </Form.Item>
+              <Form.Item style={{ width: '60%' }} label="Confirmar senha"
+                dependencies={['password']}
+                hasFeedback>
+                {getFieldDecorator('confirmPassword', {
+                  rules: [
+                    {
+                      validator: compareToFirstPassword,
+                    },
+                  ],
+                })(
+                  <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
+                )}
+              </Form.Item>
+            </>
+            : <a onClick={() => setUpdatePassword(true)}><Text underline> Alterar senha </Text></a>
+          : null
+        }
+        {visible ? 
+        <Form.Item style={{marginTop: '20px'}} >
           <Button loading={loading} type="primary" htmlType="submit" > Salvar </Button>
           <Button style={{ marginLeft: '10px' }} htmlType="button" onClick={onReset}>  Cancelar </Button>
         </Form.Item>
+       : null  
+      }
       </Form>
 
     </Container>
