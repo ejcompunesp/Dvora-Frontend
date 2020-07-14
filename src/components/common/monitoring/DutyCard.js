@@ -10,6 +10,7 @@ const DutyCard = memo(({duty, onClick, dutyId}) => {
     let rhours = Math.floor(hours);
     let minutes = (hours - rhours) * 60;
     let rminutes = Math.round(minutes);
+    if(rminutes < 10 && rminutes !== 0) rminutes = `0${rminutes}`;
     if(rminutes === 0) rminutes = "00";
     return rhours + ":" + rminutes;
   }
