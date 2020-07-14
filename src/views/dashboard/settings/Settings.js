@@ -10,9 +10,8 @@ import * as JeActions from "../../../store/actions/je"
 
 import { Title } from '../team/styles/team';
 import { Container, Avatar } from './styles/settings';
-import { setJe } from '../../../store/actions/je';
 
-function Settings({ form, je }) {
+function Settings({ form, je, setJe }) {
   const { getFieldDecorator } = form;
   const [image, setImage] = useState({ preview: '', fileList: '' });
   const [disable, setDisable] = useState(true);
@@ -26,7 +25,7 @@ function Settings({ form, je }) {
   </div>
   );
 
-  const [ src ] = useState(je.image? <img src={`https://backend-dvora.herokuapp.com/files/je/${je.image}`} alt="avatar" style={{ width: '100%' }}/>: uploadButton);
+  const src = je.image? <img src={`https://backend-dvora.herokuapp.com/files/je/${je.image}`} alt="avatar" style={{ width: '100%' }}/>: uploadButton;
 
   function handleSubmit(e) {
     setLoading(true);
@@ -36,21 +35,19 @@ function Settings({ form, je }) {
         const form = new FormData();
         form.append("id", je.id);
         form.append("name", values.name);
-        form.append("email", values.email);
-        form.append("password", values.password);
-        form.append("file", image.fileList);
+        if(values.password !== null) form.append("password", values.password);
+        if(image.fileList) form.append("file", image.fileList);
         form.append("university", values.university);
         form.append("city", values.city);
         form.append("creationYear", values.creationYear);
         try {
           const response = await jesApi.update(form);
-          console.log(response);
           if (response.status === 200) {
             setLoading(false);
-            console.log(response.data);
-            setJe(response.data);
+            setJe({ je: response.data});
             message.success('Perfil atualizado com sucesso!');
             setDisable(true);
+            setVisible(false);
           }
         } catch (error) {
           setLoading(false);
@@ -115,13 +112,6 @@ function Settings({ form, je }) {
             <Input disabled={disable} addonBefore={<Icon type='user' />} />
           )}
         </Form.Item>
-        <Form.Item style={{ width: '60%' }} label="Email">
-          {getFieldDecorator('email', {
-            initialValue: je.email,
-          })(
-            <Input disabled={disable} addonBefore={<Icon type='mail' />} />
-          )}
-        </Form.Item>
         <Form.Item style={{ width: '60%' }} label="IES (instituição de ensino superior)">
           {getFieldDecorator('university', {
             initialValue: je.university,
@@ -129,15 +119,22 @@ function Settings({ form, je }) {
             <Input disabled={disable} addonBefore={<Icon type='bank' />} />
           )}
         </Form.Item>
-
-        <Form.Item style={{ width: '60%' }} label="Ano de criação(da EJ)">
-          {getFieldDecorator('creationYear', {
-            initialValue: je.creationYear,
+        <Form.Item style={{ width: '60%' }} label="Cidade de origem">
+          {getFieldDecorator('city', {
+            initialValue: je.city,
           })(
             <Input disabled={disable} addonBefore={<Icon type='home' />} />
           )}
         </Form.Item>
-        {visible ? <>
+        <Form.Item style={{ width: '60%' }} label="Ano de criação(da EJ)">
+          {getFieldDecorator('creationYear', {
+            initialValue: je.creationYear,
+          })(
+            <Input disabled={disable} addonBefore={<Icon type='calendar' />} />
+          )}
+        </Form.Item>
+        {visible ?
+         <>
           <Form.Item style={{ width: '60%' }} label="Nova senha" hasFeedback>
             {getFieldDecorator('password', {
             })(
