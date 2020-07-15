@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-import { Form, Input, message, Button } from 'antd';
+import { Form, Input, message, Button, Radio } from 'antd';
 
 import { FiCamera } from 'react-icons/fi';
 import { MdPerson, MdPhone, MdEmail, MdLock } from 'react-icons/md';
@@ -15,6 +15,7 @@ function MemberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
   const [loading, setLoading] = useState(false);
   const [photo, setPhoto] = useState(null);
+  const [board, setBoard] = useState(null);
 
   function handleCancel() {
     props.setVisible(false);
@@ -60,6 +61,17 @@ function MemberRegistrationForm(props) {
   const preview = useMemo(() => {
     return photo ? URL.createObjectURL(photo) : null;
   }, [photo]);
+
+  function onChange(e) {
+    console.log('radio checked', e.target.value);
+    setBoard(e.target.value);
+  };
+
+  // const radioStyle = {
+  //   display: 'block',
+  //   height: '30px',
+  //   lineHeight: '30px',
+  // };
 
   const { getFieldDecorator } = props.form;
 
@@ -142,7 +154,19 @@ function MemberRegistrationForm(props) {
               message: 'Por favor, insira sua diretoria!'
             }
           ],
-        })(<Input addonBefore={<FaUserTie />} style={{ width: '100%' }} />)}
+        })(
+          <Radio.Group onChange={onChange} setFieldsValue={board}>
+            <Radio value={1}>
+              Presidente
+            </Radio>
+            <Radio value={2}>
+              Projetos
+            </Radio>
+            <Radio value={3}>
+              RE
+            </Radio>
+          </Radio.Group>
+        )}
       </Form.Item>
       <Form.Item label="Cargo">
         {getFieldDecorator('position', {
