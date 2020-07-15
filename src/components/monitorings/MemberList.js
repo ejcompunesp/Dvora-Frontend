@@ -6,6 +6,7 @@ import { feedbacksApi } from '../../api';
 import { Table, Skeleton } from 'antd';
 
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from 'react-icons/io';
+import { MdTimelapse } from 'react-icons/md';
 
 import user from '../../assets/user.png';
 
@@ -33,13 +34,17 @@ function MemberList(props) {
   function handleStatusIcon(status) {
     if (status === 0 || null)
       return <IoIosCloseCircle style={{ color: "#E71A23" }} />;
-    else return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
+    else if (status === 1)
+      return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
+    else return <MdTimelapse />;
   }
 
   function handleStatus(status) {
     if (status === 0 || null)
       return "Não feito";
-    else return "Feito";
+    else if (status === 1) 
+      return "Feito";
+    else return "Não respondido";
 
   }
 

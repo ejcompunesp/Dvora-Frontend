@@ -112,7 +112,7 @@ function Team(props) {
     data.append('id', memberId);
     data.append('password', values.password);
     data.append('sr', values.sr);
-    data.append('board', values.board);
+    // data.append('board', values.board);
     data.append('position', values.position);
     // data.append('phone', values.phone);
     // data.append('facebook', values.facebook);
@@ -121,17 +121,10 @@ function Team(props) {
     data.append('file', values.file);
 
     try {
-      const response = await membersApi.update(props.je.id, {
-        id: data.id,
-        name: data.name,
-        board: data.board,
-        position: data.position,
-        sr: data.sr,
-        password: data.password,
-        file: data.file
-      });
+      const response = await membersApi.update(props.je.id, data);
+      console.log(response);
       if (response.status === 200) {
-        setMembers(members.filter(item => item.id !== memberId));
+        setMembers(...members);
         message.success('Membro editado com sucesso!');
       }
     } catch (err) {
