@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Input, message } from 'antd';
+import { boardsApi } from '../../api'
 
 
 function ModalBoard(props) {
@@ -10,17 +11,20 @@ function ModalBoard(props) {
     function onSubmit(e) {
         setLoading(true);
         e.preventDefault();
-        props.form.validateFields((err, values) => {
+        props.form.validateFields(async (err, values) => {
             if (!err) {
-                console.log(values);
-                props.handleAdd(values.name);
-                setVisible(false);
-            }
-            else {
-                message.error("Erro!");
+                try {
+                    const response = await boardsApi.create(props.je.id, { name: values.name })
+                    if (response.status === 200) {
+                        props.handleAdd(response.data.board);
+                        setVisible(false);
+                    }
+                } catch (error) {
+                    message.error(error.response.data.msg);
+                }
+                setLoading(false);
             }
         })
-        setLoading(false);
     }
 
     return (

@@ -1,7 +1,7 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
 
-import { Table, Popconfirm, Input, Form, message } from 'antd';
+import { Table, Popconfirm, Input, Form, message, Skeleton } from 'antd';
 
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { FaChalkboard } from 'react-icons/fa';
@@ -15,52 +15,45 @@ import { boardsApi } from '../../../api'
 function Board({ form, je }) {
   const { getFieldDecorator } = form;
   const [dataSource, setDataSource] = useState([]);
+  const [loading, setLoading] = useState([]);
 
   useEffect(() => {
     const loadBoards = async () => {
-      try{
-       const response = await boardsApi.index(je.id);
-       console.log(response)
-       if(response.status === 200){
-         const data = response.data.boards.map(board => ({
-          ...board,
-          editable: false
-         }));
-         setDataSource(data);
-       } 
-      }
-      catch(error){
+      setLoading(true);
+      try {
+        const response = await boardsApi.index(je.id);
+        if (response.status === 200) {
+          const data = response.data.boards.map(board => ({
+            ...board,
+            editable: false
+          }));
+          setDataSource(data);
+        }
+      } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     }
     loadBoards();
-  },[]);
+  }, []);
 
-  async function handleAdd(board) {
-    try{
-      const response = await boardsApi.create(je.id, {name: board})
-      if(response.status === 200){
-        const data = {
-          ...response.data.board,
-          editable: false,
-        }
-        setDataSource([...dataSource, data]);
-      }
+  function handleAdd(board) {
+    const data = {
+      ...board,
+      editable: false,
     }
-    catch(error){ 
-      message.error(error.response.data.msg);
-    }
+    setDataSource([...dataSource, data]);
   }
 
   async function handleDelete(key) {
-    try{
-      const response = await boardsApi.delete(je.id, {boardId : key});
-      if(response.status === 200){
+    try {
+      const response = await boardsApi.delete(je.id, { boardId: key });
+      if (response.status === 200) {
         setDataSource(dataSource.filter(board => board.id !== key));
         message.success("Diretoria removida com sucesso!");
       }
     }
-    catch(error){
+    catch (error) {
       message.error(error.response.data.msg);
     }
   }
@@ -71,18 +64,18 @@ function Board({ form, je }) {
   }
 
   async function onSaveEdit(board) {
-    try{
+    try {
       const response = await boardsApi.update(je.id, {
         boardId: board.id,
-        name : form.getFieldValue('name'),
+        name: form.getFieldValue('name'),
       })
-      if(response.status === 200){
-          board.name = response.data.board.name;
-          board.editable = false;
+      if (response.status === 200) {
+        board.name = response.data.board.name;
+        board.editable = false;
         setDataSource([...dataSource]);
       }
     }
-    catch(error){
+    catch (error) {
       console.log(error);
       message.error(error.response.data.msg);
     }
@@ -141,11 +134,13 @@ function Board({ form, je }) {
 
   return (
     <Container>
-      <Title>
-        <h2>Diretorias  <FaChalkboard /></h2>
-      </Title>
-      <ModalBoard handleAdd={handleAdd} />
-      <Table dataSource={dataSource} columns={columns} pagination={false} />
+      <Skeleton loading={loading}>
+        <Title>
+          <h2>Diretorias  <FaChalkboard /></h2>
+        </Title>
+        <ModalBoard handleAdd={handleAdd} je={je} />
+        <Table rowKey="id" dataSource={dataSource} columns={columns} pagination={false} />
+      </Skeleton>
     </Container>
   );
 }
