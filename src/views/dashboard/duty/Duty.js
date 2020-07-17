@@ -1,53 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
-import { Button, Table } from 'antd';
+import { useHistory } from 'react-router-dom';
+
+import { Table, Popconfirm, message } from 'antd';
 
 import { FiCoffee } from 'react-icons/fi';
 
 import { Container, Title, Content } from '../team/styles/team'
 import { DutyControllerButtons, DaysDuties } from './styles/duty';
 
-import {data} from '../../../api/ApiTeste';
+import { membersDutyApi } from '../../../api'
 
 import user from '../../../assets/user.png';
+import ModalOnDuty from '../../../components/duty/ModalOnDuty'
 
-const person0 = data[0];
-const people = data.slice(0, 4);
-
-export default function Duty() {
-
-  var currentdate = new Date(); 
-  var datetime = "Last Sync: " + currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
-
-  console.log(datetime);
-
+function Duty({ je }) {
+  const apiURL = 'https://backend-dvora.herokuapp.com/files/member';
   let [sortedInfo, setSortedInfo] = useState();
-  const [started, setStarted] = useState(false);
-  const [finished, setFinished] = useState(true);
-   
-  function handleStarted() {
-    setStarted(!started);
-    setFinished(!finished);
+  const [memberOnDuty, setMemberOnDuty] = useState([]);
+  const [newDuty, setNewDuty] = useState();
 
-    person0.duties[0].startTime = currentdate.getHours() + ":" + currentdate.getMinutes();
+  const history = useHistory();
+
+  function addZero(number) {
+    if (number < 10) {
+      number = "0" + number;
+    }
+    return number;
+  }
+  function formatTime(time) {
+    const currentdate = new Date(time);
+    let h = addZero(currentdate.getHours());
+    let m = addZero(currentdate.getMinutes());
+    return h + ":" + m;
   }
 
-  function handleFinished() {
-    setStarted(!started);
-    setFinished(!finished);
+  useEffect(() => {
+    const loadDuties = async () => {
+      try {
+        const response = await membersDutyApi.list(je.id);
+        if (response.status === 200) {
+          const data = response.data.dutiesToday.map(memberDuty => ({
+            ...memberDuty,
+            startTime: formatTime(memberDuty.duty.createdAt),
+            finishTime: memberDuty.duty.status === 1 ? formatTime(memberDuty.duty.updatedAt) : null,
+          }))
+          setMemberOnDuty(data);
+        }
+      }
+      catch (error) {
+        console.log(error.response.data);
+      }
+    }
+    loadDuties();
+  }, [formatTime, je.id, newDuty]);
 
-    person0.duties[0].finishTime = currentdate.getHours() + ":" + currentdate.getMinutes();
+  async function handleFinished(dutyId, member) {
+    try {
+      const response = await membersDutyApi.update(dutyId);
+      if (response.status === 200) {
+        member.finishTime = formatTime(response.data.updatedAt);
+        setMemberOnDuty([...memberOnDuty]);
+        message.success('Plantão finalizado!');
+        history.push({
+          pathname: '/dashboard/feedback',
+          state: {
+            dutyId,
+          }
+        });
+
+      }
+    } catch (error) {
+      message.error(error.response.data.msg);
+    }
   }
-  
+
+
   function handleChange(sorter) {
     setSortedInfo(sorter);
   };
-  
+
   sortedInfo = sortedInfo || {};
 
   const columns = [
@@ -57,27 +90,33 @@ export default function Duty() {
       children: [
         {
           dataIndex: 'file',
-          key: 'file',
           width: '4%',
-          render: file => <img src={file?file:user} alt="Foto de perfil"/>
+          render: file => <img src={file ? `${apiURL}/${file}` : user} alt="Foto de perfil" />
         },
         {
           title: 'Nome',
-          dataIndex: 'name', 
-          key: 'name',
-          sorter: (a, b) => a.name.localeCompare(b.name),
-          sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+          dataIndex: 'member',
+          sorter: (a, b) => a.member.localeCompare(b.member),
+          sortOrder: sortedInfo.columnKey === 'member' && sortedInfo.order,
           ellipsis: true,
         },
         {
           title: 'Início',
-          dataIndex: 'duties[0].startTime',
-          key: 'startTime',
+          dataIndex: 'startTime',
         },
         {
           title: 'Término',
-          dataIndex: 'duties[0].finishTime',
-          key: 'finishTime',
+          dataIndex: 'finishTime',
+        },
+        {
+          title: 'Finalizar plantão',
+          dataIndex: 'duty.id',
+          render: (text, record) => record.finishTime === null ?
+            <Popconfirm title="Finalizar plantão?" onConfirm={() => handleFinished(text, record)}>
+              <a>Encerrar</a>
+            </Popconfirm>
+            :
+            <span>CONCLUÍDO!</span>
         },
       ]
     },
@@ -86,18 +125,17 @@ export default function Duty() {
   return (
     <Container>
       <Title>
-        <h2>Plantão <FiCoffee /></h2> 
+        <h2>Plantão <FiCoffee /></h2>
       </Title>
       <Content>
-        <p style={{ fontSize: '16px' }}>Bora pra mais um plantão, <span>{person0.name}</span>?</p>
+        <p style={{ fontSize: '16px' }}>Bora pra mais um plantão ?</p>
 
         <DutyControllerButtons>
-          <Button type="primary" onClick={handleStarted} disabled={started}>Iniciar</Button>
-          <Button type="primary" onClick={handleFinished} disabled={finished}>Terminar</Button>
+          <ModalOnDuty setNewDuty={setNewDuty} />
         </DutyControllerButtons>
 
         <DaysDuties>
-          <Table columns={columns} scroll={{ x: true }} dataSource={people} pagination={false} onChange={handleChange} />
+          <Table rowKey="id" columns={columns} scroll={{ x: true }} dataSource={memberOnDuty} pagination={false} onChange={handleChange} />
         </DaysDuties>
       </Content>
 
@@ -105,3 +143,9 @@ export default function Duty() {
     </Container>
   )
 }
+
+const mapStateToProps = state => ({
+  je: state.je
+});
+
+export default connect(mapStateToProps)(Duty);

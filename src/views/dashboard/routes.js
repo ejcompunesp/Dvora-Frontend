@@ -10,7 +10,11 @@ import Board from './board/Board';
 
 import { FaHome, FaClipboardList, FaComments, FaCoffee, FaChalkboardTeacher } from 'react-icons/fa';
 import { MdSettings } from 'react-icons/md';
-import { IoIosPeople, IoMdPerson } from 'react-icons/io';
+import { IoIosPeople } from 'react-icons/io';
+
+import { isLoginMember } from '../../api/auth';
+
+const invisibleToMember = isLoginMember();
 
 function isActive(path) {
   const url = window.location.pathname;
@@ -21,7 +25,6 @@ const HomeIcon = <FaHome/>
 const SettingsIcon = <MdSettings/>
 const MonitoringIcon = <FaClipboardList title="Acompanhamento"/>
 const TeamIcon = <IoIosPeople title="Equipe"/>
-const ProfileIcon = <IoMdPerson title="Profile"/>
 const FeedbackIcon = <FaComments title="Feedback"/>
 const DutyIcon = <FaCoffee title="Plantão"/>
 const BoardIcon = <FaChalkboardTeacher title="Diretorias"/>
@@ -37,37 +40,42 @@ export const routes = [
     path: '/dashboard/settings',
     active: (path) => isActive(path),
     icon: SettingsIcon,
-    component: Settings
+    component: Settings,
+    invisible: invisibleToMember,
+    limitRouteToJe: true, 
   },
   {
     path: '/dashboard/monitoring',
     active: (path) => isActive(path),
     icon: MonitoringIcon,
-    component: Monitoring
+    component: Monitoring,
+    invisible: invisibleToMember,
+    limitRouteToJe: true, 
   },
   {
     path: '/dashboard/team',
     active: (path) => isActive(path),
     icon: TeamIcon,
-    component: Team
+    component: Team,
   },
   {
     path: '/dashboard/profile',
     active: (path) => isActive(path),
-    icon: ProfileIcon,
-    component: Profile
+    component: Profile,
+    invisible: true,
   },
   {
     path: '/dashboard/feedback',
     active: (path) => isActive(path),
     icon: FeedbackIcon,
-    component: Feedback
+    component: Feedback,
+    invisible: true,
   },
   {
     path: '/dashboard/duty',
     active: (path) => isActive(path),
     icon: DutyIcon,
-    component: Duty
+    component: Duty,
   },
   {
     path: '/dashboard/board',

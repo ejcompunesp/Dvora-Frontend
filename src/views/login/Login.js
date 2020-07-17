@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Icon, message } from "antd";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 import * as JeActions from "../../store/actions/je";
+import * as MemberActions from '../../store/actions/member'
 
 import { authApi, loginDashboard } from "../../api";
 
@@ -11,7 +11,7 @@ import { Container, StyledForm } from "./styles/login";
 
 import logo from "../../assets/dvora-logo.png";
 
-function Login({ form, setJe }) {
+function Login({ form, setJe, setMember }) {
   const { getFieldDecorator } = form;
   const [loading, setLoading] = useState(false);
   const [toDashboard, setToDashboard] = useState(false);
@@ -33,9 +33,9 @@ function Login({ form, setJe }) {
           if (response.status === 200) {
             setLoading(false);
             setJe(response.data);
-            message.success("Login feito com sucesso!");
+            if(response.data.member)setMember(response.data);
             loginDashboard(response.data.token);
-            setToDashboard(true);
+            message.success("Login feito com sucesso!");
           }
         } catch (error) {
           message.error(error.response.data.msg);
@@ -119,8 +119,10 @@ const mapStateToProps = (state) => ({
   je: state.je,
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(JeActions, dispatch);
+const mapDispatchToProps = (dispatch) =>({
+  setJe : (data) => dispatch(JeActions.setJe(data)),
+  setMember : (data) => dispatch(MemberActions.setMember(data))
+});
 
 export default connect(
   mapStateToProps,

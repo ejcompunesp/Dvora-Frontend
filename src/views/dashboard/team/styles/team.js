@@ -50,7 +50,7 @@ export const Title = styled.div`
 
 export const Content = styled.div`
   width: 100%;
-  padding: 30px 0 40px 0;
+  padding-top: 30px;
 `;
 
 export const TeamMembers = styled.ul`

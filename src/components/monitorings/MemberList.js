@@ -1,148 +1,107 @@
 import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { membersApi } from '../../api';
+import { feedbacksApi } from '../../api';
 
-import { Table, Button } from 'antd';
+import { Table, Skeleton } from 'antd';
 
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from 'react-icons/io';
-import { MdTimelapse } from 'react-icons/md';
-
-import { TableOperations } from '../../views/dashboard/monitoring/styles/monitoring';
 
 import user from '../../assets/user.png';
-
-import { data } from '../../api/ApiTeste'
 
 function MemberList(props) {
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
-  const [filteredInfo, setFilteredInfo] = useState(null);
-  const [sortedInfo, setSortedInfo] = useState(null); 
 
   useEffect(() => {
     const fetchMembers = async () => {
       setLoading(true);
       try {
-        const response = await membersApi.list(props.je.id);
+        const response = await feedbacksApi.index(props.je.id);
         if (response.status === 200) {
-          console.log(response);
-          setMembers(response.data.members);
+          console.log(response.data);
+          setMembers(response.data);
         }
       } catch (err) {
-        console.log(err);
-        console.log(err.response);
+        console.log(err.response.data);
       }
       setLoading(false);
     }
     fetchMembers();
   }, [props.je.id]);
 
-  function determineStatusIcon(status) {
-    if (status === "Feito")
-      return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
-    else if (status === "Não feito")
+  function handleStatusIcon(status) {
+    if (status === 0 || null)
       return <IoIosCloseCircle style={{ color: "#E71A23" }} />;
-    else return <MdTimelapse />;
+    else return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
   }
 
-  function handleChange(pagination, filters, sorter) {
-    setFilteredInfo(filters);
-    setSortedInfo(sorter);
-  };
+  function handleStatus(status) {
+    if (status === 0 || null)
+      return "Não feito";
+    else return "Feito";
 
-  function clearFilters() {
-    setFilteredInfo(null);
-  };
-
-  setFilteredInfo(filteredInfo || {});
-  setSortedInfo(sortedInfo || {});
+  }
 
   const columns = [
-    {
-      dataIndex: 'file',
-      width: '4%',
-      render: file => <img src={file ? file : user} alt="Foto de perfil" />
-    },
+    // {
+    //   dataIndex: 'file',
+    //   key: 'file',
+    //   width: '4%',
+    //   render: file => <img src={file ? file : user} alt="Foto de perfil" />,
+    // },
     {
       title: 'Nome',
       dataIndex: 'name',
       key: 'name',
-      sorter: (a, b) => a.name.length - b.name.length,
-      ellipsis: true,
+      width: '25%',
     },
     {
+      key: 'dutyStatusIcon',
       width: '2%',
-      render: (row) => determineStatusIcon(row.onDuty),
+      render: (row) => handleStatusIcon(row.isDutyDone),
     },
     {
       title: 'Plantão',
-      dataIndex: 'onDuty',
-      key: 'onDuty',
-      filters: [
-        {
-          text: 'Feito',
-          value: 'Feito'
-        },
-        {
-          text: 'Não feito',
-          value: 'Não feito'
-        },
-        {
-          text: 'Em andamento',
-          value: 'Em andamento'
-        }
-      ],
-      filteredValue: filteredInfo.onDuty || null,
-      onFilter: (value, record) => record.onDuty.includes(value),
-      sorter: (a, b) => a.onDuty.length - b.onDuty.length,
-      ellipsis: true,
+      key: 'dutyStatus',
+      width: '21%',
+      render: (row) => handleStatus(row.isDutyDone),
     },
     {
+      dataIndex: 'isDutyDone',
+      key: 'duty',
+      visible: false,
+    },
+    {
+      key: 'accStatusIcon',
       width: '2%',
-      render: (row) => determineStatusIcon(row.acc),
+      render: (row) => handleStatusIcon(row.isMonitoringDone),
     },
     {
       title: 'Acompanhamento',
-      dataIndex: 'acc',
+      key: 'accStatus',
+      width: '21%',
+      render: (row) => handleStatus(row.isMonitoringDone),
+    },
+    {
+      dataIndex: 'isMonitoringDone',
       key: 'acc',
-      filters: [
-        {
-          text: 'Feito',
-          value: 'Feito'
-        },
-        {
-          text: 'Não feito',
-          value: 'Não feito'
-        },
-        {
-          text: 'Em andamento',
-          value: 'Em andamento'
-        }
-      ],
-      filteredValue: filteredInfo.acc || null,
-      onFilter: (value, record) => record.acc.includes(value),
-      sorter: (a, b) => a.acc.length - b.acc.length,
-      sortOrder: sortedInfo.columnKey === 'acc' && sortedInfo.order,
-      ellipsis: true,
+      visible: false,
     },
     {
       title: 'Cargo',
       dataIndex: 'position',
       key: 'position',
-      sorter: (a, b) => a.position.length - b.position.length,
-      sortOrder: sortedInfo.columnKey === 'position' && sortedInfo.order,
-      ellipsis: true,
+      width: '25%',
     },
   ];
 
   return (
-    <div>
-      <TableOperations>
-        <Button onClick={clearFilters}>Limpar filtros</Button>
-      </TableOperations>
-      <Table columns={columns} scroll={{ x: true }} dataSource={data} onChange={handleChange} />
-    </div>
+    <Skeleton active loading={loading} >
+      <div>
+        <Table columns={columns.filter(column => column.visible !== false)} scroll={{ x: true }} dataSource={members} />
+      </div>
+    </Skeleton>
   );
 }
 
