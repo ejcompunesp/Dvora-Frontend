@@ -14,7 +14,7 @@ import { boardsApi } from '../../../api'
 
 function Board({ form, je }) {
   const { getFieldDecorator } = form;
-  const [dataSource, setDataSource] = useState([]);
+  const [boards, setBoards] = useState([]);
   const [loading, setLoading] = useState([]);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ function Board({ form, je }) {
             ...board,
             editable: false
           }));
-          setDataSource(data);
+          setBoards(data);
         }
       } catch (error) {
         console.log(error);
@@ -42,14 +42,14 @@ function Board({ form, je }) {
       ...board,
       editable: false,
     }
-    setDataSource([...dataSource, data]);
+    setBoards([...boards, data]);
   }
 
   async function handleDelete(key) {
     try {
       const response = await boardsApi.delete(je.id, { boardId: key });
       if (response.status === 200) {
-        setDataSource(dataSource.filter(board => board.id !== key));
+        setBoards(boards.filter(board => board.id !== key));
         message.success("Diretoria removida com sucesso!");
       }
     }
@@ -60,7 +60,7 @@ function Board({ form, je }) {
 
   function handleEdit(board) {
     board.editable = true;
-    setDataSource([...dataSource]);
+    setBoards([...boards]);
   }
 
   async function onSaveEdit(board) {
@@ -72,7 +72,7 @@ function Board({ form, je }) {
       if (response.status === 200) {
         board.name = response.data.board.name;
         board.editable = false;
-        setDataSource([...dataSource]);
+        setBoards([...boards]);
       }
     }
     catch (error) {
@@ -84,7 +84,7 @@ function Board({ form, je }) {
   function onCancel(board) {
     form.resetFields();
     board.editable = false;
-    setDataSource([...dataSource]);
+    setBoards([...boards]);
   }
 
   const columns = [
@@ -109,11 +109,10 @@ function Board({ form, je }) {
       title: 'Deletar ',
       dataIndex: 'delete',
       render: (text, record) =>
-        dataSource.length >= 1 ? (
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
+        boards.length >= 1 &&
+          <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.id)}>
             <a><AiOutlineDelete style={{ fontSize: '17pt' }} /></a>
           </Popconfirm>
-        ) : null,
     },
     {
       title: 'Editar',
@@ -139,7 +138,7 @@ function Board({ form, je }) {
           <h2>Diretorias  <FaChalkboard /></h2>
         </Title>
         <ModalBoard handleAdd={handleAdd} je={je} />
-        <Table rowKey="id" dataSource={dataSource} columns={columns} pagination={false} />
+        <Table rowKey="id" dataSource={boards} columns={columns} pagination={false} />
       </Skeleton>
     </Container>
   );
