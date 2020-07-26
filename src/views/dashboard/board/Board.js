@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from 'react-redux';
 
-import { Table, Popconfirm, Input, Form } from 'antd';
+import { Table, Popconfirm, Input, Form, message, Skeleton } from 'antd';
 
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { FaChalkboard } from 'react-icons/fa';
@@ -9,64 +10,81 @@ import { Container, Title } from '../team/styles/team';
 
 import ModalBoard from '../../../components/boards/ModalBoard';
 
-const dataSource = [
-  {
-    key: '1',
-    name: 'Diretoria de Projetos',
-    edit: false,
-  },
-  {
-    key: '2',
-    name: 'Diretoria de Recursos Humanos',
-    edit: false,
-  },
-  {
-    key: '3',
-    name: 'Diretoria de Relações Externas',
-    edit: false,
-  },
-  {
-    key: '4',
-    name: 'Diretoria de Inovações',
-    edit: false,
-  },
-];
+import { boardsApi } from '../../../api'
 
-function Board({ form }) {
+function Board({ form, je }) {
   const { getFieldDecorator } = form;
-  const [data, setData] = useState(dataSource);
-  //simulando id da diretoria 
-  const [key, setKey] = useState(4);
+  const [dataSource, setDataSource] = useState([]);
+  const [loading, setLoading] = useState([]);
+
+  useEffect(() => {
+    const loadBoards = async () => {
+      setLoading(true);
+      try {
+        const response = await boardsApi.index(je.id);
+        if (response.status === 200) {
+          const data = response.data.boards.map(board => ({
+            ...board,
+            editable: false
+          }));
+          setDataSource(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      setLoading(false);
+    }
+    loadBoards();
+  }, []);
 
   function handleAdd(board) {
-    setKey(key + 1);
-    const newBoard = {
-      key: key,
-      name: board,
-      edit: false,
-    };
-    setData([...data, newBoard]);
+    const data = {
+      ...board,
+      editable: false,
+    }
+    setDataSource([...dataSource, data]);
   }
 
-  function handleDelete(key) {
-    setData(data.filter(board => board.key !== key));
+  async function handleDelete(key) {
+    try {
+      const response = await boardsApi.delete(je.id, { boardId: key });
+      if (response.status === 200) {
+        setDataSource(dataSource.filter(board => board.id !== key));
+        message.success("Diretoria removida com sucesso!");
+      }
+    }
+    catch (error) {
+      message.error(error.response.data.msg);
+    }
   }
 
   function handleEdit(board) {
-    board.edit = true;
-    setData([...data]);
+    board.editable = true;
+    setDataSource([...dataSource]);
   }
 
-  function onSave(board) {
-    board.name = form.getFieldValue('name');
-    board.edit = false;
-    setData([...data]);
+  async function onSaveEdit(board) {
+    try {
+      const response = await boardsApi.update(je.id, {
+        boardId: board.id,
+        name: form.getFieldValue('name'),
+      })
+      if (response.status === 200) {
+        board.name = response.data.board.name;
+        board.editable = false;
+        setDataSource([...dataSource]);
+      }
+    }
+    catch (error) {
+      console.log(error);
+      message.error(error.response.data.msg);
+    }
   }
 
   function onCancel(board) {
     form.resetFields();
-    board.edit = false;
-    setData([...data]);
+    board.editable = false;
+    setDataSource([...dataSource]);
   }
 
   const columns = [
@@ -75,7 +93,7 @@ function Board({ form }) {
       dataIndex: 'name',
       key: 'name',
       render: (_, record) =>
-        record.edit ? (
+        record.editable ? (
           <Form>
             <Form.Item>
               {getFieldDecorator('name', {
@@ -91,20 +109,20 @@ function Board({ form }) {
       title: 'Deletar ',
       dataIndex: 'delete',
       render: (text, record) =>
-        data.length >= 1 ? (
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+        dataSource.length >= 1 ? (
+          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
             <a><AiOutlineDelete style={{ fontSize: '17pt' }} /></a>
           </Popconfirm>
         ) : null,
     },
     {
       title: 'Editar',
-      dataIndex: 'edit',
+      dataIndex: 'editable',
       render: (text, record) =>
-        text ?
+        text ? //verifica se editable é true
           (
             <>
-              <a onClick={() => onSave(record)} style={{ marginRight: 8 }}>Salvar</a>
+              <a onClick={() => onSaveEdit(record)} style={{ marginRight: 8 }}>Salvar</a>
               <a onClick={() => onCancel(record)} >Cancelar</a>
             </>
           ) :
@@ -116,12 +134,17 @@ function Board({ form }) {
 
   return (
     <Container>
-      <Title>
-        <h2>Diretorias  <FaChalkboard /></h2>
-      </Title>
-      <ModalBoard handleAdd={handleAdd} />
-      <Table dataSource={data} columns={columns} pagination={false} />
+      <Skeleton loading={loading}>
+        <Title>
+          <h2>Diretorias  <FaChalkboard /></h2>
+        </Title>
+        <ModalBoard handleAdd={handleAdd} je={je} />
+        <Table rowKey="id" dataSource={dataSource} columns={columns} pagination={false} />
+      </Skeleton>
     </Container>
   );
 }
-export default Form.create()(Board);
+const mapStateToProps = state => ({
+  je: state.je,
+})
+export default connect(mapStateToProps)(Form.create()(Board));
