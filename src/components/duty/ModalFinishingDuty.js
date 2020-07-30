@@ -1,0 +1,50 @@
+import React, { useState } from 'react';
+import { Form, Input, Modal, Button, message } from 'antd';
+
+function ModalFinishingDuty(props) {
+  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { getFieldDecorator } = props.form;
+
+  function onSubmit(e) {
+    e.preventDefault();
+    props.form.validateFields(async (err, values) => {
+      if (!err) {
+        setLoading(true);
+        try {
+          props.onSubmit(values);
+        } catch (error) {
+          setLoading(false);
+          message.error(error.response.data.msg);
+        }
+      }
+    });
+  }
+
+  return (
+      <Modal
+        destroyOnClose={true}
+        visible={visible}
+        title="Identificação de usuário"
+        onOk={onSubmit}
+        onCancel={() => setVisible(false)}
+        footer={[
+          <Button key="back" onClick={() => setVisible(false)}>
+            Cancelar
+          </Button>,
+          <Button key="submit" type="primary" loading={loading} onClick={onSubmit}>
+            Finalizar plantão
+          </Button>,
+        ]}
+      >
+        <Form>
+          <Form.Item>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: 'Please input your password!' }],
+            })(<Input.Password placeholder='senha' />)}
+          </Form.Item>
+        </Form>
+      </Modal>
+  )
+}
+export default Form.create()(ModalFinishingDuty)

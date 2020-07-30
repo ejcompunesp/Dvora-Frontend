@@ -11,9 +11,11 @@ import { Container, Title, Content } from '../team/styles/team'
 import { DutyControllerButtons, DaysDuties } from './styles/duty';
 
 import { membersDutyApi } from '../../../api'
+import { isLoginMember } from '../../../api/auth';
 
 import user from '../../../assets/user.png';
 import ModalOnDuty from '../../../components/duty/ModalOnDuty'
+import ModalFinishingDuty from '../../../components/duty/ModalFinishingDuty';
 
 function Duty({ je }) {
   const apiURL = 'https://backend-dvora.herokuapp.com/files/member';
@@ -76,7 +78,6 @@ function Duty({ je }) {
     }
   }
 
-
   function handleChange(sorter) {
     setSortedInfo(sorter);
   };
@@ -110,9 +111,12 @@ function Duty({ je }) {
         },
         {
           title: 'Finalizar plantão',
-          dataIndex: 'duty.id',
+          dataIndex: 'duty.memberId',
           render: (text, record) => record.finishTime === null ?
-            <Popconfirm title="Finalizar plantão?" onConfirm={() => handleFinished(text, record)}>
+            <Popconfirm title="Finalizar plantão?" onConfirm={
+              isLoginMember() ?
+                handleFinished(text, record) :
+                <ModalFinishingDuty onSubmit={handleFinished} />}>
               <a>Encerrar</a>
             </Popconfirm>
             :
