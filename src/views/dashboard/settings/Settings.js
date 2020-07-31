@@ -18,7 +18,7 @@ function Settings({ form, je, setJe }) {
   const [disable, setDisable] = useState(true);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [updatePassword, setUpdatePassword] = useState(false);
+  const [visiblePassword, setVisiblePassword] = useState(false);
 
   const uploadButton = (
     <div>
@@ -35,9 +35,8 @@ function Settings({ form, je, setJe }) {
     form.validateFields(async (err, values) => {
       if (!err) {
         const form = new FormData();
-        form.append("id", je.id);
         form.append("name", values.name);
-        if (values.password !== null) form.append("password", values.password);
+        if (values.password) form.append("password", values.password);
         if (image.fileList) form.append("file", image.fileList);
         form.append("university", values.university);
         form.append("city", values.city);
@@ -45,18 +44,17 @@ function Settings({ form, je, setJe }) {
         try {
           const response = await jesApi.update(form);
           if (response.status === 200) {
-            setLoading(false);
             setJe({ je: response.data });
             message.success('Perfil atualizado com sucesso!');
             setDisable(true);
             setVisible(false);
-            setUpdatePassword(false);
+            setVisiblePassword(false);
           }
         } catch (error) {
-          setLoading(false);
           console.log(error);
           message.error(error.response.data.msg);
         }
+        setLoading(false);
       }
     });
   }
@@ -75,7 +73,7 @@ function Settings({ form, je, setJe }) {
     setDisable(true);
     setVisible(false);
     setImage({ preview: '' });
-    setUpdatePassword(false);
+    setVisiblePassword(false);
   };
   function onUpdate() {
     setDisable(false);
@@ -137,41 +135,40 @@ function Settings({ form, je, setJe }) {
             <Input disabled={disable} addonBefore={<Icon type='calendar' />} />
           )}
         </Form.Item>
-        {visible ?
-          updatePassword ?
-            <>
-              <Form.Item style={{ width: '60%' }} label="Nova senha" hasFeedback>
-                {getFieldDecorator('password', {
-                })(
-                  <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
-                )}
-              </Form.Item>
-              <Form.Item style={{ width: '60%' }} label="Confirmar senha"
-                dependencies={['password']}
-                hasFeedback>
-                {getFieldDecorator('confirmPassword', {
-                  rules: [
-                    {
-                      validator: compareToFirstPassword,
-                    },
-                  ],
-                })(
-                  <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
-                )}
-              </Form.Item>
-            </>
-            : <a onClick={() => setUpdatePassword(true)}><Text underline> Alterar senha </Text></a>
-          : null
-        }
-        {visible ? 
-        <Form.Item style={{marginTop: '20px'}} >
-          <Button loading={loading} type="primary" htmlType="submit" > Salvar </Button>
-          <Button style={{ marginLeft: '10px' }} htmlType="button" onClick={onReset}>  Cancelar </Button>
-        </Form.Item>
-       : null  
-      }
+        {visible && (
+          <>
+            {visiblePassword ? (
+              <>
+                <Form.Item style={{ width: '60%' }} label="Nova senha" hasFeedback>
+                  {getFieldDecorator('password', {
+                  })(
+                    <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
+                  )}
+                </Form.Item>
+                <Form.Item style={{ width: '60%' }} label="Confirmar senha"
+                  dependencies={['password']}
+                  hasFeedback>
+                  {getFieldDecorator('confirmPassword', {
+                    rules: [
+                      {
+                        validator: compareToFirstPassword,
+                      },
+                    ],
+                  })(
+                    <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
+                  )}
+                </Form.Item>
+              </>
+            ) : (
+                <a onClick={() => setVisiblePassword(true)}><Text underline> Alterar senha </Text></a>
+              )}
+            <Form.Item style={{ marginTop: '20px' }} >
+              <Button loading={loading} type="primary" htmlType="submit" > Salvar </Button>
+              <Button style={{ marginLeft: '10px' }} htmlType="button" onClick={onReset}>  Cancelar </Button>
+            </Form.Item>
+          </>
+        )}
       </Form>
-
     </Container>
   );
 }
