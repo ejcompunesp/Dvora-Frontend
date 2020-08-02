@@ -21,7 +21,7 @@ function Board({ form, je }) {
     const loadBoards = async () => {
       setLoading(true);
       try {
-        const response = await boardsApi.index(je.id);
+        const response = await boardsApi.index();
         if (response.status === 200) {
           const data = response.data.boards.map(board => ({
             ...board,
@@ -47,7 +47,7 @@ function Board({ form, je }) {
 
   async function handleDelete(key) {
     try {
-      const response = await boardsApi.delete(je.id, { boardId: key });
+      const response = await boardsApi.delete({ boardId: key });
       if (response.status === 200) {
         setBoards(boards.filter(board => board.id !== key));
         message.success("Diretoria removida com sucesso!");
@@ -65,7 +65,7 @@ function Board({ form, je }) {
 
   async function onSaveEdit(board) {
     try {
-      const response = await boardsApi.update(je.id, {
+      const response = await boardsApi.update({
         boardId: board.id,
         name: form.getFieldValue('name'),
       })

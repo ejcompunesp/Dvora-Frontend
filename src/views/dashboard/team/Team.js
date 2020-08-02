@@ -82,7 +82,7 @@ function Team(props) {
     data.append('email', values.email);
     data.append('password', values.password);
     data.append('sr', values.sr);
-    data.append('board', values.board);
+    data.append('boardId', values.boardId);
     data.append('position', values.position);
     // data.append('phone', values.phone);
     // data.append('facebook', values.facebook);
@@ -92,7 +92,7 @@ function Team(props) {
     data.append('isDutyDone', 0);
 
     try {
-      const response = await membersApi.store(props.je.id, data);
+      const response = await membersApi.store(data);
       if (response.status === 200) {
         setMembers([...members, response.data.member]);
         message.success('Membro inserido com sucesso!');
@@ -101,7 +101,7 @@ function Team(props) {
       }
     } catch (err) {
       console.log(err);
-      message.error('Erro ao inserir o membro');
+      message.error(err.response.data.msg);
       console.log(err.response.data);
     }
   }
@@ -112,7 +112,7 @@ function Team(props) {
     data.append('id', memberId);
     data.append('password', values.password);
     data.append('sr', values.sr);
-    data.append('board', values.board);
+    data.append('boardId', values.boardId);
     data.append('position', values.position);
     // data.append('phone', values.phone);
     // data.append('facebook', values.facebook);
@@ -124,7 +124,7 @@ function Team(props) {
       const response = await membersApi.update(props.je.id, {
         id: data.id,
         name: data.name,
-        board: data.board,
+        boardId: data.boardId,
         position: data.position,
         sr: data.sr,
         password: data.password,
@@ -141,7 +141,7 @@ function Team(props) {
 
   async function handleRemove(memberId) {
     try {
-      const response = await membersApi.delete(props.je.id, { id: memberId });
+      const response = await membersApi.delete({ memberId: memberId });
       if (response.status === 200) {
         setMembers(members.filter(item => item.id !== memberId));
         message.success('Membro removido com sucesso!');
