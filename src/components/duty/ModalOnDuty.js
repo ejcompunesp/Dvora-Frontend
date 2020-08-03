@@ -15,7 +15,7 @@ function ModalOnDuty(props) {
                 setLoading(true);
                 try {
                     const response = await membersDutyApi.create(values);
-                    if (response.status === 201) {
+                    if (response.status === 200) {
                         setLoading(false);
                         setVisible(false);
                         props.setNewDuty(response.data.duty.id);

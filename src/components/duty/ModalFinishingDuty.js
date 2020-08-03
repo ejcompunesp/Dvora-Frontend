@@ -8,16 +8,15 @@ function ModalFinishingDuty(props) {
 
   function onSubmit(e) {
     e.preventDefault();
-    props.form.validateFields(async (err, values) => {
+    props.form.validateFields((err, values) => {
       if (!err) {
         setLoading(true);
-        try {
-          props.onSubmit(values);
-        } catch (error) {
+        props.onSubmit(values);
+      } 
+      else {
           setLoading(false);
-          message.error(error.response.data.msg);
+          message.error("Senha incorreta, tente novamente...");
         }
-      }
     });
   }
 

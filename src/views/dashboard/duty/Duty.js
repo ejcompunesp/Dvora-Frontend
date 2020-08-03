@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-
 import { useHistory } from 'react-router-dom';
 
 import { Table, Popconfirm, message } from 'antd';
@@ -31,6 +30,7 @@ function Duty({ je }) {
     }
     return number;
   }
+
   function formatTime(time) {
     const currentdate = new Date(time);
     let h = addZero(currentdate.getHours());
@@ -60,7 +60,7 @@ function Duty({ je }) {
 
   async function handleFinished(dutyId, member) {
     try {
-      const response = await membersDutyApi.update(dutyId);
+      const response = await membersDutyApi.finish(dutyId);
       if (response.status === 200) {
         member.finishTime = formatTime(response.data.updatedAt);
         setMemberOnDuty([...memberOnDuty]);
@@ -71,7 +71,6 @@ function Duty({ je }) {
             dutyId,
           }
         });
-
       }
     } catch (error) {
       message.error(error.response.data.msg);
@@ -118,8 +117,7 @@ function Duty({ je }) {
                 handleFinished(text, record) :
                 <ModalFinishingDuty onSubmit={handleFinished} />}>
               <a>Encerrar</a>
-            </Popconfirm>
-            :
+            </Popconfirm> :
             <span>CONCLUÍDO!</span>
         },
       ]
