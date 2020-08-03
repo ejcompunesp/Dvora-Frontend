@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { boardsApi } from '../../api'
+import { boardsApi, membersApi } from '../../api'
 
 import { Form, Input, message, Button, Select } from 'antd';
 
@@ -38,18 +38,34 @@ function MemberRegistrationForm(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setLoading(true);
-    props.form.validateFields((err, values) => {
+    props.form.validateFields(async (err, values) => {
       if (!err) {
-        values.file = photo;
-        console.log(values);
-        props.onSubmit(values);
-        setTimeout(() => {
+        setLoading(true);
+        const data = new FormData();
+        data.append('name', values.name);
+        data.append('id', props.memberId);
+        data.append('password', values.password);
+        data.append('sr', values.sr);
+        data.append('boardId', values.boardId);
+        data.append('position', values.position);
+        // data.append('phone', values.phone);
+        // data.append('facebook', values.facebook);
+        // data.append('instagram', values.instagram);
+        // data.append('linkedin', values.linkedin);
+        data.append('file', values.file);
+        try {
+          const response = await membersApi.update(data);
+          if (response.status === 200) {
+            setLoading(false);
+            props.setNewMember(response.data);
+            message.success('Membro editado com sucesso!');
+            props.setVisible(false);
+          }
+        } catch (err) {
           setLoading(false);
-          props.setVisible(false);
-        }, 2000);
+          message.error(err.response.data.msg);
+        }
       }
-      else message.error('Erro. Verifique os campos e tente novamente.');
     });
   }
 
@@ -91,6 +107,12 @@ function MemberRegistrationForm(props) {
       </UploadPhoto>
       <Form.Item label="Nome">
         {getFieldDecorator('name', {
+          rules: [
+            {
+              required: true,
+              message: 'Por favor, insira seu nome!',
+            }
+          ]
         })(<Input addonBefore={<MdPerson />} style={{ width: '100%' }} />)}
       </Form.Item>
       {/* <Form.Item label="E-mail">
@@ -103,19 +125,24 @@ function MemberRegistrationForm(props) {
           ],
         })(<Input addonBefore={<MdEmail />} style={{ width: '100%' }} />)}
       </Form.Item> */}
-      <Form.Item label="New password" hasFeedback >
+      <Form.Item label="Nova senha" hasFeedback >
         {getFieldDecorator('password', {
           rules: [
             {
-              validator: validateToNextPassword,
+              required: true,
+              message: 'Por favor, insira sua senha!',
             },
+            {
+              validator: validateToNextPassword,
+            }
           ],
         })(<Input.Password addonBefore={<MdLock />} style={{ width: '100%' }} />)}
       </Form.Item>
-      <Form.Item label="Confirm password" hasFeedback>
+      <Form.Item label="Confirme sua senha" hasFeedback>
         {getFieldDecorator('confirm', {
           rules: [
             {
+              required: true,
               message: 'Por favor, confirme sua senha!',
             },
             {
@@ -127,10 +154,22 @@ function MemberRegistrationForm(props) {
       </Form.Item>
       <Form.Item label="RA">
         {getFieldDecorator('sr', {
+          rules: [
+            {
+              required: true,
+              message: 'Por favor, insira seu RA!',
+            }
+          ],
         })(<Input addonBefore={<FaAddressCard />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Diretoria">
         {getFieldDecorator('boardId', {
+          rules: [
+            {
+              required: true,
+              message: 'Por favor, insira sua diretoria!'
+            }
+          ],
         })(
           <Select prefix={<FaUserTie />} placeholder="Selecione uma diretoria" allowClear>
             {boards.map((board) => (
@@ -141,6 +180,12 @@ function MemberRegistrationForm(props) {
       </Form.Item>
       <Form.Item label="Cargo">
         {getFieldDecorator('position', {
+          rules: [
+            {
+              required: true,
+              message: 'Por favor, insira seu cargo!'
+            }
+          ],
         })(<Input addonBefore={<FaUserCog />} style={{ width: '100%' }} />)}
       </Form.Item>
       {/* <Form.Item label="Telefone">
@@ -168,7 +213,6 @@ function MemberRegistrationForm(props) {
           key="submit"
           type="primary"
           loading={loading}
-          onClick={handleSubmit}
           htmlType="submit" >
           Editar
         </Button>
