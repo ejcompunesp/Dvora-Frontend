@@ -1,70 +1,93 @@
-import React from 'react';
-import Home from '../dashboard/home/Home';
-import Settings from '../dashboard/settings/Settings';
-import Monitoring from './monitoring/Monitoring';
-import Team from './team/Team';
-import Profile from './profile/Profile';
-import Feedback from './feedback/Feedback';
-import Duty from './duty/Duty';
+import React from "react";
+import Home from "../dashboard/home/Home";
+import Settings from "../dashboard/settings/Settings";
+import Monitoring from "./monitoring/Monitoring";
+import MonitoringDetails from "./monitoring/MonitoringDetails";
+import Team from "./team/Team";
+import Profile from "./profile/Profile";
+import Feedback from "./feedback/Feedback";
+import Duty from "./duty/Duty";
+import Board from './board/Board';
 
-import { FaHome, FaClipboardList, FaComments, FaCoffee } from 'react-icons/fa';
-import { MdSettings } from 'react-icons/md';
-import { IoIosPeople, IoMdPerson } from 'react-icons/io';
+import { FaHome, FaClipboardList, FaComments, FaCoffee, FaChalkboardTeacher } from "react-icons/fa";
+import { MdSettings } from "react-icons/md";
+import { IoIosPeople } from "react-icons/io";
+
+import { isLoginMember } from '../../api/auth';
+
+const invisibleToMember = isLoginMember();
 
 function isActive(path) {
   const url = window.location.pathname;
   return path === url;
 }
 
-const HomeIcon = <FaHome/>
-const SettingsIcon = <MdSettings/>
-const MonitoringIcon = <FaClipboardList title="Acompanhamento"/>
-const TeamIcon = <IoIosPeople title="Equipe"/>
-const ProfileIcon = <IoMdPerson title="Profile"/>
-const FeedbackIcon = <FaComments title="Feedback"/>
-const DutyIcon = <FaCoffee title="Plantão"/>
+const HomeIcon = <FaHome />;
+const SettingsIcon = <MdSettings />;
+const MonitoringIcon = <FaClipboardList title="Acompanhamento" />;
+const TeamIcon = <IoIosPeople title="Equipe" />;
+const FeedbackIcon = <FaComments title="Feedback" />;
+const DutyIcon = <FaCoffee title="Plantão" />;
+const BoardIcon = <FaChalkboardTeacher title="Diretorias"/>;
 
 export const routes = [
   {
-    path: '/dashboard/home',
+    path: "/dashboard/home",
     active: (path) => isActive(path),
     icon: HomeIcon,
     component: Home,
   },
   {
-    path: '/dashboard/settings',
+    path: "/dashboard/settings",
     active: (path) => isActive(path),
     icon: SettingsIcon,
-    component: Settings
+    component: Settings,
+    invisible: invisibleToMember,
+    limitRouteToJe: true, 
   },
   {
-    path: '/dashboard/monitoring',
+    path: "/dashboard/monitoring",
     active: (path) => isActive(path),
     icon: MonitoringIcon,
-    component: Monitoring
+    component: Monitoring,
+    invisible: invisibleToMember,
+    limitRouteToJe: true, 
   },
   {
-    path: '/dashboard/team',
+    path: "/dashboard/monitoring/details/:memberId",
+    active: (path) => isActive(path),
+    invisible: true,
+    component: MonitoringDetails,
+  },
+  {
+    path: "/dashboard/team",
     active: (path) => isActive(path),
     icon: TeamIcon,
-    component: Team
+    component: Team,
   },
   {
-    path: '/dashboard/profile',
+    path: "/dashboard/profile",
     active: (path) => isActive(path),
-    icon: ProfileIcon,
-    component: Profile
+    component: Profile,
+    invisible: true,
   },
   {
-    path: '/dashboard/feedback',
+    path: "/dashboard/feedback",
     active: (path) => isActive(path),
     icon: FeedbackIcon,
-    component: Feedback
+    component: Feedback,
+    invisible: true,
   },
   {
-    path: '/dashboard/duty',
+    path: "/dashboard/duty",
     active: (path) => isActive(path),
     icon: DutyIcon,
-    component: Duty
+    component: Duty,
+  },
+  {
+    path: "/dashboard/board",
+    active: (path) => isActive(path),
+    icon: BoardIcon,
+    component: Board
   },
 ];

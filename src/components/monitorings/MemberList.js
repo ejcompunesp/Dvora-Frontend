@@ -1,153 +1,126 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { connect } from 'react-redux';
-import { membersApi } from '../../api';
+import { connect } from "react-redux";
+import { feedbacksApi } from "../../api";
 
-import { Table, Button } from 'antd';
+import { Table, Skeleton, Icon } from "antd";
 
-import { IoIosCheckmarkCircle, IoIosCloseCircle } from 'react-icons/io';
-import { MdTimelapse } from 'react-icons/md';
+import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
 
-import { TableOperations } from '../../views/dashboard/monitoring/styles/monitoring';
-
-import user from '../../assets/user.png';
-
-import { data } from '../../api/ApiTeste'
+import user from "../../assets/user.png";
+import { Link } from "react-router-dom";
 
 function MemberList(props) {
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
-  const [filteredInfo, setFilteredInfo] = useState(null);
-  const [sortedInfo, setSortedInfo] = useState(null); 
 
   useEffect(() => {
     const fetchMembers = async () => {
       setLoading(true);
       try {
-        const response = await membersApi.list(props.je.id);
+        const response = await feedbacksApi.index(props.je.id);
         if (response.status === 200) {
-          console.log(response);
-          setMembers(response.data.members);
+          setMembers(response.data);
         }
       } catch (err) {
-        console.log(err);
-        console.log(err.response);
+        console.log(err.response.data);
       }
       setLoading(false);
-    }
+    };
     fetchMembers();
   }, [props.je.id]);
 
-  function determineStatusIcon(status) {
-    if (status === "Feito")
-      return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
-    else if (status === "Não feito")
+  function handleStatusIcon(status) {
+    if (status === 0 || null)
       return <IoIosCloseCircle style={{ color: "#E71A23" }} />;
-    else return <MdTimelapse />;
+    else return <IoIosCheckmarkCircle style={{ color: "#89C03E" }} />;
   }
 
-  function handleChange(pagination, filters, sorter) {
-    setFilteredInfo(filters);
-    setSortedInfo(sorter);
-  };
-
-  function clearFilters() {
-    setFilteredInfo(null);
-  };
-
-  setFilteredInfo(filteredInfo || {});
-  setSortedInfo(sortedInfo || {});
+  function handleStatus(status) {
+    if (status === 0 || null) return "Não feito";
+    else return "Feito";
+  }
 
   const columns = [
+    // {
+    //   dataIndex: 'file',
+    //   key: 'file',
+    //   width: '4%',
+    //   render: file => <img src={file ? file : user} alt="Foto de perfil" />,
+    // },
     {
-      dataIndex: 'file',
-      width: '4%',
-      render: file => <img src={file ? file : user} alt="Foto de perfil" />
+      title: "Nome",
+      dataIndex: "name",
+      key: "name",
+      width: "25%",
     },
     {
-      title: 'Nome',
-      dataIndex: 'name',
-      key: 'name',
-      sorter: (a, b) => a.name.length - b.name.length,
-      ellipsis: true,
+      key: "dutyStatusIcon",
+      width: "2%",
+      render: (row) => handleStatusIcon(row.isDutyDone),
     },
     {
-      width: '2%',
-      render: (row) => determineStatusIcon(row.onDuty),
+      title: "Plantão",
+      key: "dutyStatus",
+      width: "21%",
+      render: (row) => handleStatus(row.isDutyDone),
     },
     {
-      title: 'Plantão',
-      dataIndex: 'onDuty',
-      key: 'onDuty',
-      filters: [
-        {
-          text: 'Feito',
-          value: 'Feito'
-        },
-        {
-          text: 'Não feito',
-          value: 'Não feito'
-        },
-        {
-          text: 'Em andamento',
-          value: 'Em andamento'
-        }
-      ],
-      filteredValue: filteredInfo.onDuty || null,
-      onFilter: (value, record) => record.onDuty.includes(value),
-      sorter: (a, b) => a.onDuty.length - b.onDuty.length,
-      ellipsis: true,
+      dataIndex: "isDutyDone",
+      key: "duty",
+      visible: false,
     },
     {
-      width: '2%',
-      render: (row) => determineStatusIcon(row.acc),
+      key: "accStatusIcon",
+      width: "2%",
+      render: (row) => handleStatusIcon(row.isMonitoringDone),
     },
     {
-      title: 'Acompanhamento',
-      dataIndex: 'acc',
-      key: 'acc',
-      filters: [
-        {
-          text: 'Feito',
-          value: 'Feito'
-        },
-        {
-          text: 'Não feito',
-          value: 'Não feito'
-        },
-        {
-          text: 'Em andamento',
-          value: 'Em andamento'
-        }
-      ],
-      filteredValue: filteredInfo.acc || null,
-      onFilter: (value, record) => record.acc.includes(value),
-      sorter: (a, b) => a.acc.length - b.acc.length,
-      sortOrder: sortedInfo.columnKey === 'acc' && sortedInfo.order,
-      ellipsis: true,
+      title: "Acompanhamento",
+      key: "accStatus",
+      width: "21%",
+      render: (row) => handleStatus(row.isMonitoringDone),
     },
     {
-      title: 'Cargo',
-      dataIndex: 'position',
-      key: 'position',
-      sorter: (a, b) => a.position.length - b.position.length,
-      sortOrder: sortedInfo.columnKey === 'position' && sortedInfo.order,
-      ellipsis: true,
+      dataIndex: "isMonitoringDone",
+      key: "acc",
+      visible: false,
+    },
+    {
+      title: "Cargo",
+      dataIndex: "position",
+      key: "position",
+      width: "25%",
+    },
+    {
+      title: "Detalhes",
+      dataIndex: "",
+      key: "details",
+      render: (row) => (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Link type="link" to={`monitoring/details/${row.id}`}>
+            <Icon type="eye" />
+          </Link>
+        </div>
+      ),
     },
   ];
 
   return (
-    <div>
-      <TableOperations>
-        <Button onClick={clearFilters}>Limpar filtros</Button>
-      </TableOperations>
-      <Table columns={columns} scroll={{ x: true }} dataSource={data} onChange={handleChange} />
-    </div>
+    <Skeleton active loading={loading}>
+      <div>
+        <Table
+          columns={columns.filter((column) => column.visible !== false)}
+          scroll={{ x: true }}
+          dataSource={members}
+        />
+      </div>
+    </Skeleton>
   );
 }
 
-const mapStateToProps = state => ({
-  je: state.je
+const mapStateToProps = (state) => ({
+  je: state.je,
 });
 
 export default connect(mapStateToProps)(MemberList);

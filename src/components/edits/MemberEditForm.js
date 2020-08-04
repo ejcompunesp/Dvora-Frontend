@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { boardsApi, membersApi } from '../../api'
 
-import { Form, Input, message, Button, Upload, Icon } from 'antd';
+import { Form, Input, message, Button, Select } from 'antd';
 
 import { FiCamera } from 'react-icons/fi';
 import { MdPerson, MdPhone, MdEmail, MdLock } from 'react-icons/md';
@@ -9,20 +10,27 @@ import {
   FaInstagram, FaLinkedin
 } from 'react-icons/fa';
 
-import { UploadButtons, UploadPhoto } from '../registrations/styles/memberRegistrationForm';
+import { UploadButtons, UploadPhoto } from '../registrations/styles/memberRegistration';
 
 function MemberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
   const [loading, setLoading] = useState(false);
   const [photo, setPhoto] = useState(null);
+  const [boards, setBoards] = useState([]);
 
-  function handleOk() {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      props.setVisible(false);
-    }, 2000);
-  };
+  useEffect(() => {
+    const loadBoards = async () => {
+      try {
+        const response = await boardsApi.index();
+        if (response.status === 200) {
+          setBoards(response.data.boards);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    loadBoards();
+  }, []);
 
   function handleCancel() {
     props.setVisible(false);
@@ -30,13 +38,34 @@ function MemberRegistrationForm(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.form.validateFields((err, values) => {
+    props.form.validateFields(async (err, values) => {
       if (!err) {
-        values.file = photo;
-        console.log(values);
-        props.onSubmit(values);
+        setLoading(true);
+        const data = new FormData();
+        data.append('name', values.name);
+        data.append('id', props.memberId);
+        data.append('password', values.password);
+        data.append('sr', values.sr);
+        data.append('boardId', values.boardId);
+        data.append('position', values.position);
+        // data.append('phone', values.phone);
+        // data.append('facebook', values.facebook);
+        // data.append('instagram', values.instagram);
+        // data.append('linkedin', values.linkedin);
+        data.append('file', values.file);
+        try {
+          const response = await membersApi.update(data);
+          if (response.status === 200) {
+            setLoading(false);
+            props.setNewMember(response.data);
+            message.success('Membro editado com sucesso!');
+            props.setVisible(false);
+          }
+        } catch (err) {
+          setLoading(false);
+          message.error(err.response.data.msg);
+        }
       }
-      else message.error('Erro. Verifique os campos e tente novamente.');
     });
   }
 
@@ -66,38 +95,24 @@ function MemberRegistrationForm(props) {
     return photo ? URL.createObjectURL(photo) : null;
   }, [photo]);
 
-  function normFile(e) {
-    console.log('Upload event:', e);
-    setPhoto(e.target.file[0]);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   const { getFieldDecorator } = props.form;
 
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 8 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 },
-    },
-  };
-
   return (
-    <Form {...formItemLayout} onSubmit={handleSubmit} >
+    <Form layout='vertical' onSubmit={handleSubmit} >
+      <UploadPhoto
+        style={{ backgroundImage: `url(${preview})` }}
+        className={photo ? 'has-photo' : ''}>
+        <input type="file" onChange={event => setPhoto(event.target.files[0])} />
+        <FiCamera />
+      </UploadPhoto>
       <Form.Item label="Nome">
         {getFieldDecorator('name', {
           rules: [
             {
               required: true,
               message: 'Por favor, insira seu nome!',
-            },
-          ],
+            }
+          ]
         })(<Input addonBefore={<MdPerson />} style={{ width: '100%' }} />)}
       </Form.Item>
       {/* <Form.Item label="E-mail">
@@ -110,16 +125,20 @@ function MemberRegistrationForm(props) {
           ],
         })(<Input addonBefore={<MdEmail />} style={{ width: '100%' }} />)}
       </Form.Item> */}
-      <Form.Item label="New password" hasFeedback required={true} >
+      <Form.Item label="Nova senha" hasFeedback >
         {getFieldDecorator('password', {
           rules: [
             {
-              validator: validateToNextPassword,
+              required: true,
+              message: 'Por favor, insira sua senha!',
             },
+            {
+              validator: validateToNextPassword,
+            }
           ],
         })(<Input.Password addonBefore={<MdLock />} style={{ width: '100%' }} />)}
       </Form.Item>
-      <Form.Item label="Confirm password" hasFeedback>
+      <Form.Item label="Confirme sua senha" hasFeedback>
         {getFieldDecorator('confirm', {
           rules: [
             {
@@ -135,14 +154,38 @@ function MemberRegistrationForm(props) {
       </Form.Item>
       <Form.Item label="RA">
         {getFieldDecorator('sr', {
+          rules: [
+            {
+              required: true,
+              message: 'Por favor, insira seu RA!',
+            }
+          ],
         })(<Input addonBefore={<FaAddressCard />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Diretoria">
-        {getFieldDecorator('board', {
-        })(<Input addonBefore={<FaUserTie />} style={{ width: '100%' }} />)}
+        {getFieldDecorator('boardId', {
+          rules: [
+            {
+              required: true,
+              message: 'Por favor, insira sua diretoria!'
+            }
+          ],
+        })(
+          <Select prefix={<FaUserTie />} placeholder="Selecione uma diretoria" allowClear>
+            {boards.map((board) => (
+              <Select.Option key={board.id} value={board.id}>{board.name}</Select.Option>
+            ))}
+          </Select>
+        )}
       </Form.Item>
       <Form.Item label="Cargo">
         {getFieldDecorator('position', {
+          rules: [
+            {
+              required: true,
+              message: 'Por favor, insira seu cargo!'
+            }
+          ],
         })(<Input addonBefore={<FaUserCog />} style={{ width: '100%' }} />)}
       </Form.Item>
       {/* <Form.Item label="Telefone">
@@ -161,31 +204,6 @@ function MemberRegistrationForm(props) {
         {getFieldDecorator('linkedin', {
         })(<Input addonBefore={<FaLinkedin />} style={{ width: '100%' }} />)}
       </Form.Item> */}
-      {/* <Form.Item 
-        style={{ backgroundImage: `url(${preview})` }}
-        className={photo ? 'has-photo' : ''}>
-        <Input type="file" onChange={event => setPhoto(event.target.files[0])} />
-          <FiCamera />
-      </Form.Item> */}
-        {/* <UploadPhoto
-          style={{ backgroundImage: `url(${preview})` }}
-          className={photo ? 'has-photo' : ''}
-        >
-          <Input type="file" onChange={event => setPhoto(event.target.files[0])} />
-          <FiCamera />
-        </UploadPhoto> */}
-        <Form.Item label="Upload">
-          {getFieldDecorator('upload', {
-            valuePropName: 'fileList',
-            getValueFromEvent: normFile,
-          })(
-            <Upload name="logo"  listType="picture">
-              <Button>
-                <Icon type="upload" /> Click to upload
-              </Button>
-            </Upload>,
-          )}
-        </Form.Item>
 
       <UploadButtons>
         <Button className="cancel" key="back" onClick={handleCancel}>
@@ -195,15 +213,14 @@ function MemberRegistrationForm(props) {
           key="submit"
           type="primary"
           loading={loading}
-          onClick={handleOk}
           htmlType="submit" >
-          Adicionar
+          Editar
         </Button>
       </UploadButtons>
     </Form>
   );
 }
 
-const RegistrationForm = Form.create({ name: 'Registro de membros' })(MemberRegistrationForm);
+const RegistrationForm = Form.create({ name: 'Edição de membros' })(MemberRegistrationForm);
 
 export default RegistrationForm;

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
-import { Modal } from 'antd';
-
 import { FiEdit } from 'react-icons/fi';
 
+import { DropdownItem } from '../../views/dashboard/team/styles/team';
+
+import { StyledModal } from '../registrations/styles/memberRegistration';
 import EditForm from './MemberEditForm';
 
 export default function MemberRegistration(props) {
@@ -15,17 +16,19 @@ export default function MemberRegistration(props) {
 
   return (
     <div>
-      <p style={{ margin: 0 }} onClick={() => setVisible(true)}><FiEdit /> Edit</p>
+      <DropdownItem style={{ margin: 0 }} onClick={() => setVisible(true)}>
+        <FiEdit /> Editar
+      </DropdownItem>
       
-      <Modal
+      <StyledModal
         destroyOnClose={true}
         visible={visible}
         title="Edição do membro"
         onCancel={handleCancel}
         footer={null}
       >
-        <EditForm onSubmit={props.onSubmit} setVisible={setVisible}/>
-      </Modal>
+        <EditForm setNewMember={props.setNewMember} memberId={props.memberId} setVisible={setVisible}/>
+      </StyledModal>
     </div>
   );
 }
