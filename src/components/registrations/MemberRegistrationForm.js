@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { boardsApi } from '../../api'
 
-import { Form, Input, message, Button } from 'antd';
+import { Form, Input, message, Button, Select } from 'antd';
 
 import { FiCamera } from 'react-icons/fi';
 import { MdPerson, MdPhone, MdEmail, MdLock } from 'react-icons/md';
@@ -15,6 +16,21 @@ function MemberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
   const [loading, setLoading] = useState(false);
   const [photo, setPhoto] = useState(null);
+  const [boards, setBoards] = useState([]);
+
+  useEffect(() => {
+    const loadBoards = async () => {
+      try {
+        const response = await boardsApi.index();
+        if (response.status === 200) {
+          setBoards(response.data.boards);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    loadBoards();
+  }, []);
 
   function handleCancel() {
     props.setVisible(false);
@@ -135,14 +151,20 @@ function MemberRegistrationForm(props) {
         })(<Input addonBefore={<FaAddressCard />} style={{ width: '100%' }} />)}
       </Form.Item>
       <Form.Item label="Diretoria">
-        {getFieldDecorator('board', {
+        {getFieldDecorator('boardId', {
           rules: [
             {
               required: true,
               message: 'Por favor, insira sua diretoria!'
             }
           ],
-        })(<Input addonBefore={<FaUserTie />} style={{ width: '100%' }} />)}
+        })(
+          <Select suffixIcon={<FaUserTie />} placeholder="Selecione uma diretoria" allowClear>
+            {boards.map((board) => (
+              <Select.Option key={board.id} value={board.id}>{board.name}</Select.Option>
+            ))}
+          </Select>
+        )}
       </Form.Item>
       <Form.Item label="Cargo">
         {getFieldDecorator('position', {

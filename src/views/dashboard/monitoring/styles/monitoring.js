@@ -12,3 +12,16 @@ export const TableStyle = styled.div`
     }
   }
 `;
+
+export const Content = styled.div`
+  display: flex;
+  margin-top: 30px;
+  justify-content: space-between;
+`;
+
+export const MonitoringInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
+

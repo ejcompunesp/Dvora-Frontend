@@ -54,7 +54,7 @@ function Duty({ je }) {
       }
     }
     loadDuties();
-  }, [newDuty]);
+  }, [formatTime, je.id, newDuty]);
 
   async function handleFinished(dutyId, member) {
     try {

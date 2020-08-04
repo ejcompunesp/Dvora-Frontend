@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { connect } from 'react-redux';
-import { membersApi } from '../../api';
+import { connect } from "react-redux";
+import { feedbacksApi } from "../../api";
 
-import { Table, Skeleton } from 'antd';
+import { Table, Skeleton, Icon } from "antd";
 
-import { IoIosCheckmarkCircle, IoIosCloseCircle } from 'react-icons/io';
-import { MdTimelapse } from 'react-icons/md';
+import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
 
-import user from '../../assets/user.png';
+import user from "../../assets/user.png";
+import { Link } from "react-router-dom";
 
 function MemberList(props) {
   const [loading, setLoading] = useState(false);
@@ -18,15 +18,15 @@ function MemberList(props) {
     const fetchMembers = async () => {
       setLoading(true);
       try {
-        const response = await membersApi.list(props.je.id);
+        const response = await feedbacksApi.index(props.je.id);
         if (response.status === 200) {
-          setMembers(response.data.members);
+          setMembers(response.data);
         }
       } catch (err) {
-        console.log(err.response);
+        console.log(err.response.data);
       }
       setLoading(false);
-    }
+    };
     fetchMembers();
   }, [props.je.id]);
 
@@ -37,108 +37,90 @@ function MemberList(props) {
   }
 
   function handleStatus(status) {
-    if (status === 0 || null)
-      return "Não feito";
+    if (status === 0 || null) return "Não feito";
     else return "Feito";
-
   }
 
   const columns = [
+    // {
+    //   dataIndex: 'file',
+    //   key: 'file',
+    //   width: '4%',
+    //   render: file => <img src={file ? file : user} alt="Foto de perfil" />,
+    // },
     {
-      dataIndex: 'file',
-      key: 'file',
-      width: '4%',
-      render: file => <img src={file ? file : user} alt="Foto de perfil" />,
+      title: "Nome",
+      dataIndex: "name",
+      key: "name",
+      width: "25%",
     },
     {
-      title: 'Nome',
-      dataIndex: 'name',
-      key: 'name',
-      width: '25%',
-      sorter: (a, b) => a.name.length - b.name.length,
-      sortDirections: ['descend'],
+      key: "dutyStatusIcon",
+      width: "2%",
+      render: (row) => handleStatusIcon(row.isDutyDone),
     },
     {
-      key: 'dutyStatusIcon',
-      width: '2%',
-      render: (row) => handleStatusIcon(row.duty),
+      title: "Plantão",
+      key: "dutyStatus",
+      width: "21%",
+      render: (row) => handleStatus(row.isDutyDone),
     },
     {
-      title: 'Plantão',
-      key: 'dutyStatus',
-      width: '21%',
-      render: (row) => handleStatus(row.duty),
-      filters: [
-        {
-          text: 'Done',
-          value: 'Feito',
-        },
-        {
-          text: 'Not Done',
-          value: 'Não feito',
-        },
-      ],
-      filterMultiple: false,
-      onFilter: (value, record) => record.duty.indexOf(value) === 0,
-      sorter: (a, b) => a.dutyStatus.length - b.dutyStatus.length,
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      dataIndex: 'isDutyDone',
-      key:'duty',
-      visible: false, 
-    },
-    {
-      key: 'accStatusIcon',
-      width: '2%',
-      render: (row) => handleStatusIcon(row.acc),
-    },
-    {
-      title: 'Acompanhamento',
-      key: 'accStatus',
-      width: '21%',
-      render: (row) => handleStatus(row.acc),
-      filters: [
-        {
-          text: 'Done',
-          value: 'Feito',
-        },
-        {
-          text: 'Not Done',
-          value: 'Não feito',
-        },
-      ],
-      filterMultiple: false,
-      onFilter: (value, record) => record.acc.indexOf(value) === 0,
-      sorter: (a, b) => a.accStatus.length - b.accStatus.length,
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      dataIndex: 'isMonitoringDone',
-      key: 'acc',
+      dataIndex: "isDutyDone",
+      key: "duty",
       visible: false,
     },
     {
-      title: 'Cargo',
-      dataIndex: 'position',
-      key: 'position',
-      width: '25%',
-      sorter: (a, b) => a.position.length - b.position.length,
-      sortDirections: ['descend', 'ascend'],
-      ellipsis: true,
+      key: "accStatusIcon",
+      width: "2%",
+      render: (row) => handleStatusIcon(row.isMonitoringDone),
+    },
+    {
+      title: "Acompanhamento",
+      key: "accStatus",
+      width: "21%",
+      render: (row) => handleStatus(row.isMonitoringDone),
+    },
+    {
+      dataIndex: "isMonitoringDone",
+      key: "acc",
+      visible: false,
+    },
+    {
+      title: "Cargo",
+      dataIndex: "position",
+      key: "position",
+      width: "25%",
+    },
+    {
+      title: "Detalhes",
+      dataIndex: "",
+      key: "details",
+      render: (row) => (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Link type="link" to={`monitoring/details/${row.id}`}>
+            <Icon type="eye" />
+          </Link>
+        </div>
+      ),
     },
   ];
 
   return (
-    loading ? <Skeleton active avatar paragraph={{ rows: 2 }} /> :
-    <div>
-      <Table columns={columns.filter(column => column.visible !== false)} scroll={{ x: true }} dataSource={members} />
-    </div>
+    <Skeleton active loading={loading}>
+      <div>
+        <Table
+          columns={columns.filter((column) => column.visible !== false)}
+          scroll={{ x: true }}
+          dataSource={members}
+        />
+      </div>
+    </Skeleton>
   );
 }
 
-const mapStateToProps = state => ({
-  je: state.je
+const mapStateToProps = (state) => ({
+  je: state.je,
 });
 
 export default connect(mapStateToProps)(MemberList);
