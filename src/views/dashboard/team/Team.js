@@ -27,6 +27,7 @@ function Team(props) {
   const [membersPerPage, setMembersPerPage] = useState(12);
   const [visible, setVisible] = useState(false);
   const invisibleToMember = isLoginMember();
+  const [newMember, setNewMember] = useState();
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -34,7 +35,6 @@ function Team(props) {
       try {
         const response = await membersApi.list(props.je.id);
         if (response.status === 200) {
-          console.log(response);
           setMembers(response.data.members);
         }
       } catch (err) {
@@ -44,7 +44,7 @@ function Team(props) {
       setLoading(false);
     }
     fetchMembers();
-  }, [props.je.id]);
+  }, [props.je.id, newMember]);
 
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
@@ -55,11 +55,10 @@ function Team(props) {
   }
 
   function handleMember(memberId) {
-
     return (
       <Menu>
         <Menu.Item key="0">
-          <MemberEdit onSubmit={() => handleEdit(memberId)} />
+          <MemberEdit setNewMember={setNewMember} memberId={memberId} />
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="1">
@@ -82,7 +81,7 @@ function Team(props) {
     data.append('email', values.email);
     data.append('password', values.password);
     data.append('sr', values.sr);
-    data.append('board', values.board);
+    data.append('boardId', values.boardId);
     data.append('position', values.position);
     // data.append('phone', values.phone);
     // data.append('facebook', values.facebook);
@@ -92,62 +91,28 @@ function Team(props) {
     data.append('isDutyDone', 0);
 
     try {
-      const response = await membersApi.store(props.je.id, data);
+      const response = await membersApi.store(data);
       if (response.status === 200) {
         setMembers([...members, response.data.member]);
         message.success('Membro inserido com sucesso!');
         setVisible(false);
-        console.log(response);
       }
     } catch (err) {
       console.log(err);
-      message.error('Erro ao inserir o membro');
-      console.log(err.response.data);
-    }
-  }
-
-  async function handleEdit(values, memberId) {
-    const data = new FormData();
-    data.append('name', values.name);
-    data.append('id', memberId);
-    data.append('password', values.password);
-    data.append('sr', values.sr);
-    data.append('board', values.board);
-    data.append('position', values.position);
-    // data.append('phone', values.phone);
-    // data.append('facebook', values.facebook);
-    // data.append('instagram', values.instagram);
-    // data.append('linkedin', values.linkedin);
-    data.append('file', values.file);
-
-    try {
-      const response = await membersApi.update(props.je.id, {
-        id: data.id,
-        name: data.name,
-        board: data.board,
-        position: data.position,
-        sr: data.sr,
-        password: data.password,
-        file: data.file
-      });
-      if (response.status === 200) {
-        setMembers(members.filter(item => item.id !== memberId));
-        message.success('Membro editado com sucesso!');
-      }
-    } catch (err) {
-      console.log(err.response.data);
+      message.error(err.response.data.msg);
     }
   }
 
   async function handleRemove(memberId) {
     try {
-      const response = await membersApi.delete(props.je.id, { id: memberId });
+      const response = await membersApi.delete({ memberId: memberId });
       if (response.status === 200) {
         setMembers(members.filter(item => item.id !== memberId));
         message.success('Membro removido com sucesso!');
       }
     } catch (err) {
       console.log(err.response.data);
+      message.error(err.response.data.msg);
     }
   }
 

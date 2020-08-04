@@ -14,7 +14,7 @@ function ModalBoard(props) {
         props.form.validateFields(async (err, values) => {
             if (!err) {
                 try {
-                    const response = await boardsApi.create(props.je.id, { name: values.name })
+                    const response = await boardsApi.create({ name: values.name })
                     if (response.status === 200) {
                         props.handleAdd(response.data.board);
                         setVisible(false);
