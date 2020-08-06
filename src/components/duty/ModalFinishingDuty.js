@@ -1,26 +1,45 @@
 import React, { useState } from 'react';
-import { Form, Input, Modal, Button, message } from 'antd';
+
+import { isLoginMember } from '../../api/auth';
+
+import { Form, Input, Modal, Button, message, Popconfirm } from 'antd';
 
 function ModalFinishingDuty(props) {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { getFieldDecorator } = props.form;
 
+  function verifyMemberLogged() {
+    if (props.member.duty.memberId === props.memberId) return true;
+    return false;
+  }
+
   function onSubmit(e) {
     e.preventDefault();
     props.form.validateFields((err, values) => {
+      setLoading(true);
       if (!err) {
-        setLoading(true);
+        values.member = props.member;
+        values.dutyId = props.dutyId;
+        values.id = props.member.duty.memberId;
         props.onSubmit(values);
-      } 
+        setLoading(false);
+        setVisible(false);
+      }
       else {
-          setLoading(false);
-          message.error("Senha incorreta, tente novamente...");
-        }
+        setLoading(false);
+        message.error("Senha incorreta, tente novamente...");
+      }
     });
   }
 
   return (
+    isLoginMember() ?
+    <Popconfirm title="Finalizar plantão?" onConfirm={onSubmit} disabled={!verifyMemberLogged()}>
+      <Button disabled={!verifyMemberLogged()} type="primary" >Encerrar</Button>
+    </Popconfirm> :
+    <>
+      <Button type="primary" onClick={() => setVisible(true)} >Encerrar</Button>
       <Modal
         destroyOnClose={true}
         visible={visible}
@@ -44,6 +63,8 @@ function ModalFinishingDuty(props) {
           </Form.Item>
         </Form>
       </Modal>
+    </>
   )
 }
-export default Form.create()(ModalFinishingDuty)
+
+export default Form.create()(ModalFinishingDuty);

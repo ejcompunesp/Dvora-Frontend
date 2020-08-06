@@ -31,9 +31,11 @@ function ModalOnDuty(props) {
 
     return (
         isLoginMember() ?
-            <Popconfirm title="Deseja iniciar um plantão?" onConfirm={onSubmit}><Button disabled={props.disabled} type="primary" >Iniciar</Button></Popconfirm>:
+            <Popconfirm title="Deseja iniciar um plantão?" onConfirm={onSubmit}>
+                <Button type="primary" >Iniciar</Button>
+            </Popconfirm> :
             <>
-                <Button disabled={props.disabled} type="primary" onClick={() => setVisible(true)} >Iniciar</Button>
+                <Button type="primary" onClick={() => setVisible(true)} >Iniciar</Button>
                 <Modal
                     destroyOnClose={true}
                     visible={visible}
@@ -65,4 +67,5 @@ function ModalOnDuty(props) {
             </>
     )
 }
+
 export default Form.create()(ModalOnDuty)
