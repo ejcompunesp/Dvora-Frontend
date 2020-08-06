@@ -10,10 +10,11 @@ import { Dropdown, Menu, Spin } from 'antd';
 
 import { TopNavbarContainer, TopNavItems, BreadCrumb, IconsList } from './styles/menus';
 import dvoraLogo from '../../assets/dvora-logo.png';
-import { logoutDashboard } from '../../api/auth'
+import { logoutDashboard } from '../../api/auth';
+import { isLoginMember } from '../../api/auth';
 
 
-export default function TopNavbar({ je , logout }) {
+export default function TopNavbar({ je, logout }) {
   const [iconMenu, setIconMenu] = useState(true);
   const [dropdown, setDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -31,8 +32,8 @@ export default function TopNavbar({ je , logout }) {
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="3" onClick={redirectToLogin}>
-      <Spin spinning={loading} size='small'>
-        <FiLogOut viewBox={'0 0 24 20'}/> Sair
+        <Spin spinning={loading} size='small'>
+          <FiLogOut viewBox={'0 0 24 20'} /> Sair
         </Spin>
       </Menu.Item>
     </Menu>
@@ -49,9 +50,10 @@ export default function TopNavbar({ je , logout }) {
   }
 
   function redirectToProfile() {
-    history.push(`/dashboard/profile`);
+    isLoginMember() ?
+      history.push('/dashboard/profile') :
+      history.push('/dashboard/team');
   }
-  
   function showOptions() {
     setIconMenu(!iconMenu);
     setDropdown(!dropdown);
@@ -59,7 +61,7 @@ export default function TopNavbar({ je , logout }) {
 
   return (
     <TopNavbarContainer background={"#00A7E1"}>
-      <img src={dvoraLogo} alt="Dvora"/>
+      <img src={dvoraLogo} alt="Dvora" />
       <TopNavItems>
         <BreadCrumb>{je.name}</BreadCrumb>
         <IconsList>
