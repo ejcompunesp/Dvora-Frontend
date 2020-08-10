@@ -22,6 +22,7 @@ export const TopNavItems = styled.div`
   width: 100%;
 `;
 
+ 
 export const IconsList = styled.div`
   display: flex;
   margin: 0 20px;
@@ -29,6 +30,13 @@ export const IconsList = styled.div`
     margin: 0 14px;
     font-size: 20px;
     cursor: pointer;
+  }
+  img{
+    border-radius: 20px;
+    width: 20px;
+    object-fit: cover;
+    cursor: pointer;
+    margin: 0 14px;
   }
 `;
 

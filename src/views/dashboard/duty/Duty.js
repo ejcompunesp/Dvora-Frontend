@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-
 import { useHistory } from 'react-router-dom';
 
-import { Table, Popconfirm, message } from 'antd';
+import { Table, message } from 'antd';
 
 import { FiCoffee } from 'react-icons/fi';
 
 import { Container, Title, Content } from '../team/styles/team'
 import { DutyControllerButtons, DaysDuties } from './styles/duty';
 
-import { membersDutyApi } from '../../../api'
+import { membersDutyApi } from '../../../api';
 
 import user from '../../../assets/user.png';
 import ModalOnDuty from '../../../components/duty/ModalOnDuty'
+import ModalFinishingDuty from '../../../components/duty/ModalFinishingDuty';
 
-function Duty({ je }) {
+function Duty({ je, member }) {
   const apiURL = 'https://backend-dvora.herokuapp.com/files/member';
   let [sortedInfo, setSortedInfo] = useState();
   const [memberOnDuty, setMemberOnDuty] = useState([]);
@@ -29,6 +29,7 @@ function Duty({ je }) {
     }
     return number;
   }
+
   function formatTime(time) {
     const currentdate = new Date(time);
     let h = addZero(currentdate.getHours());
@@ -56,26 +57,25 @@ function Duty({ je }) {
     loadDuties();
   }, [formatTime, je.id, newDuty]);
 
-  async function handleFinished(dutyId, member) {
+  async function handleFinished(values) {
     try {
-      const response = await membersDutyApi.update(dutyId);
+      const response = await membersDutyApi.finish(values);
       if (response.status === 200) {
-        member.finishTime = formatTime(response.data.updatedAt);
+        values.member.finishTime = formatTime(response.data.updatedAt);
         setMemberOnDuty([...memberOnDuty]);
         message.success('Plantão finalizado!');
+        const dutyId = values.dutyId;
         history.push({
           pathname: '/dashboard/feedback',
           state: {
             dutyId,
           }
         });
-
       }
     } catch (error) {
       message.error(error.response.data.msg);
     }
   }
-
 
   function handleChange(sorter) {
     setSortedInfo(sorter);
@@ -110,12 +110,9 @@ function Duty({ je }) {
         },
         {
           title: 'Finalizar plantão',
-          dataIndex: 'duty.id',
+          dataIndex: 'duty.memberId',
           render: (text, record) => record.finishTime === null ?
-            <Popconfirm title="Finalizar plantão?" onConfirm={() => handleFinished(text, record)}>
-              <a>Encerrar</a>
-            </Popconfirm>
-            :
+            <ModalFinishingDuty onSubmit={handleFinished} member={record} dutyId={record.duty.id} memberId={member.id} /> :
             <span>CONCLUÍDO!</span>
         },
       ]
@@ -145,7 +142,8 @@ function Duty({ je }) {
 }
 
 const mapStateToProps = state => ({
-  je: state.je
+  je: state.je,
+  member: state.member
 });
 
 export default connect(mapStateToProps)(Duty);

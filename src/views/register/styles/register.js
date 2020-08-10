@@ -28,6 +28,7 @@ export const StyledFormRegister = styled(Form)`
   justify-content: flex-end;
   align-items: center;
   min-height: 400px;
+  padding: 10px;
 
   .blue {
     position: absolute;
