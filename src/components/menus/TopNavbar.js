@@ -50,9 +50,10 @@ export default function TopNavbar({ je, logout, member }) {
   }
 
   function redirectToProfile() {
-    history.push(`/dashboard/profile`);
+    isLoginMember() ?
+      history.push('/dashboard/profile') :
+      history.push('/dashboard/team');
   }
-  
   function showOptions() {
     setIconMenu(!iconMenu);
     setDropdown(!dropdown);
