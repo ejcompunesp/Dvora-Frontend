@@ -8,8 +8,8 @@ export const isLoginMember = () => {
   if(user) {
     if(user.member){
       if (user.member.id) {
-        return true; 
-       }
+        return true;
+      }
     }
 	}
   return false;

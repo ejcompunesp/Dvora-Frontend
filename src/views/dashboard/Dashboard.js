@@ -9,11 +9,11 @@ import DashboardRouter from "../../dashboard.routes";
 
 // import { Container } from './styles';
 
-function Dashboard({ je, logout }) {
+function Dashboard({ je, logout, member }) {
   return (
     <DashboardContainer>
       <div className="navbar">
-        <Menu je={je} logout={logout}/>
+        <Menu je={je} logout={logout} member={member}/>
       </div>
       <div className="sidebar">
         <Siderbar/> 
@@ -26,7 +26,8 @@ function Dashboard({ je, logout }) {
 }
 
 const mapStateToProps = state => ({
-  je: state.je
+  je: state.je,
+  member: state.member,
 });
 const mapDispatchToProps = (dispatch) => 
   bindActionCreators(MemberActions, dispatch)

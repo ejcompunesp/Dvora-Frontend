@@ -10,11 +10,11 @@ import { Dropdown, Menu, Spin } from 'antd';
 
 import { TopNavbarContainer, TopNavItems, BreadCrumb, IconsList } from './styles/menus';
 import dvoraLogo from '../../assets/dvora-logo.png';
-import { logoutDashboard } from '../../api/auth';
-import { isLoginMember } from '../../api/auth';
+import { logoutDashboard, isLoginMember } from '../../api/auth'
 
 
-export default function TopNavbar({ je, logout }) {
+export default function TopNavbar({ je, logout, member }) {
+  const apiURL = 'https://backend-dvora.herokuapp.com/files/member';
   const [iconMenu, setIconMenu] = useState(true);
   const [dropdown, setDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -65,7 +65,11 @@ export default function TopNavbar({ je, logout }) {
       <TopNavItems>
         <BreadCrumb>{je.name}</BreadCrumb>
         <IconsList>
-          <FaUser onClick={redirectToProfile} />
+          {isLoginMember() && member.image ?
+            <img src={`${apiURL}/${member.image}`} onClick={redirectToProfile} />
+            :
+            <FaUser onClick={redirectToProfile} />
+          }
           <FaBell />
           <Dropdown overlay={menu}
             trigger={['click']}

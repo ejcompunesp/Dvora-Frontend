@@ -18,7 +18,7 @@ function MemberList(props) {
     const fetchMembers = async () => {
       setLoading(true);
       try {
-        const response = await feedbacksApi.index(props.je.id);
+        const response = await feedbacksApi.index();
         if (response.status === 200) {
           setMembers(response.data);
         }
