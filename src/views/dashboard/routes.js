@@ -88,6 +88,7 @@ export const routes = [
     path: "/dashboard/board",
     active: (path) => isActive(path),
     icon: BoardIcon,
-    component: Board
+    component: Board,
+    invisible : invisibleToMember,
   },
 ];

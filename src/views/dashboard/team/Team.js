@@ -120,9 +120,7 @@ function Team(props) {
     <Container>
       <Title>
         <h2>Nossa equipe <AiOutlineRocket className="rocket" /></h2>
-        {invisibleToMember ?
-          null : <MemberRegistration visible={visible} setVisible={setVisible} onSubmit={handleSubmit} />
-        }
+        {!invisibleToMember && <MemberRegistration visible={visible} setVisible={setVisible} onSubmit={handleSubmit} />}
       </Title>
       <Content>
         <Skeleton loading={loading}>
@@ -130,11 +128,13 @@ function Team(props) {
             {currentMember.map((member) => {
               return (
                 <li key={member.id}>
-                  <MoreButton>
-                    <Dropdown overlay={handleMember(member.id)} trigger={['click']} placement="bottomRight">
-                      <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
-                    </Dropdown>
-                  </MoreButton>
+                  {!invisibleToMember &&
+                    <MoreButton>
+                      <Dropdown overlay={handleMember(member.id)} trigger={['click']} placement="bottomRight">
+                        <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
+                      </Dropdown>
+                    </MoreButton>
+                  }
                   <img src={member.image ? `https://backend-dvora.herokuapp.com/files/member/${member.image}` : user} alt={"Foto de perfil"} />
                   <strong>{member.name}</strong>
                   <p>{member.position}</p>

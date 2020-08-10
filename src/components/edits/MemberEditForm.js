@@ -4,7 +4,7 @@ import { boardsApi, membersApi } from '../../api'
 import { Form, Input, message, Button, Select } from 'antd';
 
 import { FiCamera } from 'react-icons/fi';
-import { MdPerson, MdPhone, MdEmail, MdLock } from 'react-icons/md';
+import { MdPerson, MdPhone, MdEmail, MdLock, MdPhotoFilter } from 'react-icons/md';
 import {
   FaAddressCard, FaUserCog, FaUserTie, FaFacebookSquare,
   FaInstagram, FaLinkedin
@@ -52,7 +52,7 @@ function MemberRegistrationForm(props) {
         // data.append('facebook', values.facebook);
         // data.append('instagram', values.instagram);
         // data.append('linkedin', values.linkedin);
-        data.append('file', values.file);
+        data.append('file', photo);
         try {
           const response = await membersApi.update(data);
           if (response.status === 200) {
