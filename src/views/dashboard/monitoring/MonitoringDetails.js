@@ -10,20 +10,25 @@ import { Content, MonitoringInfoContainer } from "./styles/monitoring";
 import { feedbacksApi } from "../../../api";
 import { message, Spin, Button, Result } from "antd";
 
-export default function General({ match }) {
+export default function General(props) {
   const text =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet elit sed neque vulputate iaculis in id orci. Aliquam ac interdum nisl. Morbi et orci nec neque feugiat dictum. Nulla blandit nisl lobortis sagittis ornare. Quisque et vestibulum elit. Nunc commodo risus eget orci convallis, vulputate cursus libero sodales.";
-  const { memberId } = match.params;
+  const { memberId } = props.match.params;
 
   const [member, setMember] = useState({});
   const [duties, setDuties] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [dutyId, setDutyId] = useState(null);
+  const [duty, setDuty] = useState([]);
 
   useEffect(() => {
     getInfo();
   }, []);
+
+  useEffect(() => {
+    if (dutyId !== null) setDuty(duties.filter((item) => item.id === dutyId));
+  }, [dutyId]);
 
   async function getInfo() {
     setLoading(true);
@@ -42,6 +47,7 @@ export default function General({ match }) {
       setError(true);
     }
   }
+
   return (
     <Container>
       <Spin spinning={loading}>
@@ -51,6 +57,7 @@ export default function General({ match }) {
               img={member.image}
               name={member.name}
               role={member.position}
+              feedback={duty.length > 0 && duty[0].feedback}
             />
             <Content>
               <DutyContainer

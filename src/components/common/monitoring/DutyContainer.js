@@ -6,7 +6,7 @@ import { Container } from "./styles/monitoring";
 
 // máximo de DutyCards por página é 8!!
 // fazer paginação
-const DutyContainer = memo(({ duties, setDutyId, dutyId }) => {
+const DutyContainer = memo(({ duties, setDutyId, dutyId}) => {
   return (
     <Container>
       <h2>
