@@ -34,11 +34,12 @@ export const Title = styled.ul`
   }
 `;
 
-export const UserInfo = styled.ul`
-  list-style: none;
-  display: flex;
-  flex-direction: row;
+export const UserInfo = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  column-gap: 12px;
   align-items: center;
+  justify-content: center;
 
   strong {
     margin-left: 55px;
@@ -60,6 +61,10 @@ export const LastDuties = styled.ul`
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
+
+    svg {
+      margin-right: 6px;
+    }
   }
 `;
 
@@ -78,11 +83,6 @@ export const Duties = styled.li`
     border: solid 1px #aaaaaa;
     margin: 0 8px 0 8px;
     width: 50px;
-  }
-
-  .info {
-    cursor: pointer;
-    margin: 0 0 0 8px;
   }
 `;
 
