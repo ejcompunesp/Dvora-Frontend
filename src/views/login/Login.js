@@ -6,6 +6,7 @@ import * as JeActions from "../../store/actions/je";
 import * as MemberActions from '../../store/actions/member'
 
 import { authApi, loginDashboard } from "../../api";
+import { isAuthenticated } from "../../api/auth";
 
 import { Container, StyledForm } from "./styles/login";
 
@@ -14,14 +15,7 @@ import logo from "../../assets/dvora-logo.png";
 function Login({ form, setJe, setMember }) {
   const { getFieldDecorator } = form;
   const [loading, setLoading] = useState(false);
-  const [toDashboard, setToDashboard] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem("@dvora-token");
-    if (token) {
-      setToDashboard(true);
-    }
-  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -46,7 +40,7 @@ function Login({ form, setJe, setMember }) {
   }
   return (
     <>
-      {toDashboard ? <Redirect to="/dashboard" /> : null}
+      {isAuthenticated() ? <Redirect to="/dashboard" /> : null}
       <Container>
         <img src={logo} />
         <StyledForm onSubmit={handleSubmit} className="login-form">
