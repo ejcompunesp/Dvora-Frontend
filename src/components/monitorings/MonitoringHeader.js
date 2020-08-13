@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Title } from "../../views/dashboard/team/styles/team";
-import { ProfilePhoto } from "./styles/monitoring";
+import { ProfilePhoto, Header } from "./styles/monitoring";
 
 import imgTest from "../../assets/John Doe.png";
 import { Button, message } from "antd";
@@ -28,7 +27,7 @@ const MonitoringHeader = ({ name, role, img, feedback }) => {
 
   useEffect(() => {
     getDisable();
-  }, [feedback]);
+  }, [feedback, getDisable]);
 
   async function finishFeedback() {
     setLoading(true);
@@ -52,7 +51,7 @@ const MonitoringHeader = ({ name, role, img, feedback }) => {
 
   return (
     <>
-      <Title>
+      <Header>
         <div
           style={{
             display: "flex",
@@ -72,7 +71,7 @@ const MonitoringHeader = ({ name, role, img, feedback }) => {
             {buttonText}
           </Button>
         </div>
-      </Title>
+      </Header>
     </>
   );
 };

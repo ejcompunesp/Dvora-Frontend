@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 export const TopNavbarContainer = styled.div`
   width: 100%;
-  background-color: ${(props) => props.background};
-  height: 65px;
-  display: flex;
+  background-color: var(--color-primary);
+  height: 7rem;
+  display: grid;
+  grid-template-columns: 1fr 20fr;
   align-items: center;
-  padding: 0 10px;
   img {
     width: 35px;
   }
@@ -24,11 +24,12 @@ export const TopNavItems = styled.div`
 
  
 export const IconsList = styled.div`
-  display: flex;
-  margin: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 2rem;
+  margin: 0 3rem;
   svg {
-    margin: 0 14px;
-    font-size: 20px;
+    font-size: 2rem;
     cursor: pointer;
   }
   img{
@@ -61,7 +62,7 @@ export const SidebarContainer = styled.div`
     li {
       margin-top: 20px;
       svg {
-        font-size: 40px;
+        font-size: 4rem;
       }
       a {
         color: #292929;
@@ -78,4 +79,10 @@ export const SidebarContainer = styled.div`
       }
     }
   }
+`;
+
+export const TopNavLogo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

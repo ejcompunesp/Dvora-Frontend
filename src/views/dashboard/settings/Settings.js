@@ -8,8 +8,8 @@ import { bindActionCreators } from "redux";
 import { jesApi } from '../../../api';
 import * as JeActions from "../../../store/actions/je"
 
-import { Title } from '../team/styles/team';
 import { Container, Avatar } from './styles/settings';
+import Header from '../../../components/common/Header';
 
 function Settings({ form, je, setJe }) {
   const { getFieldDecorator } = form;
@@ -89,11 +89,12 @@ function Settings({ form, je, setJe }) {
   };
 
   return (
-    <Container>
-      <Title>
-        <h2>Configurações da EJ <FiSettings /></h2>
-        <Button onClick={onUpdate} type="primary"> <FiEdit3 title='editar' style={{ fontSize: '16pt' }} /></Button>
-      </Title>
+    <>
+      <Header 
+        title="Configurações da EJ" 
+        icon={<FiSettings />} 
+        button={<Button onClick={onUpdate} type="primary"> <FiEdit3 title='editar' style={{ fontSize: '16pt' }} /></Button>} 
+      />
       <Form onSubmit={handleSubmit} >
         <Form.Item
           name="upload"
@@ -169,7 +170,7 @@ function Settings({ form, je, setJe }) {
           </>
         )}
       </Form>
-    </Container>
+    </>
   );
 }
 const mapStateToProps = (state) => ({

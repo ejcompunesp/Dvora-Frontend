@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const Header = styled.div`
+export const Content = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -19,12 +19,4 @@ export const Header = styled.div`
       margin-left: 2rem; 
     }
   }
-`;
-
-export const ProfilePhoto = styled.img`
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 40px;
-  margin-right: 20px;
 `;

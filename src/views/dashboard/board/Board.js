@@ -6,11 +6,10 @@ import { Table, Popconfirm, Input, Form, message, Skeleton } from 'antd';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { FaChalkboard } from 'react-icons/fa';
 
-import { Container, Title } from '../team/styles/team';
-
 import ModalBoard from '../../../components/boards/ModalBoard';
 
 import { boardsApi } from '../../../api'
+import Header from '../../../components/common/Header';
 
 function Board({ form, je }) {
   const { getFieldDecorator } = form;
@@ -110,9 +109,9 @@ function Board({ form, je }) {
       dataIndex: 'delete',
       render: (text, record) =>
         boards.length >= 1 &&
-          <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.id)}>
-            <a><AiOutlineDelete style={{ fontSize: '17pt' }} /></a>
-          </Popconfirm>
+        <Popconfirm title="Tem certeza que deseja deletar?" onConfirm={() => handleDelete(record.id)}>
+          <a><AiOutlineDelete style={{ fontSize: '17pt' }} /></a>
+        </Popconfirm>
     },
     {
       title: 'Editar',
@@ -132,15 +131,16 @@ function Board({ form, je }) {
   ];
 
   return (
-    <Container>
+    <>
+      <Header
+        title="Diretorias"
+        icon={<FaChalkboard />}
+      />
       <Skeleton loading={loading}>
-        <Title>
-          <h2>Diretorias  <FaChalkboard /></h2>
-        </Title>
         <ModalBoard handleAdd={handleAdd} je={je} />
         <Table rowKey="id" dataSource={boards} columns={columns} pagination={false} />
       </Skeleton>
-    </Container>
+    </>
   );
 }
 const mapStateToProps = state => ({

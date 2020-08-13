@@ -8,7 +8,7 @@ import { FiLogOut, FiX } from "react-icons/fi";
 
 import { Dropdown, Menu, Spin } from 'antd';
 
-import { TopNavbarContainer, TopNavItems, BreadCrumb, IconsList } from './styles/menus';
+import { TopNavbarContainer, TopNavItems, BreadCrumb, IconsList, TopNavLogo } from './styles/menus';
 import dvoraLogo from '../../assets/dvora-logo.png';
 import { logoutDashboard, isLoginMember } from '../../api/auth'
 
@@ -60,8 +60,10 @@ export default function TopNavbar({ je, logout, member }) {
   }
 
   return (
-    <TopNavbarContainer background={"#00A7E1"}>
-      <img src={dvoraLogo} alt="Dvora" />
+    <TopNavbarContainer>
+      <TopNavLogo>
+        <img src={dvoraLogo} alt="Dvora" />
+      </TopNavLogo>
       <TopNavItems>
         <BreadCrumb>{je.name}</BreadCrumb>
         <IconsList>

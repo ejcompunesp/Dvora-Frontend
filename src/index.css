@@ -1,15 +1,35 @@
 @import '~antd/dist/antd.css';
+
+:root {
+  font-size: 60%; /* A cada 1 rem equivale a 9,6px */
+
+  --color-background: #F5F5F5;
+  --color-content-background: #FFFFFF;
+  --color-primary: #00A7E1;
+  --color-text-primary: #4A4A4A;
+  --color-button-text: #FFFFFF;
+  --color-border: #AAAAAA;
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-html {
-  font-size: 62.5%; /* A cada 1rem equivale a 10px */
+html,
+body,
+#root {
+  height: 100vh;
+}
+ 
+body {
+  background-color: var(--color-background);
+  font-family: 'Ubuntu';
 }
 
-html, body {
-  background-color: #f5f5f5;
-  font-family: 'Ubuntu';
+@media (min-width: 700px) {
+  :root {
+    font-size: 62.5%; /* A cada 1rem equivale a 10px */
+  }
 }

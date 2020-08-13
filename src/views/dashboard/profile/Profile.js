@@ -8,7 +8,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { GoPencil, GoInfo } from "react-icons/go";
 import { FaRegUser, FaRegClock, FaRegLightbulb, FaRegCalendarAlt } from "react-icons/fa";
 
-import { Container, Content } from "../team/styles/team";
+import { Content } from "../team/styles/team";
 import { Title, UserInfo, LastDuties, Duties, About, ActualProject } from "./styles/profile";
 
 import {data} from '../../../api/ApiTeste';
@@ -27,7 +27,7 @@ export default function Profile() {
   }
 
   return (
-    <Container>
+    <>
       <Title>
         <img src={JohnDoe} alt="profile-img"/>
         <li style={{marginLeft: "280px"}}>
@@ -67,6 +67,6 @@ export default function Profile() {
           </li>
         </UserInfo>
       </Content>
-    </Container>
+    </>
   );
 }

@@ -7,8 +7,9 @@ import { Radio, Button, message } from 'antd';
 
 import { RiMessage3Line } from 'react-icons/ri';
 
-import { Container, Title, Content } from '../team/styles/team';
+import { Content } from '../team/styles/team';
 import { FeedbackForm, Question } from './styles/feedback';
+import Header from '../../../components/common/Header';
 
 export default function Feedback(props) {
   const history = useHistory();
@@ -78,10 +79,11 @@ export default function Feedback(props) {
   }
 
   return(
-    <Container>
-      <Title>
-        <h2>Feedback <RiMessage3Line /></h2>
-      </Title>
+    <>
+      <Header 
+        title="Feedback"
+        icon={<RiMessage3Line />}
+      />
       <Content>
         <p style={{ fontSize: '16px' }}>Vamos, conte-nos um pouco sobre o seu plantão!</p>
         <FeedbackForm>
@@ -120,6 +122,6 @@ export default function Feedback(props) {
           </form>
         </FeedbackForm>
       </Content>
-    </Container>
+    </>
   );
 }

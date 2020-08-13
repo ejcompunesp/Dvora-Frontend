@@ -1,53 +1,5 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  width: 100%;
-  padding: 40px 60px;
-  background-color: #ffffff;
-  border: solid 1px #aaaaaa;
-  border-radius: 6px;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  font-family: "Ubuntu";
-  color: #4a4a4a;
-
-  button{
-    background: #00A7E1;
-    border-color: #00A7E1;
-    color: #ffffff;
-  }
-
-  button:hover{
-    background: #00A7E1;
-    border-color: #00A7E1;
-    filter: brightness(110%);
-  }
-`;
-
-export const Title = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 20px;
-  border-bottom: solid 1px #aaaaaa;
-
-  h2 {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    font-size: 30px;
-    font-weight: 500;
-
-    svg {
-      margin-left: 20px; 
-    }
-
-    .rocket{
-      transform: rotate(45deg);
-    }
-  }
-`;
-
 export const Content = styled.div`
   width: 100%;
   padding-top: 30px;

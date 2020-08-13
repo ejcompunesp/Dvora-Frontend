@@ -6,7 +6,7 @@ import { Table, message } from 'antd';
 
 import { FiCoffee } from 'react-icons/fi';
 
-import { Container, Title, Content } from '../team/styles/team'
+import { Content } from '../team/styles/team'
 import { DutyControllerButtons, DaysDuties } from './styles/duty';
 
 import { membersDutyApi } from '../../../api';
@@ -14,6 +14,7 @@ import { membersDutyApi } from '../../../api';
 import user from '../../../assets/user.png';
 import ModalOnDuty from '../../../components/duty/ModalOnDuty'
 import ModalFinishingDuty from '../../../components/duty/ModalFinishingDuty';
+import Header from '../../../components/common/Header';
 
 function Duty({ je, member }) {
   const apiURL = 'https://backend-dvora.herokuapp.com/files/member';
@@ -120,10 +121,11 @@ function Duty({ je, member }) {
   ]
 
   return (
-    <Container>
-      <Title>
-        <h2>Plantão <FiCoffee /></h2>
-      </Title>
+    <>
+      <Header 
+        title="Plantão"
+        icon={<FiCoffee />}
+      />
       <Content>
         <p style={{ fontSize: '16px' }}>Bora pra mais um plantão ?</p>
 
@@ -137,7 +139,7 @@ function Duty({ je, member }) {
       </Content>
 
 
-    </Container>
+    </>
   )
 }
 

@@ -11,13 +11,13 @@ import { AiOutlineRocket } from 'react-icons/ai';
 import { FiMoreVertical } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
-import {
-  Container, Title, Content, TeamMembers,
+import { Content, TeamMembers,
   MoreButton, DropdownItem, SocialMedias, Pages
 } from './styles/team';
 
 import MemberRegistration from '../../../components/registrations/MemberRegistration';
 import MemberEdit from '../../../components/edits/MemberEdit';
+import Header from '../../../components/common/Header';
 import user from '../../../assets/user.png';
 
 function Team(props) {
@@ -117,11 +117,12 @@ function Team(props) {
   }
 
   return (
-    <Container>
-      <Title>
-        <h2>Nossa equipe <AiOutlineRocket className="rocket" /></h2>
-        {!invisibleToMember && <MemberRegistration visible={visible} setVisible={setVisible} onSubmit={handleSubmit} />}
-      </Title>
+    <>
+      <Header 
+        title="Nossa equipe" 
+        icon={<AiOutlineRocket style={{ transform: "rotate(45deg)" }}/>} 
+        button={!invisibleToMember && <MemberRegistration visible={visible} setVisible={setVisible} onSubmit={handleSubmit} />} 
+      />
       <Content>
         <Skeleton loading={loading}>
           <TeamMembers>
@@ -164,7 +165,7 @@ function Team(props) {
           </Pages>
         </Skeleton>
       </Content>
-    </Container>
+    </>
   );
 }
 

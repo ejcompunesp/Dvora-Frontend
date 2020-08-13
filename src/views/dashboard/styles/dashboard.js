@@ -1,21 +1,38 @@
 import styled from 'styled-components';
 
+export const Navbar = styled.div`
+  width: 100%;
+`;
+
 export const DashboardContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 14fr;
-  .navbar {
-    grid-column: 1/5;  
-    width: 100%;
-  }
+  grid-template-columns: 1fr 20fr;
+
   .sidebar {
-    grid-column: 1/2;
     min-height: 100vh;
-    background-color: #ffffff;
-    box-shadow: 1px 1px 4px rgba(0, 0, 0, .3);
+    background-color: var(--color-content-background);
+    box-shadow: 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, .3);
   }
-  .content {
-    grid-column: 2/14;
-    padding: 30px;
+`;
+
+export const Content = styled.div`
+  margin: 3rem;
+  padding: 4rem 5rem;
+  background-color: var(--color-content-background);
+  border-radius: 0.6rem;
+  box-shadow: 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.3);
+  color: var(--color-text-secondary);
+
+  button{
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-button-text);
+  }
+
+  button:hover{
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    filter: brightness(110%);
   }
 `;
 
