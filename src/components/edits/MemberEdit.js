@@ -27,7 +27,7 @@ export default function MemberRegistration(props) {
         onCancel={handleCancel}
         footer={null}
       >
-        <EditForm setNewMember={props.setNewMember} memberId={props.memberId} setVisible={setVisible}/>
+        <EditForm setNewMember={props.setNewMember} member={props.member} setVisible={setVisible}/>
       </StyledModal>
     </div>
   );
