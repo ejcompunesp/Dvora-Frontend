@@ -19,6 +19,15 @@ export const Header = styled.div`
       margin-left: 2rem; 
     }
   }
+  @media (max-width: 1100px) {
+    div {
+     flex-direction: column; 
+     align-items: initial !important;
+   }
+    h2 {
+      margin-bottom: 1.2rem;
+    }
+  }
 `;
 
 export const ProfilePhoto = styled.img`
