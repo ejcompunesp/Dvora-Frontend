@@ -14,7 +14,7 @@ export default function MemberRegistration(props) {
   };
 
   return (
-    <div style={{ float: "right", paddingTop: "3px" }}>
+    <>
       <Button
         title="Adicionar membro"
         type="primary"
@@ -32,6 +32,6 @@ export default function MemberRegistration(props) {
       >
         <RegistrationForm onSubmit={props.onSubmit} setVisible={props.setVisible}/>
       </StyledModal>
-    </div>
+    </>
   );
 }

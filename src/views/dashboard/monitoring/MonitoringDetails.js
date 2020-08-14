@@ -23,11 +23,11 @@ export default function General(props) {
 
   useEffect(() => {
     getInfo();
-  }, [getInfo]);
+  }, []);
 
   useEffect(() => {
     if (dutyId !== null) setDuty(duties.filter((item) => item.id === dutyId));
-  }, [duties, dutyId]);
+  }, [dutyId]);
 
   async function getInfo() {
     setLoading(true);
@@ -48,7 +48,7 @@ export default function General(props) {
   }
 
   return (
-    <>
+    <div>
       <Spin spinning={loading}>
         {!error ? (
           <>
@@ -83,6 +83,6 @@ export default function General(props) {
           />
         )}
       </Spin>
-    </>
+      </div>
   );
 }

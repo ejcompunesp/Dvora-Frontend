@@ -16,7 +16,17 @@ export const Content = styled.div`
     font-weight: 500;
 
     svg {
+      font-size: 2.6rem;
       margin-left: 2rem; 
+    }
+  }
+
+  @media (max-width: 1100px) {
+    display: flex;
+    flex-direction: column; 
+
+    h2 {
+      margin-bottom: 1.2rem;
     }
   }
 `;

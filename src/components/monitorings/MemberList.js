@@ -52,17 +52,15 @@ function MemberList(props) {
       title: "Nome",
       dataIndex: "name",
       key: "name",
-      width: "25%",
     },
     {
       key: "dutyStatusIcon",
-      width: "2%",
       render: (row) => handleStatusIcon(row.isDutyDone),
+      width: "4%",
     },
     {
       title: "Plantão",
       key: "dutyStatus",
-      width: "21%",
       render: (row) => handleStatus(row.isDutyDone),
     },
     {
@@ -72,13 +70,12 @@ function MemberList(props) {
     },
     {
       key: "accStatusIcon",
-      width: "2%",
       render: (row) => handleStatusIcon(row.isMonitoringDone),
+      width: "4%",
     },
     {
       title: "Acompanhamento",
       key: "accStatus",
-      width: "21%",
       render: (row) => handleStatus(row.isMonitoringDone),
     },
     {
@@ -90,31 +87,26 @@ function MemberList(props) {
       title: "Cargo",
       dataIndex: "position",
       key: "position",
-      width: "25%",
     },
     {
       title: "Detalhes",
       dataIndex: "",
       key: "details",
       render: (row) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
           <Link type="link" to={`monitoring/details/${row.id}`}>
             <Icon type="eye" />
           </Link>
-        </div>
       ),
     },
   ];
 
   return (
     <Skeleton active loading={loading}>
-      <div>
         <Table
           columns={columns.filter((column) => column.visible !== false)}
           scroll={{ x: true }}
           dataSource={members}
         />
-      </div>
     </Skeleton>
   );
 }

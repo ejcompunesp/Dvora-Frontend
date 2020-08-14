@@ -24,13 +24,11 @@ export default function Siderbar() {
             );
           }
           return (
-            <div key={idx}>
+            <li key={idx}>
               {!route.invisible &&
-                <li >
-                  <Link to={route.path}> {route.icon}</Link>
-                </li>
+                <Link to={route.path}> {route.icon}</Link>
               }
-            </div>
+            </li>
           );
         })}
       </ul>

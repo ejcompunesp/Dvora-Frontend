@@ -6,12 +6,22 @@ export const Navbar = styled.div`
 
 export const DashboardContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 20fr;
+  grid-template-columns: 1fr 19fr;
 
   .sidebar {
     min-height: 100vh;
     background-color: var(--color-content-background);
     box-shadow: 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, .3);
+  }
+
+  @media (max-width: 1100px) {
+    display: flex;
+    flex-direction: column;
+
+    .sidebar {
+      min-height: 0;
+      width: 100%;
+    }
   }
 `;
 
@@ -34,6 +44,10 @@ export const Content = styled.div`
     border-color: var(--color-primary);
     filter: brightness(110%);
   }
+
+  @media (max-width: 1100px) {
+    margin: 2rem 0;
+    padding: 2rem 1.4rem;
+    min-height: 100vh;
+  }
 `;
-
-
