@@ -4,7 +4,7 @@ import Settings from "../dashboard/settings/Settings";
 import Monitoring from "./monitoring/Monitoring";
 import MonitoringDetails from "./monitoring/MonitoringDetails";
 import Team from "./team/Team";
-import Profile from "./profile/Profile";
+// import Profile from "./profile/Profile";
 import Feedback from "./feedback/Feedback";
 import Duty from "./duty/Duty";
 import Board from './board/Board';
@@ -65,12 +65,12 @@ export const routes = [
     icon: TeamIcon,
     component: Team,
   },
-  {
-    path: "/dashboard/profile",
-    active: (path) => isActive(path),
-    component: Profile,
-    invisible: true,
-  },
+  // {
+  //   path: "/dashboard/profile",
+  //   active: (path) => isActive(path),
+  //   component: Profile,
+  //   invisible: true,
+  // },
   {
     path: "/dashboard/feedback",
     active: (path) => isActive(path),

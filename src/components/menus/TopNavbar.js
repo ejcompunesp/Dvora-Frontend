@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { FaBell, FaUser } from 'react-icons/fa';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { FiLogOut, FiX } from "react-icons/fi";
+import { FiLogOut, FiX } from 'react-icons/fi';
 
 import { Dropdown, Menu, Spin } from 'antd';
 
@@ -49,11 +49,6 @@ export default function TopNavbar({ je, logout, member }) {
     logout();
   }
 
-  function redirectToProfile() {
-    isLoginMember() ?
-      history.push('/dashboard/profile') :
-      history.push('/dashboard/team');
-  }
   function showOptions() {
     setIconMenu(!iconMenu);
     setDropdown(!dropdown);
@@ -66,9 +61,9 @@ export default function TopNavbar({ je, logout, member }) {
         <BreadCrumb>{je.name}</BreadCrumb>
         <IconsList>
           {isLoginMember() && member.image ?
-            <img src={`${apiURL}/${member.image}`} onClick={redirectToProfile} />
+            <img src={`${apiURL}/${member.image}`} />
             :
-            <FaUser onClick={redirectToProfile} />
+            <FaUser />
           }
           <FaBell />
           <Dropdown overlay={menu}
