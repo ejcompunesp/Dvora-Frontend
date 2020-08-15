@@ -22,8 +22,9 @@ export default function AppRoutes() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/registro"  component={Registro}/>      
+        <Route exact path="/" component={Login} />
+        <Route path="/login" component={Login} />
+        <Route path="/registro"  component={Registro}/>      
         <PrivateRoute path="/dashboard" component={Dashboard}/> 
       </Switch>
     </Router>
