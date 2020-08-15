@@ -141,6 +141,8 @@ function MemberRegistrationForm(props) {
       </Form.Item>
       <Form.Item label="Diretoria">
         {getFieldDecorator('boardId', {
+          valuePropName: 'option',
+          initialValue: props.member.boardId || '',
           rules: [
             {
               required: true,
