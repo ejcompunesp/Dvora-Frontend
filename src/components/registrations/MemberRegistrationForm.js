@@ -159,7 +159,9 @@ function MemberRegistrationForm(props) {
             }
           ],
         })(
-          <Select suffixIcon={<FaUserTie />} placeholder="Selecione uma diretoria" allowClear>
+          <Select placeholder="Selecione uma diretoria"
+            getPopupContainer={trigger => trigger.parentNode}
+            allowClear>
             {boards.map((board) => (
               <Select.Option key={board.id} value={board.id}>{board.name}</Select.Option>
             ))}
