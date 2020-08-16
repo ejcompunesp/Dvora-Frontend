@@ -42,7 +42,7 @@ function Duty({ je, member }) {
       try {
         const response = await membersDutyApi.list(je.id);
         if (response.status === 200) {
-          const data = response.data.dutiesToday.map(memberDuty => ({
+          const data = response.data.duties.map(memberDuty => ({
             ...memberDuty,
             startTime: formatTime(memberDuty.duty.createdAt),
             finishTime: memberDuty.duty.status === 1 ? formatTime(memberDuty.duty.updatedAt) : null,
