@@ -41,7 +41,6 @@ const Duty = ({ je, member }) => {
     const loadDuties = async () => {
       try {
         const response = await membersDutyApi.list(je.id);
-        console.log({ response });
         if (response.status === 200) {
           const data = [];
           response.data.members.forEach((currentMember) => {
@@ -56,7 +55,6 @@ const Duty = ({ je, member }) => {
               data.push(memberObj);
             });
           });
-          console.log({ data });
           setMemberOnDuty(data);
         }
       } catch (error) {
