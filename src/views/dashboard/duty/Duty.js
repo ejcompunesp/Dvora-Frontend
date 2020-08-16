@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect, memo } from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
-import { Table, message } from 'antd';
+import { Table, message } from "antd";
 
-import { FiCoffee } from 'react-icons/fi';
+import { FiCoffee } from "react-icons/fi";
 
-import { Container, Title, Content } from '../team/styles/team'
-import { DutyControllerButtons, DaysDuties } from './styles/duty';
+import { Container, Title, Content } from "../team/styles/team";
+import { DutyControllerButtons, DaysDuties } from "./styles/duty";
 
-import { membersDutyApi } from '../../../api';
+import { membersDutyApi } from "../../../api";
 
-import user from '../../../assets/user.png';
-import ModalOnDuty from '../../../components/duty/ModalOnDuty'
-import ModalFinishingDuty from '../../../components/duty/ModalFinishingDuty';
+import user from "../../../assets/user.png";
+import ModalOnDuty from "../../../components/duty/ModalOnDuty";
+import ModalFinishingDuty from "../../../components/duty/ModalFinishingDuty";
 
-function Duty({ je, member }) {
-  const apiURL = 'https://backend-dvora.herokuapp.com/files/member';
+const Duty = ({ je, member }) => {
+  const apiURL = "https://backend-dvora.herokuapp.com/files/member";
   let [sortedInfo, setSortedInfo] = useState();
   const [memberOnDuty, setMemberOnDuty] = useState([]);
   const [newDuty, setNewDuty] = useState();
@@ -42,18 +42,25 @@ function Duty({ je, member }) {
       try {
         const response = await membersDutyApi.list(je.id);
         if (response.status === 200) {
-          const data = response.data.duties.map(memberDuty => ({
-            ...memberDuty,
-            startTime: formatTime(memberDuty.duty.createdAt),
-            finishTime: memberDuty.duty.status === 1 ? formatTime(memberDuty.duty.updatedAt) : null,
-          }))
+          const data = [];
+          response.data.members.forEach((currentMember) => {
+            currentMember.duties.forEach((memberDuty) => {
+              const memberObj = {
+                ...memberDuty,
+                member: currentMember.member,
+                startTime: formatTime(memberDuty.createdAt),
+                finishTime:
+                  memberDuty.status && formatTime(memberDuty.updatedAt),
+              };
+              data.push(memberObj);
+            });
+          });
           setMemberOnDuty(data);
         }
+      } catch (error) {
+        console.log(error);
       }
-      catch (error) {
-        console.log(error.response.data);
-      }
-    }
+    };
     loadDuties();
   }, [formatTime, je.id, newDuty]);
 
@@ -63,13 +70,13 @@ function Duty({ je, member }) {
       if (response.status === 200) {
         values.member.finishTime = formatTime(response.data.updatedAt);
         setMemberOnDuty([...memberOnDuty]);
-        message.success('Plantão finalizado!');
+        message.success("Plantão finalizado!");
         const dutyId = values.dutyId;
         history.push({
-          pathname: '/dashboard/feedback',
+          pathname: "/dashboard/feedback",
           state: {
             dutyId,
-          }
+          },
         });
       }
     } catch (error) {
@@ -79,71 +86,88 @@ function Duty({ je, member }) {
 
   function handleChange(sorter) {
     setSortedInfo(sorter);
-  };
+  }
 
   sortedInfo = sortedInfo || {};
 
   const columns = [
     {
-      title: 'Plantões do dia',
-      key: 'tableTitle',
+      title: "Plantões do dia",
+      key: "tableTitle",
       children: [
         {
-          dataIndex: 'file',
-          width: '4%',
-          render: file => <img src={file ? `${apiURL}/${file}` : user} alt="Foto de perfil" />
+          dataIndex: "file",
+          width: "4%",
+          render: (file) => (
+            <img src={file ? `${apiURL}/${file}` : user} alt="Foto de perfil" />
+          ),
         },
         {
-          title: 'Nome',
-          dataIndex: 'member',
+          title: "Nome",
+          dataIndex: "member",
           sorter: (a, b) => a.member.localeCompare(b.member),
-          sortOrder: sortedInfo.columnKey === 'member' && sortedInfo.order,
+          sortOrder: sortedInfo.columnKey === "member" && sortedInfo.order,
           ellipsis: true,
         },
         {
-          title: 'Início',
-          dataIndex: 'startTime',
+          title: "Início",
+          dataIndex: "startTime",
         },
         {
-          title: 'Término',
-          dataIndex: 'finishTime',
+          title: "Término",
+          dataIndex: "finishTime",
         },
         {
-          title: 'Finalizar plantão',
-          dataIndex: 'duty.memberId',
-          render: (text, record) => record.finishTime === null ?
-            <ModalFinishingDuty onSubmit={handleFinished} member={record} dutyId={record.duty.id} memberId={member.id} /> :
-            <span>CONCLUÍDO!</span>
+          title: "Finalizar plantão",
+          dataIndex: "duty.memberId",
+          render: (text, record) =>
+            record.finishTime === null ? (
+              <ModalFinishingDuty
+                onSubmit={handleFinished}
+                member={record}
+                dutyId={record.duty.id}
+                memberId={member.id}
+              />
+            ) : (
+              <span>CONCLUÍDO!</span>
+            ),
         },
-      ]
+      ],
     },
-  ]
+  ];
 
   return (
     <Container>
       <Title>
-        <h2>Plantão <FiCoffee /></h2>
+        <h2>
+          Plantão <FiCoffee />
+        </h2>
       </Title>
       <Content>
-        <p style={{ fontSize: '16px' }}>Bora pra mais um plantão ?</p>
+        <p style={{ fontSize: "16px" }}>Bora pra mais um plantão ?</p>
 
         <DutyControllerButtons>
           <ModalOnDuty setNewDuty={setNewDuty} />
         </DutyControllerButtons>
 
         <DaysDuties>
-          <Table rowKey="id" columns={columns} scroll={{ x: true }} dataSource={memberOnDuty} pagination={false} onChange={handleChange} />
+          <Table
+            rowKey="id"
+            columns={columns}
+            scroll={{ x: true }}
+            dataSource={memberOnDuty}
+            pagination={false}
+            onChange={handleChange}
+          />
         </DaysDuties>
       </Content>
-
-
     </Container>
-  )
+  );
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   je: state.je,
-  member: state.member
+  member: state.member,
 });
 
-export default connect(mapStateToProps)(Duty);
+export default connect(mapStateToProps)(memo(Duty));
