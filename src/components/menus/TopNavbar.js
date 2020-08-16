@@ -24,16 +24,16 @@ export default function TopNavbar({ je, logout, member }) {
   const menu = (
     <Menu>
       <Menu.Item key="1" >
-        1st menu item
+        Em desenvolvimento
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="2" >
-        2nd menu item
+        Em desenvolvimento
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="3" onClick={redirectToLogin}>
         <Spin spinning={loading} size='small'>
-          <FiLogOut viewBox={'0 0 24 20'} /> Sair
+          <FiLogOut viewBox={'0 0 24 20'} /> Log Out
         </Spin>
       </Menu.Item>
     </Menu>
