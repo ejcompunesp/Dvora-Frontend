@@ -8,8 +8,9 @@ import { bindActionCreators } from "redux";
 import { jesApi } from '../../../api';
 import * as JeActions from "../../../store/actions/je"
 
-import { Title } from '../team/styles/team';
-import { Container, Avatar } from './styles/settings';
+import { Avatar } from './styles/settings';
+import Header from '../../../components/common/Header';
+import { Content } from '../styles/global';
 
 function Settings({ form, je, setJe }) {
   const { getFieldDecorator } = form;
@@ -89,87 +90,90 @@ function Settings({ form, je, setJe }) {
   };
 
   return (
-    <Container>
-      <Title>
-        <h2>Configurações da EJ <FiSettings /></h2>
-        <Button onClick={onUpdate} type="primary"> <FiEdit3 title='editar' style={{ fontSize: '16pt' }} /></Button>
-      </Title>
-      <Form onSubmit={handleSubmit} >
-        <Form.Item
-          name="upload"
-          label="Foto"
-          onChange={handleChange}
-        >
-          <Avatar>
-            <Upload showUploadList={false}
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76" listType="picture-card" disabled={disable} >
-              {image.preview ? <img src={image.preview} alt="avatar" style={{ width: '100%' }} /> : src}
-            </Upload>
-          </Avatar>
-        </Form.Item>
-        <Form.Item style={{ width: '60%' }} label='Nome'>
-          {getFieldDecorator('name', {
-            initialValue: je.name,
-          })(
-            <Input disabled={disable} addonBefore={<Icon type='user' />} />
+    <>
+      <Header 
+        title="Configurações da EJ" 
+        icon={<FiSettings />} 
+        button={<Button onClick={onUpdate} type="primary"> <FiEdit3 title='editar' style={{ fontSize: '16pt' }} /></Button>} 
+      />
+      <Content>
+        <Form onSubmit={handleSubmit} >
+          <Form.Item
+            name="upload"
+            label="Foto"
+            onChange={handleChange}
+          >
+            <Avatar>
+              <Upload showUploadList={false}
+                action="https://www.mocky.io/v2/5cc8019d300000980a055e76" listType="picture-card" disabled={disable} >
+                {image.preview ? <img src={image.preview} alt="avatar" style={{ width: '100%' }} /> : src}
+              </Upload>
+            </Avatar>
+          </Form.Item>
+          <Form.Item style={{ width: '60%' }} label='Nome'>
+            {getFieldDecorator('name', {
+              initialValue: je.name,
+            })(
+              <Input disabled={disable} addonBefore={<Icon type='user' />} />
+            )}
+          </Form.Item>
+          <Form.Item style={{ width: '60%' }} label="IES (instituição de ensino superior)">
+            {getFieldDecorator('university', {
+              initialValue: je.university,
+            })(
+              <Input disabled={disable} addonBefore={<Icon type='bank' />} />
+            )}
+          </Form.Item>
+          <Form.Item style={{ width: '60%' }} label="Cidade de origem">
+            {getFieldDecorator('city', {
+              initialValue: je.city,
+            })(
+              <Input disabled={disable} addonBefore={<Icon type='home' />} />
+            )}
+          </Form.Item>
+          <Form.Item style={{ width: '60%' }} label="Ano de criação(da EJ)">
+            {getFieldDecorator('creationYear', {
+              initialValue: je.creationYear,
+            })(
+              <Input disabled={disable} addonBefore={<Icon type='calendar' />} />
+            )}
+          </Form.Item>
+          {visible && (
+            <>
+              {visiblePassword ? (
+                <>
+                  <Form.Item style={{ width: '60%' }} label="Nova senha" hasFeedback>
+                    {getFieldDecorator('password', {
+                    })(
+                      <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
+                    )}
+                  </Form.Item>
+                  <Form.Item style={{ width: '60%' }} label="Confirmar senha"
+                    dependencies={['password']}
+                    hasFeedback>
+                    {getFieldDecorator('confirmPassword', {
+                      rules: [
+                        {
+                          validator: compareToFirstPassword,
+                        },
+                      ],
+                    })(
+                      <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
+                    )}
+                  </Form.Item>
+                </>
+              ) : (
+                  <a onClick={() => setVisiblePassword(true)}><Text underline> Alterar senha </Text></a>
+                )}
+              <Form.Item style={{ marginTop: '20px' }} >
+                <Button loading={loading} type="primary" htmlType="submit" > Salvar </Button>
+                <Button style={{ marginLeft: '10px' }} htmlType="button" onClick={onReset}>  Cancelar </Button>
+              </Form.Item>
+            </>
           )}
-        </Form.Item>
-        <Form.Item style={{ width: '60%' }} label="IES (instituição de ensino superior)">
-          {getFieldDecorator('university', {
-            initialValue: je.university,
-          })(
-            <Input disabled={disable} addonBefore={<Icon type='bank' />} />
-          )}
-        </Form.Item>
-        <Form.Item style={{ width: '60%' }} label="Cidade de origem">
-          {getFieldDecorator('city', {
-            initialValue: je.city,
-          })(
-            <Input disabled={disable} addonBefore={<Icon type='home' />} />
-          )}
-        </Form.Item>
-        <Form.Item style={{ width: '60%' }} label="Ano de criação(da EJ)">
-          {getFieldDecorator('creationYear', {
-            initialValue: je.creationYear,
-          })(
-            <Input disabled={disable} addonBefore={<Icon type='calendar' />} />
-          )}
-        </Form.Item>
-        {visible && (
-          <>
-            {visiblePassword ? (
-              <>
-                <Form.Item style={{ width: '60%' }} label="Nova senha" hasFeedback>
-                  {getFieldDecorator('password', {
-                  })(
-                    <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
-                  )}
-                </Form.Item>
-                <Form.Item style={{ width: '60%' }} label="Confirmar senha"
-                  dependencies={['password']}
-                  hasFeedback>
-                  {getFieldDecorator('confirmPassword', {
-                    rules: [
-                      {
-                        validator: compareToFirstPassword,
-                      },
-                    ],
-                  })(
-                    <Input.Password disabled={disable} addonBefore={<Icon type='lock' />} />
-                  )}
-                </Form.Item>
-              </>
-            ) : (
-                <a onClick={() => setVisiblePassword(true)}><Text underline> Alterar senha </Text></a>
-              )}
-            <Form.Item style={{ marginTop: '20px' }} >
-              <Button loading={loading} type="primary" htmlType="submit" > Salvar </Button>
-              <Button style={{ marginLeft: '10px' }} htmlType="button" onClick={onReset}>  Cancelar </Button>
-            </Form.Item>
-          </>
-        )}
-      </Form>
-    </Container>
+        </Form>
+      </Content>
+    </>
   );
 }
 const mapStateToProps = (state) => ({

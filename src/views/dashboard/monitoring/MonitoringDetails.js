@@ -5,7 +5,6 @@ import DutyContainer from "../../../components/common/monitoring/DutyContainer";
 import FeedbackMonitoring from "../../../components/common/monitoring/FeedbackMonitoring";
 import MonitoringComments from "../../../components/common/monitoring/MonitoringComments";
 
-import { Container } from "../team/styles/team";
 import { Content, MonitoringInfoContainer } from "./styles/monitoring";
 import { feedbacksApi } from "../../../api";
 import { message, Spin, Button, Result } from "antd";
@@ -49,7 +48,7 @@ export default function General(props) {
   }
 
   return (
-    <Container>
+    <div>
       <Spin spinning={loading}>
         {!error ? (
           <>
@@ -84,6 +83,6 @@ export default function General(props) {
           />
         )}
       </Spin>
-    </Container>
+      </div>
   );
 }

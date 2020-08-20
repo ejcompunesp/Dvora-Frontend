@@ -17,6 +17,10 @@ export const Content = styled.div`
   display: flex;
   margin-top: 30px;
   justify-content: space-between;
+
+  @media (max-width: 1100px) {
+    flex-direction: column;
+  }
 `;
 
 export const MonitoringInfoContainer = styled.div`

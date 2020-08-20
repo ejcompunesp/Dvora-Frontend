@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const Header = styled.div`
+export const Content = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -16,24 +16,17 @@ export const Header = styled.div`
     font-weight: 500;
 
     svg {
+      font-size: 2.6rem;
       margin-left: 2rem; 
     }
   }
+
   @media (max-width: 1100px) {
-    div {
-     flex-direction: column; 
-     align-items: initial !important;
-   }
+    display: flex;
+    flex-direction: column; 
+
     h2 {
       margin-bottom: 1.2rem;
     }
   }
-`;
-
-export const ProfilePhoto = styled.img`
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 40px;
-  margin-right: 20px;
 `;

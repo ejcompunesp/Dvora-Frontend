@@ -1,90 +1,42 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  width: 100%;
-  padding: 40px 60px;
-  background-color: #ffffff;
-  border: solid 1px #aaaaaa;
-  border-radius: 6px;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  font-family: "Ubuntu";
-  color: #4a4a4a;
-
-  button{
-    background: #00A7E1;
-    border-color: #00A7E1;
-    color: #ffffff;
-  }
-
-  button:hover{
-    background: #00A7E1;
-    border-color: #00A7E1;
-    filter: brightness(110%);
-  }
-`;
-
-export const Title = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 20px;
-  border-bottom: solid 1px #aaaaaa;
-
-  h2 {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    font-size: 30px;
-    font-weight: 500;
-
-    svg {
-      margin-left: 20px; 
-    }
-
-    .rocket{
-      transform: rotate(45deg);
-    }
-  }
-`;
-
 export const Content = styled.div`
   width: 100%;
-  padding-top: 30px;
+  padding: 3rem 0;
 `;
 
 export const TeamMembers = styled.ul`
   list-style: none;
   display: grid;
   grid-template-columns: repeat(5, minmax(200px, 1fr));
-  grid-gap: 30px;
-  margin-bottom: 20px;
-  font-size: 14px; 
+  grid-gap: 3rem;
+  margin-bottom: 2rem;
+  font-size: 1.4rem; 
 
   li{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    border: solid 1px #aaaaaa;
-    border-radius: 6px;
+    padding: 2rem;
+    border: solid 0.1rem #aaaaaa;
+    border-radius: 0.6rem;
 
     strong{
-      font-size: 14px;
+      font-size: 1.4rem;
     }
 
     p{
-      font-size: 12px;
-      margin: 0 0 10px 0;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
     }
 
     img{
-      width: 100px;
-      height: 100px;
+      width: 10rem;
+      height: 10rem;
       object-fit: cover;
       border-radius: 50%;
-      margin-bottom: 10px;
+      margin-bottom: 1rem;
     }
   }
 
@@ -165,5 +117,4 @@ export const SocialMedias = styled.div`
 export const Pages = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin: 0 50px 30px 50px;
 `;

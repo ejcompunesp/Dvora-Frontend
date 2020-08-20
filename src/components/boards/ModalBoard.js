@@ -29,7 +29,7 @@ function ModalBoard(props) {
 
     return (
         <div>
-            <Button style={{marginTop: '3%', marginBottom: '3%'}} type="primary" onClick={() => setVisible(true)}> Adicionar diretoria  </Button>
+            <Button type="primary" onClick={() => setVisible(true)}> Adicionar diretoria  </Button>
             <Modal
                 title="Adicionar diretoria"
                 destroyOnClose={true}

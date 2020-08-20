@@ -44,6 +44,9 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
   }
+  @media (max-width: 1100px) {
+    width: 100%;
+  }
 `;
 
 export const FeedbackContainer = styled.div`
@@ -54,6 +57,11 @@ export const FeedbackContainer = styled.div`
   max-height: 250px;
   overflow: hidden;
   margin-bottom: 20px;
+
+  @media (max-width: 1100px) {
+    min-width:  100%;
+    margin-top: 20px;
+  }
 `;
 
 export const FeedbackTitle = styled.div`
@@ -83,6 +91,9 @@ export const CommentContainer = styled.div`
   padding: 20px 40px;
   border-radius: 3px;
   border: 1px solid #aaaaaa;
+  @media (max-width: 1100px) {
+    min-width: 100%;
+  }
 `;
 
 export const CommentContent = styled.div`
