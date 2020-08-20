@@ -8,24 +8,24 @@ export const DashboardContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 19fr;
 
-  .sidebar {
-    min-height: 100vh;
-    background-color: var(--color-content-background);
-    box-shadow: 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, .3);
-  }
-
   @media (max-width: 1100px) {
     display: flex;
     flex-direction: column;
-
-    .sidebar {
-      min-height: 0;
-      width: 100%;
-    }
   }
 `;
 
-export const Content = styled.div`
+export const Sidebar = styled.div`
+  min-height: 100vh;
+  background-color: var(--color-content-background);
+  box-shadow: 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, .3);
+
+  @media (max-width: 1100px) {
+    min-height: 0;
+    width: 100%;
+  }
+`;
+
+export const Container = styled.div`
   margin: 3rem;
   padding: 4rem 5rem;
   background-color: var(--color-content-background);
