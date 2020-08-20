@@ -6,9 +6,9 @@ import * as MemberActions from '../../store/actions/member'
 import DashboardRouter from "../../dashboard.routes";
 
 import Menu from "../../components/menus/Nav";
-import Siderbar from "../../components/menus/Sidebar";
+import SideMenu from "../../components/menus/Sidebar";
 
-import { Navbar, DashboardContainer, Content } from "./styles/dashboard";
+import { Navbar, DashboardContainer, Container, Sidebar } from "./styles/dashboard";
 
 function Dashboard({ je, logout, member }) {
   return (
@@ -17,12 +17,12 @@ function Dashboard({ je, logout, member }) {
         <Menu je={je} logout={logout} member={member}/>
       </Navbar>
       <DashboardContainer>
-        <div className="sidebar">
-          <Siderbar/> 
-        </div>
-        <Content>
+        <Sidebar>
+          <SideMenu/> 
+        </Sidebar>
+        <Container>
           <DashboardRouter/>
-        </Content>
+        </Container>
       </DashboardContainer>
     </>
   );
