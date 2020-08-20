@@ -6,7 +6,6 @@ import { Table, message } from 'antd';
 
 import { FiCoffee } from 'react-icons/fi';
 
-import { Content } from '../team/styles/team'
 import { DutyControllerButtons, DaysDuties } from './styles/duty';
 
 import { membersDutyApi } from '../../../api';
@@ -15,6 +14,8 @@ import user from '../../../assets/user.png';
 import ModalOnDuty from '../../../components/duty/ModalOnDuty'
 import ModalFinishingDuty from '../../../components/duty/ModalFinishingDuty';
 import Header from '../../../components/common/Header';
+
+import { Content } from '../styles/global';
 
 function Duty({ je, member }) {
   const apiURL = 'https://backend-dvora.herokuapp.com/files/member';

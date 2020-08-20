@@ -11,6 +11,8 @@ import ModalBoard from '../../../components/boards/ModalBoard';
 import { boardsApi } from '../../../api'
 import Header from '../../../components/common/Header';
 
+import { StyledContent } from "./styles/board";
+
 function Board({ form, je }) {
   const { getFieldDecorator } = form;
   const [boards, setBoards] = useState([]);
@@ -137,8 +139,10 @@ function Board({ form, je }) {
         icon={<FaChalkboard />}
       />
       <Skeleton loading={loading}>
-        <ModalBoard handleAdd={handleAdd} je={je} />
-        <Table rowKey="id" dataSource={boards} columns={columns} pagination={false} />
+        <StyledContent>
+          <ModalBoard handleAdd={handleAdd} je={je} />
+          <Table rowKey="id" dataSource={boards} columns={columns} pagination={false} />
+        </StyledContent>
       </Skeleton>
     </>
   );

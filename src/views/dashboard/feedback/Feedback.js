@@ -7,7 +7,7 @@ import { Radio, Button, message } from 'antd';
 
 import { RiMessage3Line } from 'react-icons/ri';
 
-import { Content } from '../team/styles/team';
+import { Content } from '../styles/global';
 import { FeedbackForm, Question } from './styles/feedback';
 import Header from '../../../components/common/Header';
 
