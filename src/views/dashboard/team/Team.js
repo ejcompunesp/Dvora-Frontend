@@ -54,17 +54,17 @@ function Team(props) {
     setCurrentPage(page);
   }
 
-  function handleMember(memberId) {
+  function handleMember(member) {
     return (
       <Menu>
         <Menu.Item key="0">
-          <MemberEdit setNewMember={setNewMember} memberId={memberId} />
+          <MemberEdit setNewMember={setNewMember} member={member} />
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="1">
           <Popconfirm
             title="Deseja mesmo remover o membro?"
-            onConfirm={() => handleRemove(memberId)}
+            onConfirm={() => handleRemove(member.id)}
             okText="Yes"
             cancelText="No"
           >
@@ -131,7 +131,7 @@ function Team(props) {
                 <li key={member.id}>
                   {!invisibleToMember &&
                     <MoreButton>
-                      <Dropdown overlay={handleMember(member.id)} trigger={['click']} placement="bottomRight">
+                      <Dropdown overlay={handleMember(member)} trigger={['click']} placement="bottomRight">
                         <FiMoreVertical className="ant-dropdown-link" onClick={e => e.preventDefault()} />
                       </Dropdown>
                     </MoreButton>

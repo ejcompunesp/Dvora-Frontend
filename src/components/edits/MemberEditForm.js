@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { boardsApi, membersApi } from '../../api'
 
-import { Form, Input, message, Button, Select } from 'antd';
+import { Form, Input, message, Button, Select, Typography } from 'antd';
 
 import { FiCamera } from 'react-icons/fi';
 import { MdPerson, MdPhone, MdEmail, MdLock, MdPhotoFilter } from 'react-icons/md';
@@ -17,6 +17,8 @@ function MemberRegistrationForm(props) {
   const [loading, setLoading] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [boards, setBoards] = useState([]);
+  const [visiblePassword, setVisiblePassword] = useState(false);
+  const { Text } = Typography;
 
   useEffect(() => {
     const loadBoards = async () => {
@@ -43,8 +45,8 @@ function MemberRegistrationForm(props) {
         setLoading(true);
         const data = new FormData();
         data.append('name', values.name);
-        data.append('id', props.memberId);
-        data.append('password', values.password);
+        data.append('id', props.member.id);
+        if(values.password) data.append('password', values.password);
         data.append('sr', values.sr);
         data.append('boardId', values.boardId);
         data.append('position', values.position);
@@ -107,6 +109,7 @@ function MemberRegistrationForm(props) {
       </UploadPhoto>
       <Form.Item label="Nome">
         {getFieldDecorator('name', {
+          initialValue: props.member.name,
           rules: [
             {
               required: true,
@@ -125,35 +128,9 @@ function MemberRegistrationForm(props) {
           ],
         })(<Input addonBefore={<MdEmail />} style={{ width: '100%' }} />)}
       </Form.Item> */}
-      <Form.Item label="Nova senha" hasFeedback >
-        {getFieldDecorator('password', {
-          rules: [
-            {
-              required: true,
-              message: 'Por favor, insira sua senha!',
-            },
-            {
-              validator: validateToNextPassword,
-            }
-          ],
-        })(<Input.Password addonBefore={<MdLock />} style={{ width: '100%' }} />)}
-      </Form.Item>
-      <Form.Item label="Confirme sua senha" hasFeedback>
-        {getFieldDecorator('confirm', {
-          rules: [
-            {
-              required: true,
-              message: 'Por favor, confirme sua senha!',
-            },
-            {
-              validator: compareToFirstPassword,
-            },
-          ],
-        })(<Input.Password onBlur={handleConfirmBlur} addonBefore={<MdLock />}
-          style={{ width: '100%' }} />)}
-      </Form.Item>
       <Form.Item label="RA">
         {getFieldDecorator('sr', {
+          initialValue: props.member.sr,
           rules: [
             {
               required: true,
@@ -164,6 +141,8 @@ function MemberRegistrationForm(props) {
       </Form.Item>
       <Form.Item label="Diretoria">
         {getFieldDecorator('boardId', {
+          valuePropName: 'option',
+          initialValue: props.member.boardId || '',
           rules: [
             {
               required: true,
@@ -182,6 +161,7 @@ function MemberRegistrationForm(props) {
       </Form.Item>
       <Form.Item label="Cargo">
         {getFieldDecorator('position', {
+          initialValue: props.member.position,
           rules: [
             {
               required: true,
@@ -190,6 +170,30 @@ function MemberRegistrationForm(props) {
           ],
         })(<Input addonBefore={<FaUserCog />} style={{ width: '100%' }} />)}
       </Form.Item>
+      {visiblePassword ? (
+        <>
+          <Form.Item label="Nova senha" hasFeedback >
+            {getFieldDecorator('password', {
+              rules: [
+                {
+                  validator: validateToNextPassword,
+                }
+              ],
+            })(<Input.Password addonBefore={<MdLock />} style={{ width: '100%' }} />)}
+          </Form.Item>
+          <Form.Item label="Confirme sua senha" hasFeedback>
+            {getFieldDecorator('confirm', {
+              rules: [
+                {
+                  validator: compareToFirstPassword,
+                },
+              ],
+            })(<Input.Password onBlur={handleConfirmBlur} addonBefore={<MdLock />}
+              style={{ width: '100%' }} />)}
+          </Form.Item>
+        </>
+      ) : (<a onClick={() => setVisiblePassword(true)}><Text underline> Alterar senha </Text></a>)
+      }
       {/* <Form.Item label="Telefone">
         {getFieldDecorator('phone', {
         })(<Input addonBefore={<MdPhone />} style={{ width: '100%' }} />)}
