@@ -40,7 +40,7 @@ function Login({ form, setJe, setMember }) {
   }
   return (
     <>
-      {isAuthenticated() ? <Redirect to="/dashboard" /> : null}
+      {isAuthenticated() ? <Redirect to="/dashboard/home" /> : null}
       <Container>
         <img src={logo} />
         <StyledForm onSubmit={handleSubmit} className="login-form">
