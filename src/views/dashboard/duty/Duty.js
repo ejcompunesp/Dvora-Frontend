@@ -44,7 +44,7 @@ function Duty({ je, member }) {
       try {
         const response = await membersDutyApi.list(je.id);
         if (response.status === 200) {
-          const data = response.data.duties.map(memberDuty => ({
+          const data = response.data.dutiesToday.map(memberDuty => ({
             ...memberDuty,
             startTime: formatTime(memberDuty.duty.createdAt),
             finishTime: memberDuty.duty.status === 1 ? formatTime(memberDuty.duty.updatedAt) : null,
@@ -57,7 +57,7 @@ function Duty({ je, member }) {
       }
     }
     loadDuties();
-  }, [formatTime, je.id, newDuty]);
+  }, [newDuty]);
 
   async function handleFinished(values) {
     try {
@@ -123,7 +123,7 @@ function Duty({ je, member }) {
 
   return (
     <>
-      <Header 
+      <Header
         title="Plantão"
         icon={<FiCoffee />}
       />
