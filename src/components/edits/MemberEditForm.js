@@ -4,10 +4,9 @@ import { boardsApi, membersApi } from '../../api'
 import { Form, Input, message, Button, Select, Typography } from 'antd';
 
 import { FiCamera } from 'react-icons/fi';
-import { MdPerson, MdPhone, MdEmail, MdLock, MdPhotoFilter } from 'react-icons/md';
+import { MdPerson, MdLock } from 'react-icons/md';
 import {
-  FaAddressCard, FaUserCog, FaUserTie, FaFacebookSquare,
-  FaInstagram, FaLinkedin
+  FaAddressCard, FaUserCog
 } from 'react-icons/fa';
 
 import { UploadButtons, UploadPhoto } from '../registrations/styles/memberRegistration';

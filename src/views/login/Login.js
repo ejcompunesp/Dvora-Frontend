@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Icon, message } from "antd";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+
 import * as JeActions from "../../store/actions/je";
 import * as MemberActions from '../../store/actions/member'
-
 import { authApi, loginDashboard } from "../../api";
 import { isAuthenticated } from "../../api/auth";
+
+import { Form, Input, Button, Icon, message } from "antd";
 
 import { Container, StyledForm } from "./styles/login";
 
@@ -15,7 +16,6 @@ import logo from "../../assets/dvora-logo.png";
 function Login({ form, setJe, setMember }) {
   const { getFieldDecorator } = form;
   const [loading, setLoading] = useState(false);
-
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -33,11 +33,13 @@ function Login({ form, setJe, setMember }) {
           }
         } catch (error) {
           message.error(error.response.data.msg);
+          console.log(error)
           setLoading(false);
         }
       }
     });
   }
+
   return (
     <>
       {isAuthenticated() ? <Redirect to="/dashboard/home" /> : null}

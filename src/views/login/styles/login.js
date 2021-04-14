@@ -4,12 +4,12 @@ import { Form } from "antd";
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   height: 100vh;
   background-color: #f5f5f5;
   flex-direction: column;
+  
   img {
-    margin-top: 10px;
+    margin-top: 100px;
     width: 100px;
     margin-bottom: 30px;
   }

@@ -38,6 +38,7 @@ export default function General(props) {
         setMember(response.data);
         setLoading(false);
         setError(false);
+        console.log(response)
       }
     } catch (error) {
       message.error("Não foi possível recuperar os dados do membro!");

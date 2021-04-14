@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+
 import { feedbacksApi } from "../../api";
 
 import { Table, Skeleton, Icon } from "antd";
 
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
-
-import user from "../../assets/user.png";
-import { Link } from "react-router-dom";
 
 function MemberList(props) {
   const [loading, setLoading] = useState(false);
@@ -19,6 +17,7 @@ function MemberList(props) {
       setLoading(true);
       try {
         const response = await feedbacksApi.index();
+        console.log(response);
         if (response.status === 200) {
           setMembers(response.data);
         }
@@ -93,9 +92,9 @@ function MemberList(props) {
       dataIndex: "",
       key: "details",
       render: (row) => (
-          <Link type="link" to={`monitoring/details/${row.id}`}>
-            <Icon type="eye" />
-          </Link>
+        <Link type="link" to={`monitoring/details/${row.id}`}>
+          <Icon type="eye" />
+        </Link>
       ),
     },
   ];

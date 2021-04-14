@@ -63,7 +63,7 @@ export default function TopNavbar({ je, logout, member }) {
         <BreadCrumb>{je.name}</BreadCrumb>
         <IconsList>
           {isLoginMember() && member.image ?
-            <img src={`${apiURL}/${member.image}`} />
+            <img src={`${apiURL}/${member.image}`} alt="Perfil" />
             :
             <FaUser />
           }

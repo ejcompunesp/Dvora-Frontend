@@ -6,12 +6,16 @@ import "./index.css";
 
 import store from "./store";
 
+import { ConfigProvider } from 'antd';
+import ptBR from 'antd/lib/locale/pt_BR';
 
 function App() {
   return (
-    <Provider store={store}>
-      <AppRoutes />
-    </Provider>
+    <ConfigProvider locale={ptBR}>
+      <Provider store={store}>
+        <AppRoutes />
+      </Provider>
+    </ConfigProvider>
   );
 }
 

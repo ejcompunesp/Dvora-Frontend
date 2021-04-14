@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getToken } from "./auth";
 
 const api = axios.create({
-  baseURL: 'https://backend-dvora.herokuapp.com',
+  baseURL: process.env.REACT_APP_API_URL,
   timeout: 100000
 });
 

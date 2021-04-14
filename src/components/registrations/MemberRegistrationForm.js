@@ -6,11 +6,11 @@ import { Form, Input, message, Button, Select } from 'antd';
 import { FiCamera } from 'react-icons/fi';
 import { MdPerson, MdPhone, MdEmail, MdLock } from 'react-icons/md';
 import {
-  FaAddressCard, FaUserCog, FaUserTie, FaFacebookSquare,
+  FaAddressCard, FaUserCog, FaFacebookSquare,
   FaInstagram, FaLinkedin
 } from 'react-icons/fa';
 
-import { UploadButtons, CentralizedUpload, UploadPhoto, PhotoInput } from './styles/memberRegistration';
+import { UploadButtons, CentralizedUpload, UploadPhoto } from './styles/memberRegistration';
 
 function MemberRegistrationForm(props) {
   const [confirmDirty, setConfirmDirty] = useState(false);
