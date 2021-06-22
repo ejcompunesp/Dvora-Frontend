@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux';
 
-import { Table, Popconfirm, Input, Form, message, Skeleton } from 'antd';
-
-import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
-import { FaChalkboard } from 'react-icons/fa';
-
-import ModalBoard from '../../../components/boards/ModalBoard';
-
 import { boardsApi } from '../../../api'
+
+import { Table, Popconfirm, Input, Form, message, Skeleton } from 'antd';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import { FiBriefcase } from 'react-icons/fi';
+
 import Header from '../../../components/common/Header';
+import ModalBoard from '../../../components/boards/ModalBoard';
 
 import { StyledContent } from "./styles/board";
 
@@ -136,7 +135,7 @@ function Board({ form, je }) {
     <>
       <Header
         title="Diretorias"
-        icon={<FaChalkboard />}
+        icon={<FiBriefcase />}
       />
       <Skeleton loading={loading}>
         <StyledContent>

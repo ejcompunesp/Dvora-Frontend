@@ -7,11 +7,11 @@ import { isLoginMember } from '../../../api/auth';
 import { Pagination, message, Menu, Dropdown, Popconfirm, Skeleton } from 'antd'
 
 import { FaFacebookSquare, FaInstagram, FaLinkedin } from 'react-icons/fa';
-import { AiOutlineRocket } from 'react-icons/ai';
-import { FiMoreVertical } from 'react-icons/fi';
+import { FiMoreVertical, FiUsers } from 'react-icons/fi';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
-import { Content, TeamMembers,
+import {
+  Content, TeamMembers,
   MoreButton, DropdownItem, SocialMedias, Pages
 } from './styles/team';
 
@@ -118,10 +118,10 @@ function Team(props) {
 
   return (
     <>
-      <Header 
-        title="Nossa equipe" 
-        icon={<AiOutlineRocket style={{ transform: "rotate(45deg)" }}/>} 
-        button={!invisibleToMember && <MemberRegistration visible={visible} setVisible={setVisible} onSubmit={handleSubmit} />} 
+      <Header
+        title="Nossa equipe"
+        icon={<FiUsers />}
+        button={!invisibleToMember && <MemberRegistration visible={visible} setVisible={setVisible} onSubmit={handleSubmit} />}
       />
       <Content>
         <Skeleton loading={loading}>

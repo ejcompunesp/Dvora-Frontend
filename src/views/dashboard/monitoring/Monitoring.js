@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RiMapPin2Line } from 'react-icons/ri';
+import { FiMonitor } from 'react-icons/fi';
 
 import { TableStyle } from './styles/monitoring';
 import { Content } from '../team/styles/team';
@@ -13,7 +13,7 @@ export default function General() {
     <>
       <Header
         title="Acompanhamento dos membros"
-        icon={<RiMapPin2Line />}
+        icon={<FiMonitor />}
       />
       <Content>
         <TableStyle>

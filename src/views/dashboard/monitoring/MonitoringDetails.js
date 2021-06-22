@@ -21,14 +21,6 @@ export default function General(props) {
   const [dutyId, setDutyId] = useState(null);
   const [duty, setDuty] = useState([]);
 
-  useEffect(() => {
-    getInfo();
-  }, []);
-
-  useEffect(() => {
-    if (dutyId !== null) setDuty(duties.filter((item) => item.id === dutyId));
-  }, [dutyId]);
-
   async function getInfo() {
     setLoading(true);
     try {
@@ -39,6 +31,7 @@ export default function General(props) {
         setLoading(false);
         setError(false);
       }
+      console.log(response)
     } catch (error) {
       message.error("Não foi possível recuperar os dados do membro!");
       console.log(error.response.data);
@@ -46,6 +39,15 @@ export default function General(props) {
       setError(true);
     }
   }
+
+  useEffect(() => {
+    getInfo();
+  }, []);
+
+  useEffect(() => {
+    if (dutyId !== null) setDuty(duties.filter((item) => item.id === dutyId));
+  }, [dutyId]);
+
 
   return (
     <div>
@@ -66,7 +68,7 @@ export default function General(props) {
               />
               <MonitoringInfoContainer>
                 <FeedbackMonitoring duties={duties} dutyId={dutyId} />
-                <MonitoringComments comment={text} duties={duties} dutyId={dutyId}/>
+                <MonitoringComments comment={text} duties={duties} dutyId={dutyId} />
               </MonitoringInfoContainer>
             </Content>
           </>
@@ -83,6 +85,6 @@ export default function General(props) {
           />
         )}
       </Spin>
-      </div>
+    </div>
   );
 }

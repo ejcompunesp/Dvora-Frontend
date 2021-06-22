@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+
 import { feedbacksApi } from "../../api";
 
 import { Table, Skeleton, Icon } from "antd";
-
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
-
-import user from "../../assets/user.png";
-import { Link } from "react-router-dom";
 
 function MemberList(props) {
   const [loading, setLoading] = useState(false);
@@ -93,20 +90,20 @@ function MemberList(props) {
       dataIndex: "",
       key: "details",
       render: (row) => (
-          <Link type="link" to={`monitoring/details/${row.id}`}>
-            <Icon type="eye" />
-          </Link>
+        <Link type="link" to={`monitoring/details/${row.id}`}>
+          <Icon type="eye" />
+        </Link>
       ),
     },
   ];
 
   return (
     <Skeleton active loading={loading}>
-        <Table
-          columns={columns.filter((column) => column.visible !== false)}
-          scroll={{ x: true }}
-          dataSource={members}
-        />
+      <Table
+        columns={columns.filter((column) => column.visible !== false)}
+        scroll={{ x: true }}
+        dataSource={members}
+      />
     </Skeleton>
   );
 }
